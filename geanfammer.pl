@@ -3,7 +3,7 @@
 #________________________________________________________________________
 # Title     : geanfammer.pl
 # Usage     : geanfammer.pl DATABASE(or GENOME) [e= ] [f=]
-#
+#                  * look at the Example section down below!
 # Function  : Creates a domain level clustering file from a given
 #              FASTA format sequence DB. It has been used for complete
 #              genome sequence analysis.
@@ -96,6 +96,7 @@
 #             k= for k-tuple value. default is 1 (ori. FASTA prog.
 #                                                   default is 2)
 #             a= for choosing either fasta or ssearch algorithm
+#                    You can set absolute path like (/usr/bin/fasta)
 #             E= for Evalue cutoff for single linkage clustering
 #                    $E_cut_main
 #             e= for Evalue cutoff for divide_clusters subroutine.
@@ -131,7 +132,7 @@
 #
 # Author    : Sarah A Teichmann, Jong Park, sat@mrc-lmb.cam.ac.uk,
 #                                      jong@salt2.med.harvard.edu
-# Version   : 1.3
+# Version   : 1.4
 #------------------------------------------------------------------
 
 print "\n\n\n#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
@@ -151,60 +152,84 @@ print "#_____________________________________________________________________\n"
 # Example   :
 # Keywords  :
 # Options   :
-# Version   : 1.0
+# Version   : 1.4
 #--------------------------------------------------------------------------------
 sub geanfammer_main{
-    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    # All the defaults, Evalues are determined in geanfammer sub
-    #__________________________________________________________________
-    $|=1;
-    $sub_dir_size=2; # this is the subdirectory name char size
-    $machine_readable='M';
-    $make_msp_in_sub_dir_opt='m';
-    $make_subdir_gzipped='d';
-    $make_subdir_out='D';
-    $Evalue_cut_single_link=0.01;
-    $Evalue_cut_divclus    =0.01;
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        # All the defaults, Evalues are determined in geanfammer sub
+        #__________________________________________________________________
+        $|=1;
+        $algorithm='fasta'; # default search algorithm setting(will be overridden
+                            # by 'a=xxx' prompt argument
+        $sub_dir_size=2; # this is the subdirectory name char size
+        $machine_readable='M';
+        $make_msp_in_sub_dir_opt='m';
+        $make_subdir_gzipped='d';
+        $make_subdir_out='D';
+        $Evalue_cut_single_link=0.01;
+        $Evalue_cut_divclus    =0.01;
 
-    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
-    # preprocessing the inputs,  parse_arguments reads in the options in the headerbox
-    #__________________________________________________________________________________
-    @your_genome_or_db_to_analyse_file=@{&parse_arguments(1)};
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
+        # preprocessing the inputs,  parse_arguments reads in the options in the headerbox
+        #__________________________________________________________________________________
+        @your_genome_or_db_to_analyse_file=@{&parse_arguments(1)};
 
-    print "\n\n\n# (1) geanfammer_main: \@your_genome_or_db_to_analyse_file are(is)\n";
-    print "\n => @your_genome_or_db_to_analyse_file\n\n\n";
+        print "\n\n\n# (1) geanfammer_main (with $algorithm): \@your_genome_or_db_to_analyse_file are(is)\n";
+        print "\n => @your_genome_or_db_to_analyse_file   with $algorithm\n\n\n";
 
-    if(@your_genome_or_db_to_analyse_file < 1){
-         print "\n# $0: failed to find input file! Did you put FASTA format DB file as input?\n\n\n\n";
-         print chr(7);
-         exit;
-    }
+        if(@your_genome_or_db_to_analyse_file < 1){
+              print "\n#  geanfammer_main: ERROR!\n";
+              print "\n# Dear $ENV{'USER'}, $0: failed to find input file!\n\nDid you put FASTA format DB file as input?\n\n";
+              print " As like:  $0 MG.fa \n\n\n";
+              print chr(7);
+              exit;
+        }
 
-    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    # Running the actual big sub
-    #______________________________
-    @final_clu_files=@{&geanfammer(\@your_genome_or_db_to_analyse_file,
-                          $verbose,
-                          "d=$sub_dir_size",
-                          $over_write,
-                          $dynamic_factor,
-                          $create_sso_file,
-                          $reverse_sequence,
-                          $machine_readable,
-                          $make_msp_in_sub_dir_opt,
-                          "E=$Evalue_cut_single_link",
-                          "e=$Evalue_cut_divclus",
-                          $make_subdir_gzipped,
-                          $Lean_output,
-                        )};
-    if($verbose){
-       print "\n\n\n#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
-       print "\n#";
-       print "\n# $0  is finished \n\n";
-    }
-    print "\n# $0 : the final output \'@final_clu_files\' is created " if $make_separate_summary;
-    print "\n#__________________________________________________________________\n\n" if $verbose;
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
+        # Checking if they have 'fasta' or 'ssearch' in the path
+        #__________________________________________________________________________________
+        if($algorithm=~/\/([^\/]+) *$/){
+              print "\n# Checking \$algorithm ($algorithm) name\n";
+              $algorithm_name=$1;
+        }
+        $result_of_which_run=`which $algorithm_name`;
+        if($result_of_which_run=~/^ *(\/\S+\/)[fastassearch]+ *$/){
+              print "\n# $0: Your $algorithm_name is in $1, good, I am running it\n";
+        }else{
+              print "\n# (E) \$algorithm value $algorithm is not found\n";
+              print "\n# (E) $0 ran \'which\' Linux command and the result is:\n";
+              print "  $result_of_which_run\n";
+              print "\n# Please check your path for $algorithm\n\n"; print chr(7);
+              exit;
+        }
+
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        # Running the actual big sub
+        #______________________________
+        @final_clu_files=@{&geanfammer(\@your_genome_or_db_to_analyse_file,
+              "a=$algorithm",
+               $verbose,
+               "d=$sub_dir_size",
+               $over_write,
+               $dynamic_factor,
+               $create_sso_file,
+               $reverse_sequence,
+               $machine_readable,
+               $make_msp_in_sub_dir_opt,
+               "E=$Evalue_cut_single_link",
+               "e=$Evalue_cut_divclus",
+               $make_subdir_gzipped,
+               $Lean_output,
+             )};
+        if($verbose){
+              print "\n\n\n#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
+              print "\n#";
+              print "\n# $0  is finished \n\n";
+        }
+        print "\n# $0 : the final output \'@final_clu_files\' is created " if $make_separate_summary;
+        print "\n#__________________________________________________________________\n\n" if $verbose;
 }
+
 
 
 
@@ -446,25 +471,25 @@ sub geanfammer{
             #  Searching the db self to self using default algorithm of FASTA ktup=1
             #__________________________________________________________________________
             $num_of_seq_in_fa_file=${&do_sequence_search(
-                                      $Lean_output,
-                                      \$file[$i],
-                                      $over_write,
-                                      $msp_directly_opt,
-                                      "u=$upper_expect_limit",
-                                      $do_in_batch,
-                                      $create_sso,
-                                      $reverse_query,
-                                      $single_big_msp,
-                                      $machine_readable,
-                                      "DB=$input_db_or_genome",
-                                      "File=$input_db_or_genome",
-                                      $make_msp_in_sub_dir_opt,
-                                      $make_gz_in_sub_dir_opt,
-                                      "d=$sub_dir_size",
-                                      $new_format,
-                                      $add_range,
-                                      "E=$Evalue_cut_single_link_AT_SEARCH",
-                                    ) };
+                      $Lean_output,
+                      \$file[$i],
+                      $over_write,
+                      $msp_directly_opt,
+                      "u=$upper_expect_limit",
+                      $do_in_batch,
+                      $create_sso,
+                      $reverse_query,
+                      $single_big_msp,
+                      $machine_readable,
+                      "DB=$input_db_or_genome",
+                      "File=$input_db_or_genome",
+                      $make_msp_in_sub_dir_opt,
+                      $make_gz_in_sub_dir_opt,
+                      "d=$sub_dir_size",
+                      $new_format,
+                      $add_range,
+                      "E=$Evalue_cut_single_link_AT_SEARCH",
+                    ) };
         }else{
             print "\n\n# $0; You chose NO search. I will cluster and divide now\n";
             sleep(1);
@@ -494,9 +519,9 @@ sub geanfammer{
         }elsif(!$Evalue_cut_divclus ){     $Evalue_cut_divclus    =$Evalue_cut_single_link }
 
         print "\n#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`#\n";
-        print   "# BEfore running Sinlge linkage sub                    #\n";
-        print   "# Evalue single for clus & Divclus  : $Evalue_cut_single_link, $Evalue_cut_divclus     #\n";
-        print   "#______________________________________________________#\n";
+        print "# BEfore running Sinlge linkage sub                    #\n";
+        print "# Evalue single for clus & Divclus  : $Evalue_cut_single_link, $Evalue_cut_divclus     #\n";
+        print "#______________________________________________________#\n";
 
         %hash_main=%{&msp_single_link_hash(\@msp_files_main, $Evalue_cut_single_link)};
 
@@ -512,25 +537,25 @@ sub geanfammer{
         $thresh=30;
         $sat_file=0;
         @sub_clustering_clu_files=@{&divide_clusters(
-                                 $Lean_output,
-                                 \@written_msp_files,
-                                 "s=$score",
-                                 "f=$factor", ## this is a very impo. parameter in the behaviour of divclus, Sarah!
-                                 "t=$thresh",
-                                 "e=$Evalue_cut_divclus", ## this is a very impo. parameter in the behaviour of divclus, Sarah!
-                                 $dynamic_factor,
-                                 $verbose,
-                                 $range,
-                                 $merge,
-                                 $sat_file,
-                                 $dindom,
-                                 $indup,
-                                 $over_write,
-                                 $optimize,
-                                 $short_region,
-                                 $large_region,
-                                 $average_region
-                                )};
+                $Lean_output,
+                \@written_msp_files,
+                "s=$score",
+                "f=$factor", ## this is a very impo. parameter in the behaviour of divclus, Sarah!
+                "t=$thresh",
+                "e=$Evalue_cut_divclus", ## this is a very impo. parameter in the behaviour of divclus, Sarah!
+                $dynamic_factor,
+                $verbose,
+                $range,
+                $merge,
+                $sat_file,
+                $dindom,
+                $indup,
+                $over_write,
+                $optimize,
+                $short_region,
+                $large_region,
+                $average_region
+               )};
 
         #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         #  This is the final result now.
@@ -562,6 +587,7 @@ sub geanfammer{
    }# end of for loop for @file
    return(\@files_created);
 }
+
 
 
 #_______________________________________________________________________
@@ -1511,85 +1537,86 @@ sub do_sequence_search{
 # Version   : 2.0
 #--------------------------------------------------------------------
 sub parse_arguments{
-  my( $c, $d, $f, $arg_num, $option_table_seen, $n, $option_filtered,
-		$option_table_example, $input_line, @input_files,
-		$extension);
+     my( $c, $d, $f, $arg_num, $option_table_seen, $n, $option_filtered,
+           $option_table_example, $input_line, @input_files,
+           $extension);
 
-  &import_ENV_vars; # this enables  $PDB40D automatically assigns the shell var value of $ENV{'PDB40D'}
+     &import_ENV_vars; # this enables  $PDB40D automatically assigns the shell var value of $ENV{'PDB40D'}
 
-  #"""""""""""""""""""""""""""""""""""""""""""""""""""""""
-  #   Checks if there were arguments
-  #_______________________________________________________
-  if( @ARGV < 1 ){ #<-- If Argument is not given at prompt
-	  for(@_){
-		 if($_ eq '0'){ ## this means, parsearguments do not need any argus. So no need to parse anything
-			 last;
-		 }else{
-			 print "\n \"$0\" requires at least one Argument, suiciding.\n\n";
-			 print chr(7); #<-- This is beeping
-			 print "  To get help type \"$0  h\"\n\n\n ";
-			 exit;
-		 }
-	  }
-  }
-  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  #   Some DEFAULT $debug variables for debugging purposes
-  #__________________________________________________________
-  &set_debug_option;
+     #"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+     #   Checks if there were arguments
+     #_______________________________________________________
+     if( @ARGV < 1 ){ #<-- If Argument is not given at prompt
+          for(@_){
+                 if($_ eq '0'){ ## this means, parsearguments do not need any argus. So no need to parse anything
+                         last;
+                 }else{
+                         print "\n \"$0\" requires at least one Argument, suiciding.\n\n";
+                         print chr(7); #<-- This is beeping
+                         print "  To get help type \"$0  h\"\n\n\n ";
+                         exit;
+                 }
+          }
+     }
+     #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     #   Some DEFAULT $debug variables for debugging purposes
+     #__________________________________________________________
+     &set_debug_option;
 
-  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  #  If there is only one prompt arg. and is [-]*[hH][elp]*, it calls
-  #   &default_help and exits
-  #___________________________________________________________________
-  if( ( @ARGV == 1 ) && ($ARGV[0] =~ /^[\-]*[hH\?][elp ]*$/) ){
-		&default_help;
-		exit;
-  }
+     #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     #  If there is only one prompt arg. and is [-]*[hH][elp]*, it calls
+     #   &default_help and exits
+     #___________________________________________________________________
+     if( ( @ARGV == 1 ) && ($ARGV[0] =~ /^[\-]*[hH\?][elp ]*$/) ){
+           &default_help;
+           exit;
+     }
 
-  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  #  Checking some input options like 'e=txt' for extension filtering
-  #_____________________________________________________________________
-  for($i=0; $i< @_; $i++){
-      if($_[$i]=~/e=(\S+)/){
-		  push(@extension, $1);
-	  }elsif($_[$i]=~/^[\-]?r$/){ ## reversing file order in return stage
-          $reverse_out_file_name_order='r';
-      }
-  }
+     #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     #  Checking some input options like 'e=txt' for extension filtering
+     #_____________________________________________________________________
+     for($i=0; $i< @_; $i++){
+         if($_[$i]=~/e=(\S+)/){
+             push(@extension, $1);
+             }elsif($_[$i]=~/^[\-]?r$/){ ## reversing file order in return stage
+             $reverse_out_file_name_order='r';
+         }
+     }
 
 
-  for($f=0; $f < @ARGV; $f++){
-	 if( $ARGV[$f] =~ /\w+[\-\.\w]+$/ and -f $ARGV[$f] ){
-		 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		 # When extension is defined, filter files by it
-		 #____________________________________________
-		 if(@extension > 0){
-		     for($e=0; $e < @extension; $e++){
-				 $extension=$extension[$e];
-				 if($ARGV[$f]=~/\S\.$extension/){
-					 push(@input_files, $ARGV[$f] );
-				 }else{ next }
-			 }
-		 }else{
-			 push(@input_files, $ARGV[$f] );
-			 next;
-		 }
-	 }
-  }
+     for($f=0; $f < @ARGV; $f++){
+         if( $ARGV[$f] =~ /\w+[\-\.\w]+$/ and -f $ARGV[$f] ){
+             #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+             # When extension is defined, filter files by it
+             #____________________________________________
+             if(@extension > 0){
+                 for($e=0; $e < @extension; $e++){
+                      $extension=$extension[$e];
+                      if($ARGV[$f]=~/\S\.$extension/){
+                              push(@input_files, $ARGV[$f] );
+                      }else{ next }
+                 }
+             }else{
+                 push(@input_files, $ARGV[$f] );
+                 next;
+             }
+         }
+     }
 
-  #""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-  #     Reading the running program script
-  #"""""""""""""""""""""""""""""""""""""""""""""""""""""""
-  &assign_options_to_variables;
-  if($HELP == 1){ &default_help }
-  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  # reverse order if 'r' opt is set
-  #_____________________________________________
-  if($reverse_out_file_name_order){
-      @input_files=reverse(@input_files);
-  }
-  return(\@input_files);
+     #""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+     #     Reading the running program script
+     #"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+     &assign_options_to_variables;
+     if($HELP == 1){ &default_help }
+     #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     # reverse order if 'r' opt is set
+     #_____________________________________________
+     if($reverse_out_file_name_order){
+         @input_files=reverse(@input_files);
+     }
+     return(\@input_files);
 }
+
 #________________________________________________________________________
 # Title     : assign_options_to_variables
 # Usage     : &assign_options_to_variables(\$input_line);
@@ -1613,7 +1640,7 @@ sub parse_arguments{
 #             @num_opt,
 #
 # Argument  : None.
-# Version   : 2.6
+# Version   : 2.7
 #--------------------------------------------------------------------
 sub assign_options_to_variables{
   my($i, %vars, $j, $op, $z, $n, $symb, $value, $var, %val, @val, $ARG_REG,
@@ -1622,8 +1649,8 @@ sub assign_options_to_variables{
   #""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
   #      Defining small variables for option table reading
   #""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-  my($g)='gets';                my($if)='if';
-  my($is)='is';                 my(@input_files);
+  my($g)='gets'; my($if)='if';
+  my($is)='is';  my(@input_files);
   my($o)='or';   my(@arguments) = sort @ARGV;
 
   #"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -1631,78 +1658,81 @@ sub assign_options_to_variables{
   #_______________________________________________________________
   for($i=0; $i< @arguments; $i++){
 	 if(($arguments[$i]=~/^(\-?\d+[\.\d+]?)$/)&&   ### it mustn't be a file
-		( !(-f $arguments[$i]) ) ){                ### getting NUM opt
-		push(@num_opt, $1);
-	 }elsif( $arguments[$i]=~/^(\S+)=(\S+)$/){
-		$vars{$1}=$2;
+              ( !(-f $arguments[$i]) ) ){                ### getting NUM opt
+	      push(@num_opt, $1);
+	 }elsif( $arguments[$i]=~/^(\S+)=(\S+) *$/){
+                $vars{$1}=$2;
+		# print "\n# $1 $2\n";
 	 }
   }
 
-  #""""""""""""""""""""""""""""""""""""""""""""""""""
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   #   Some DEFAULT $debug variables for debugging purposes
-  #""""""""""""""""""""""""""""""""""""""""""""""""""
+  #_________________________________________________________
   &set_debug_option;
 
-  #"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+  #"""""""""""""""""""""""""""""""""""""""""""""""""""""""
   #   The main processing of self
-  #"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+  #_______________________________________________________
   open(SELF, "$0");    ## opens the program you ran to get the options table.
   while(<SELF>){
-
 	  if( $first_border_and_title > 6 ){  ## This is to make it read only the first headbox.
-		  last;                            #  $first_border_and_title is an incremental counter.
+                last;                            #  $first_border_and_title is an incremental counter.
 	  }elsif( /^ *#[_\*\-]{15,}$/ and /^ *# *[Tt][itle]*[ :]*/ ){
-		  $first_border_and_title++;
-		  print __LINE__, "# assign_options_to_variables : Title line found\n" if $debug eq 1;
+		$first_border_and_title++;
+		print __LINE__, "# assign_options_to_variables : Title line found\n" if $debug eq 1;
 	  }elsif(/^ {0,5}# {1,50}[\$\%\@].+$/){
 		  $op = $&;  ## $op is for the whole input option line which has $xxxx, @xxx, %xxxx format
 		  $op =~ s/^( *\# *)(\W\w+.+)$/$2/;  ## This is removing '#  ' in the line.
 		  $op =~ s/^(\W\w+.+)(\s+\#.*)$/$1/;  ## This is removing any comments in the line.
-			 #"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-			 ## matching the following line input format.
-			 ## $av_sc_segment     becomes    a  by  a  # To smooth the SC rates. Gets the averages of
-			 ## $ARG_REG is for arguments regular expression variable.
-			 ##  This reg. exp. matches = 'a or A or E or e' part
-			 ##  which represents alternative prompt arguments possibilities. \=$b$g$is$e$set
-			 #"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-			 $ARG_REG ='(\S*) *[or=\,]* *(\S*) *[=or\,]* *(\S*) *[=or\,]* *(\S*) *[=or\,]* *(\S*)';
-			 if($op=~/^([\$\@\%])([\w\-]+) {0,20}[=|$g|$is] *[\$\@\%]*([\- \w\.\d]+) *[bB]y +$ARG_REG/){
-							 ## $sym     $var        becomes          a [$a...]       by       a -a -A
-				  my $sym = $1;  #### The symbols like ($, @, %), '$' in the above.
-				  my $var = $2;  #### Actual variable name 'var' from $var, 'av_sc_segment' in the above.
-				  my $val = $3;  #### The becoming value  first 'a' in the above.
-				  my @arg = ($4, $5, $6, $7, $8);  ## The alternative prompt arguments, second 'a' in the above..
-			      print "\n $sym $var $val \n" if $debug==1;
-			      print "\n \@arg are @arg \n" if $debug==1;
+                  #"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+                  ## matching the following line input format.
+                  ## $av_sc_segment     becomes    a  by  a  # To smooth the SC rates. Gets the averages of
+                  ## $ARG_REG is for arguments regular expression variable.
+                  ##  This reg. exp. matches = 'a or A or E or e' part
+                  ##  which represents alternative prompt arguments possibilities. \=$b$g$is$e$set
+                  #"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+                  $ARG_REG ='(\S*) *[or=\,]* *(\S*) *[=or\,]* *(\S*) *[=or\,]* *(\S*) *[=or\,]* *(\S*)';
+                  if($op=~/^([\$\@\%])([\w\-]+) {0,30}[=|$g|$is] *[\$\@\%]*([\- \w\.\d]+) *[bB]y +$ARG_REG/){
+                       ## $sym   $var        becomes          a [$a...]       by       a -a -A
+                       my $sym = $1;  #### The symbols like ($, @, %), '$' in the above.
+                       my $var = $2;  #### Actual variable name 'var' from $var, 'av_sc_segment' in the above.
+                       my $val = $3;  #### The becoming value  first 'a' in the above.
+                       my @arg = ($4, $5, $6, $7, $8);  ## The alternative prompt arguments, second 'a' in the above..
+                       print "\n $sym $var $val \n" if $debug==1;
+                       print "\n \@arg are @arg \n" if $debug==1;
 
-				  #""""""""""""""""""""""""""""""""""""""""""""""""""""
-				  #  Going through the PROMPT args.
-				  #""""""""""""""""""""""""""""""""""""""""""""""""""""
-				  for($z=0; $z < @arguments; $z++){     ## $arguments[$z]  is from @ARGV
-					  if($arguments[$z]=~/^\-\w+$/){
-						  $arguments[$z] =~ s/\-//;
-					  }
-					  for ($i=0; $i < @arg; $i ++ ){
-						 if( ("$arg[$i]" eq "$arguments[$z]" )&& ($arg[$i] !~ /\=/)
-							 && ($sym eq '$') ){
-							 ${"$var"}="$val";
-							 if($debug == 1){
-								 print __LINE__," \$${var} is set to \"$1\"\n";
-							 }
+                       #""""""""""""""""""""""""""""""""""""""""""""""""""""
+                       #  Going through the PROMPT args.
+                       #____________________________________________________
+                       #print "\n# \@arguments are @arguments\n";
+                       for($z=0; $z < @arguments; $z++){     ## $arguments[$z]  is from @ARGV
+                             if($arguments[$z]=~/^\-\w+$/){
+                                 $arguments[$z] =~ s/\-//;
+                             }
+                             for ($i=0; $i < @arg; $i ++ ){
+                                 if( ("$arg[$i]" eq "$arguments[$z]" )&& ($arg[$i] !~ /\=/)
+                                      && ($sym eq '$') ){
+                                      ${"$var"}="$val";
+                                      if($debug == 1){
+                                           print __LINE__," \$${var} is set to \"$1\"\n";
+                                      }
 
-						 }#'''''''''''''''' $arg = by s=  syntax ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-						 elsif( ( $arg[$i] =~ /^(\w+) *\=/ ) &&
-							( $arguments[$z] =~ /^${1}= *([\w\.*\-*]+)$/) &&
-							( $sym eq '$') ){
-							  ${"$var"}="$1";
-							  if($debug eq 1){ print __LINE__,"\$${var} is set to \"$1\"\n";  }
-						 }
-					  }
-				  }
-			  }
-		}
+                                 }#'''''''''''''''' $arg = by s=  syntax ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                                 elsif( ( $arg[$i] =~ /^(\w+) *\=/ ) &&
+                                      ( $arguments[$z] =~ /^${1}= *([\w\.*\-*\/]+) *$/) &&
+                                      ( $sym eq '$') ){
+                                        ${"$var"}="$1";
+                                        if($debug eq 1){ print __LINE__,"\$${var} is set to \"$1\"\n";  }
+                                 }
+                             }
+                       }
+                   }
+             }
 	}
 }
+
+
 #________________________________________________________________________
 # Title     : get_base_names
 # Usage     : $base =${&get_base_names(\$file_name)};
