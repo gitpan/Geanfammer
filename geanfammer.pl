@@ -136,7 +136,7 @@
 # Author    : Sarah A Teichmann, Jong Park, sat@mrc-lmb.cam.ac.uk,
 #                                      jong@salt2.med.harvard.edu
 #             For commercial use, please contact one of the authors.
-# Version   : 2.1
+# Version   : 2.2
 #------------------------------------------------------------------
 
 print "\n\n\n#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
@@ -155,7 +155,7 @@ print "#_____________________________________________________________________\n"
 # Example   :
 # Keywords  : main_geanfammer, geanfammer
 # Options   :
-# Version   : 2.0
+# Version   : 2.1
 #--------------------------------------------------------------------------------
 sub geanfammer_main{
     ### !!! As parse_arguments is in this, DO not 'my' any variable here
@@ -165,7 +165,7 @@ sub geanfammer_main{
     $|=1;
     unless($algorithm){
         $algorithm='fasta'; # default search algorithm setting(will be overridden
-                    # by 'a=xxx' prompt argument
+                            # by 'a=xxx' prompt argument
     }
     $sub_dir_size=2; # this is the subdirectory name char size
     $machine_readable='M';  # this is to invoke FASTA's m=10 option
@@ -224,7 +224,7 @@ sub geanfammer_main{
             }else{
                 print "\n# (E) \$algorithm value $algorithm is not found\n";
                 print "\n# (E) $0 ran \'which\' Linux command and the result is:\n";
-                print "  $result_of_which_run\n";
+                print "  $result_of_which_run, You may have fasta3 instead of fasta\n";
                 print "\n# Please check your path for $algorithm\n\n"; print chr(7);
                 exit;
             }
@@ -577,12 +577,17 @@ sub geanfammer{
 
 
         #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        # From Single LINKAGE file, I compile each wrong cluster MSP files resulting in bigger MSPs
+        # Single LINKAGE file,
         #___________________________________________________________________________________________
         $single_linkage_file=${&print_clusfile_from_hash(\%hash_main)};
+
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        # Make MSP files from the SCLU file
+        #________________________________________________________________________
         if(-s $single_linkage_file){
                 #print "\n# (i) Good! \$single_linkage_file $single_linkage_file is made\n";
                 @written_msp_files=@{&convert_clu_to_msp(\$single_linkage_file, $Lean_output)};
+                print "\n\n==========================\n @written_msp_files\n\n\n";
         }else{
                 print "\n# (E) BAD! \$single_linkage_file $single_linkage_file is NOT here\n";
                 exit;
@@ -698,7 +703,7 @@ sub divide_clusters{
 			 $average_region, $dynamic_factor, @sub_clustering_clu_files,
 			 @splited1, $link_or_not,  %duplicate);
 
-		$factor=7; # default factor is 7 for 70%
+		$factor=7.5; # default factor is 7 for 70%
 		$length_thresh=30;
 
 		#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -871,7 +876,7 @@ sub divide_clusters{
 					&write_good_bad_list_in_divide_clusters(\@good, \@bad);
 					sub write_good_bad_list_in_divide_clusters{
 							 my  (@good, $i, @bad); @good=@{$_[0]}; @bad=@{$_[1]};
-							 open(GOODBAD, ">good_bad.list");
+                             open(GOODBAD, ">good_bad.list") || warn "\n Can not open good_bad.list \n\n";
 							 print GOODBAD "GOOD: all link    : 000\n";
 							 for($i=0; $i< @good; $i++){  print GOODBAD "$good[$i]\n";  }
 							 print GOODBAD "BAD : Not all link: 000\n";
@@ -1201,8 +1206,6 @@ sub find_program_in_path{
 		return(\@found_prog_and_path);
 }
 
-
-
 #____________________________________________________________________________________
 # Title     : do_sequence_search
 # Usage     : &do_sequence_search("Query_seqs=\%pdb_seq", "DB=$sequence_DB",
@@ -1247,237 +1250,232 @@ sub find_program_in_path{
 # Version   : 5.6
 #----------------------------------------------------------------------------------------
 sub do_sequence_search{
-		#"""""""""""""""""< handle_arguments{ head Ver 4.1 >"""""""""""""""""""
-		my(@A)=&handle_arguments(@_);my($num_opt)=${$A[7]};my($char_opt)=${$A[8]};
-		my(@hash)=@{$A[0]};my(@file)=@{$A[4]};my(@dir)=@{$A[3]};my(@array)=@{$A[1]};
-		my(@string)=@{$A[2]};my(@num_opt)=@{$A[5]};my(@char_opt)=@{$A[6]};
-		my(@raw_string)=@{$A[9]};my(%vars)=%{$A[10]};my(@range)=@{$A[11]};
-		my($i,$j,$c,$d,$e,$f,$g,$h,$k,$l,$m,$n,$o,$p,$q,$r,$s,$t,$u,$v,$w,$x,$y,$z);
-		if($debug==1){print "\n\t\@hash=\"@hash\"
-		\@raw_string=\"@raw_string\"\n\t\@array=\"@array\"\n\t\@num_opt=\"@num_opt\"
-		\@char_opt=\"@char_opt\"\n\t\@file=\"@file\"\n\t\@string=\"@string\"\n" }
-		#""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-		my (@final_out, $add_range, $single_big_msp, $base_name, $create_sso, @nondup,
-			 $Single_msp_out_file, %duplicate, $Evalue_thresh, $Score_thresh, @SSO, $sequence_DB,
-			 @sso, @temp, $algorithm, $margin, $out_msp_file, @MSP, @final_msp_file_names_out,
-			 $upper_expect_limit, $lower_expect_limit, $k_tuple, %seq_input, %MSP, $No_processing,
-			 $new_format, $PVM_FASTA_run, $over_write, $sub_dir_size, $age_in_days_of_out_file,
-			 $over_write_by_age, $Lean_output, $gzipped_msp_file, $gzipped_sso_file,
-			 $defined_all_ok, $make_msp_in_sub_dir_opt, $upper_expect_limit, $Evalue_thresh );
+    #"""""""""""""""""< handle_arguments{ head Ver 4.1 >"""""""""""""""""""
+    my(@A)=&handle_arguments(@_);my($num_opt)=${$A[7]};my($char_opt)=${$A[8]};
+    my(@hash)=@{$A[0]};my(@file)=@{$A[4]};my(@dir)=@{$A[3]};my(@array)=@{$A[1]};
+    my(@string)=@{$A[2]};my(@num_opt)=@{$A[5]};my(@char_opt)=@{$A[6]};
+    my(@raw_string)=@{$A[9]};my(%vars)=%{$A[10]};my(@range)=@{$A[11]};
+    my($i,$j,$c,$d,$e,$f,$g,$h,$k,$l,$m,$n,$o,$p,$q,$r,$s,$t,$u,$v,$w,$x,$y,$z);
+    if($debug==1){print "\n\t\@hash=\"@hash\"
+    \@raw_string=\"@raw_string\"\n\t\@array=\"@array\"\n\t\@num_opt=\"@num_opt\"
+    \@char_opt=\"@char_opt\"\n\t\@file=\"@file\"\n\t\@string=\"@string\"\n" }
+    #""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    my (@final_out, $add_range, $single_big_msp, $base_name, $create_sso, @nondup,
+         $Single_msp_out_file, %duplicate, $Evalue_thresh, $Score_thresh, @SSO, $sequence_DB,
+         @sso, @temp, $algorithm, $margin, $out_msp_file, @MSP, @final_msp_file_names_out,
+         $upper_expect_limit, $lower_expect_limit, $k_tuple, %seq_input, %MSP, $No_processing,
+         $new_format, $PVM_FASTA_run, $over_write, $sub_dir_size, $age_in_days_of_out_file,
+         $over_write_by_age, $Lean_output, $gzipped_msp_file, $gzipped_sso_file,
+         $defined_all_ok, $make_msp_in_sub_dir_opt, $upper_expect_limit, $Evalue_thresh );
 
-		#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		# DEFAULTS
-		#________________________________________
-		$k_tuple           =1;  # 1 or 2, 1 is more sensitive
-		$algorithm         ='fasta';
-		$sub_dir_size      =2;  # the default char number taken from seq name to make sub dirs
-		$upper_expect_limit=5;
-		$lower_expect_limit=0;
-		$Score_thresh      =75; # FASTA or SSSEARCH score
-		$margin            =0;  # sequence region margin. If it is 2, 2 more edged residues will be added
-		$add_range         ='';
-		$pwd               =`pwd`; chomp($pwd);
-		$age_in_days_of_out_file=1000; ## If the files being tested is older than this, let's make anew
+    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # DEFAULTS
+    #________________________________________
+    $k_tuple           =1;  # 1 or 2, 1 is more sensitive
+    $algorithm         ='fasta';
+    $sub_dir_size      =2;  # the default char number taken from seq name to make sub dirs
+    $upper_expect_limit=5;
+    $lower_expect_limit=0;
+    $Score_thresh      =75; # FASTA or SSSEARCH score
+    $margin            =0;  # sequence region margin. If it is 2, 2 more edged residues will be added
+    $add_range         ='';
+    $pwd               =`pwd`; chomp($pwd);
+    $age_in_days_of_out_file=1000; ## If the files being tested is older than this, let's make anew
 
-		if($vars{'a'}=~/\S+/){ $algorithm          = $vars{'a'}            };
-		if($vars{'u'}=~/\d+/){ $upper_expect_limit = $vars{'u'}            };
-		if($vars{'l'}=~/\d+/){ $lower_expect_limit = $vars{'l'}            };
-		if($vars{'k'}=~/\d+/){ $k_tuple            = $vars{'k'}            };
-		if($vars{'t'}=~/\d+/){ $Score_thresh       = $vars{'t'}            };
-		if($vars{'m'}=~/\d+/){ $margin             = $vars{'m'}            };
-		if($vars{'d'}=~/\d+/){ $sub_dir_size       = $vars{'d'}            };
-		if($vars{'r'}=~/\S+/){ $add_range          = 'r'                   };
-		if($vars{'s'}=~/\S+/){ $single_big_msp     = 's'                   };
-		if($vars{'DB'}=~/\S+/){            $sequence_DB=$vars{'DB'} ;
-				if(-s $sequence_DB){
-				}elsif(-s "../$sequence_DB"){  $sequence_DB= "../$sequence_DB"
-				}elsif(-s "../../$sequence_DB"){  $sequence_DB= "../../$sequence_DB";
-				}else{
-						print "\n# (E) do_sequence_search: You set DB param, but I can\'t find $sequence_DB\n";
-						exit;
-				}
-		}else{  print "\n# (E) do_sequence_search: I need DB param defined, sorry, aborting\n"; }
+    if($vars{'a'}=~/\S+/){ $algorithm          = $vars{'a'}            };
+    if($vars{'u'}=~/\d+/){ $upper_expect_limit = $vars{'u'}            };
+    if($vars{'l'}=~/\d+/){ $lower_expect_limit = $vars{'l'}            };
+    if($vars{'k'}=~/\d+/){ $k_tuple            = $vars{'k'}            };
+    if($vars{'t'}=~/\d+/){ $Score_thresh       = $vars{'t'}            };
+    if($vars{'m'}=~/\d+/){ $margin             = $vars{'m'}            };
+    if($vars{'d'}=~/\d+/){ $sub_dir_size       = $vars{'d'}            };
+    if($vars{'r'}=~/\S+/){ $add_range          = 'r'                   };
+    if($vars{'s'}=~/\S+/){ $single_big_msp     = 's'                   };
+    if($vars{'DB'}=~/\S+/){            $sequence_DB=$vars{'DB'} ;
+            if(-s $sequence_DB){
+            }elsif(-s "../$sequence_DB"){  $sequence_DB= "../$sequence_DB"
+            }elsif(-s "../../$sequence_DB"){  $sequence_DB= "../../$sequence_DB";
+            }else{
+                    print "\n# (E) do_sequence_search: You set DB param, but I can\'t find $sequence_DB\n";
+                    exit;
+            }
+    }else{  print "\n# (E) do_sequence_search: I need DB param defined, sorry, aborting\n"; }
 
-		if($vars{'FILE'}=~/\S+/){ $query_File = $vars{'FILE'}; push(@file,$query_File) };
-		if($vars{'File'}=~/\S+/){ $query_File = $vars{'File'}; push(@file,$query_File) };
-		if($vars{'FILE_AGE'}=~/\S+/){ $age_in_days_of_out_file= $vars{'FILE_AGE'};  };
-		if($vars{'Query_seqs'}=~/\S+/){ %seq_input = %{$vars{'Query_seqs'}}};
-		if($vars{'Query'}=~/\S+/){      %seq_input = %{$vars{'Query'}}};
-		if($vars{'u'}    =~/\S+/){ $upper_expect_limit          = $vars{'u'}            };
-		if($vars{'PVM'}  =~/\S+/){ $PVM_FASTA_run  = $vars{'PVM'}; print "\n# PVM opt is set\n";     };
-		if($vars{'M'}  =~/\S+/){ $machine_readable = $vars{'M'};           };
-		if($vars{'E'}  =~/\S+/){ $Evalue_thresh = $vars{'E'};           };
+    if($vars{'FILE'}=~/\S+/){ $query_File = $vars{'FILE'}; push(@file,$query_File) };
+    if($vars{'File'}=~/\S+/){ $query_File = $vars{'File'}; push(@file,$query_File) };
+    if($vars{'FILE_AGE'}=~/\S+/){ $age_in_days_of_out_file= $vars{'FILE_AGE'};  };
+    if($vars{'Query_seqs'}=~/\S+/){ %seq_input = %{$vars{'Query_seqs'}}};
+    if($vars{'Query'}=~/\S+/){      %seq_input = %{$vars{'Query'}}};
+    if($vars{'u'}    =~/\S+/){ $upper_expect_limit          = $vars{'u'}            };
+    if($vars{'PVM'}  =~/\S+/){ $PVM_FASTA_run  = $vars{'PVM'}; print "\n# PVM opt is set\n";     };
+    if($vars{'M'}  =~/\S+/){ $machine_readable = $vars{'M'};           };
+    if($vars{'E'}  =~/\S+/){ $Evalue_thresh = $vars{'E'};           };
 
-		if($char_opt=~/r/){    $add_range          = 'r' }
-		if($char_opt=~/L/){    $Lean_output        = 'L' }
-		if($char_opt=~/o/){    $over_write         = 'o' }
-		if($char_opt=~/c/){    $create_sso         = 'c' }
-		if($char_opt=~/s/){    $single_big_msp     = 's'; print "\n# Single file opt is set\n"; }
-		if($char_opt=~/m/){    $msp_directly_opt   = 'm' }
-		if($char_opt=~/M/){    $machine_readable   = 'M' }
-		if($char_opt=~/d/){    $save_in_gz_in_sub_dir  = 'd' }
-		if($char_opt=~/D/){$make_msp_in_sub_dir_opt= 'D' } # for simple search and storing msp file
-		if($char_opt=~/N/){    $No_processing      = 'N'; $create_sso='c'; }
+    if($char_opt=~/r/){    $add_range          = 'r' }
+    if($char_opt=~/L/){    $Lean_output        = 'L' }
+    if($char_opt=~/o/){    $over_write         = 'o' }
+    if($char_opt=~/c/){    $create_sso         = 'c' }
+    if($char_opt=~/s/){    $single_big_msp     = 's'; print "\n# Single file opt is set\n"; }
+    if($char_opt=~/m/){    $msp_directly_opt   = 'm' }
+    if($char_opt=~/M/){    $machine_readable   = 'M' }
+    if($char_opt=~/d/){    $save_in_gz_in_sub_dir  = 'd' }
+    if($char_opt=~/D/){$make_msp_in_sub_dir_opt= 'D' } # for simple search and storing msp file
+    if($char_opt=~/N/){    $No_processing      = 'N'; $create_sso='c'; }
 
-		#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~``
-		# When no %seq is given, but files
-		#___________________________________________
-		if(@hash==0 and @file > 0){
-			 #print "\n# (i) do_sequence_search: You did not put sequences as in \%seq, but raw sequence file @file!\n";
-			 #print "        I will run \'open_fasta_files\' sub to fetch sequences to store in \%seq_input\n";
-			 %seq_input=%{&open_fasta_files(\@file)};
-		}else{
-			 #print "\n# (i) do_sequence_search: I will use given seqs in \%seq_input from \%\{\$hash\[0\]\}\n";
-			 %seq_input=%{$hash[0]};
-		}
-		my (@seq_names) = keys %seq_input;
-		$base_name = ${&get_base_names($query_File)};
-		print "\n# (i) line:",__LINE__, ", do_sequence_search, \$algorithm => $algorithm, \$base_name:$base_name
-							 $query_File <--> $sequence_DB\n";
+    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~``
+    # When no %seq is given, but files
+    #___________________________________________
+    if(@hash==0 and @file > 0){
+         #print "\n# (i) do_sequence_search: You did not put sequences as in \%seq, but raw sequence file @file!\n";
+         #print "        I will run \'open_fasta_files\' sub to fetch sequences to store in \%seq_input\n";
+         %seq_input=%{&open_fasta_files(\@file)};
+    }else{
+         #print "\n# (i) do_sequence_search: I will use given seqs in \%seq_input from \%\{\$hash\[0\]\}\n";
+         %seq_input=%{$hash[0]};
+    }
+    my (@seq_names) = keys %seq_input;
+    $base_name = ${&get_base_names($query_File)};
+    print "\n# (i) line:",__LINE__, ", do_sequence_search, \$algorithm => $algorithm, \$base_name:$base_name
+                         $query_File <--> $sequence_DB\n";
 
-	 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~```
-	 # If one of the files is missing, ask if it is for self self search and
-	 #  make query=target, else die
-	 #_______________________________________________________________________
-	 $defined_all_ok=&check_if_defined($query_File, $sequence_DB);
-	 unless($defined_all_ok){
-			 print "\n  Did you want to do self self search? ->(y/n) ";
-			 $answer_for_self_self=getc;
-			 if($answer_for_self_self =~/y/i){
-					 if($query_File){  $sequence_DB=$query_File }
-					 else{ $query_File=$sequence_DB }
-			 }else{
-					 print "\n# You seemed made a mistake, O.K., I will kill myself!\n\n";
-					 print chr(7);  exit;
-			 }
-	 }
+    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~```
+    # If one of the files is missing, ask if it is for self self search and
+    #  make query=target, else die
+    #_______________________________________________________________________
+    $defined_all_ok=&check_if_defined($query_File, $sequence_DB);
+    unless($defined_all_ok){
+         print "\n  Did you want to do self self search? ->(y/n) ";
+         $answer_for_self_self=getc;
+         if($answer_for_self_self =~/y/i){
+              if($query_File){  $sequence_DB=$query_File }
+              else{ $query_File=$sequence_DB }
+         }else{
+              print "\n# You seemed made a mistake, O.K., I will kill myself!\n\n";
+              print chr(7);  exit;
+         }
+    }
 
-	 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	 # (0) If blast is chosen run Blast
-	 #_________________________________________________________
-	 if($algorithm=~/[psi\-]*[pb][last]*/i){
-			print "\n# (i) Doing PSI search with @file\n";
-			@final_out=@{&do_psi_blast_search(\@file, "d=$source_DB_file",
-													 "i=$input_seq_file",  $over_write,
-													 $make_msp_in_sub_dir_opt, $Lean_output)};
-			return(\@final_out); #<<<<<<----------- F I N I S H
-	 }
+    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # [0] If blast is chosen run Blast
+    #_________________________________________________________
+    if($algorithm=~/[psi\-]*[pb][last]*/i){
+         print "\n# (i) Doing PSI search with @file\n";
+         @final_out=@{&do_psi_blast_search(\@file, "d=$source_DB_file",
+                                            "i=$input_seq_file",  $over_write,
+                                            $make_msp_in_sub_dir_opt, $Lean_output)};
+         return(\@final_out); #<<<<<<----------- F I N I S H
+    }
 
-	 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	 # (1) Controlling which kind of search it should do. Do save_in_gz_in_sub_dir first if d is set
-	 #______________________________________________________________________________________________
-	 if( $make_msp_in_sub_dir_opt ){  ## convert sso to msp and put in sub dir like /D/, /S/
+    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # [1] Controlling which kind of search it should do. Do save_in_gz_in_sub_dir first if d is set
+    #______________________________________________________________________________________________
+    if( $make_msp_in_sub_dir_opt ){  ## convert sso to msp and put in sub dir like /D/, /S/
+        print "[1] \$make_msp_in_sub_dir_opt";
+        for($x=0; $x < @seq_names; $x++){
+             my ($over_write_sso_by_age, $over_write_msp_by_age,  %single_seq, $out_file_sso_gz_name, $out_file_msp_name, $out_file_gz_name, $existing_sso);
+             my ($seq_name, $seq)= ($seq_names[$x], $seq_input{$seq_names[$x]});
+             my $first_char= substr("\U$seq_name", 0, $sub_dir_size);
+             mkdir ("$first_char", 0777) unless -d $first_char;
+             chdir("$first_char");
+             #print "\n# (i) do_sequence_search: You set \'d\' or \'D\' opt\n";
+             #print "# (i) making subDIRs ($first_char) with $seq_name $sequence_DB to store MSP files\n";
 
-			 for($x=0; $x < @seq_names; $x++){
-					my ($over_write_sso_by_age, $over_write_msp_by_age,  %single_seq,
-							$out_file_sso_gz_name, $out_file_msp_name, $out_file_gz_name, $existing_sso);
-					my ($seq_name, $seq)= ($seq_names[$x], $seq_input{$seq_names[$x]});
-					my $first_char= substr("\U$seq_name", 0, $sub_dir_size);
-					mkdir ("$first_char", 0777) unless -d $first_char;
-					chdir("$first_char");
-					#print "\n# (i) do_sequence_search: You set \'d\' or \'D\' opt\n";
-					#print "# (i) making subDIRs ($first_char) with $seq_name $sequence_DB to store MSP files\n";
+             #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+             # Let's make each fasta file for each seq to be used in searching
+             #_____________________________________________________________________
+             my $temp_file_name="$seq_name.fa";
+             %single_seq=($seq_name, $seq_input{$seq_name});
+             &write_fasta(\%single_seq, $temp_file_name ); ## e for writing each file
 
-					#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-					# Let's make each fasta file for each seq to be used in searching
-					#_____________________________________________________________________
-					my $temp_file_name="$seq_name.fa";
-					%single_seq=($seq_name, $seq_input{$seq_name});
-					&write_fasta(\%single_seq, $temp_file_name ); ## e for writing each file
+             #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+             # Making output file name according to the option given
+             #_______________________________________________________________________
+             if($machine_readable and $algorithm=~/[fastassearch]+/){  $out_file_sso_name="$seq_name\.msso";
+             }else{ $out_file_sso_name="$seq_name\.sso";      }
+             $out_file_sso_gz_name="$out_file_sso_name\.gz";
+             $out_file_msp_name="$seq_name\.msp";
+             $out_file_gz_name="$seq_name\.msp\.gz";
 
-					#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-					# Making output file name according to the option given
-					#_______________________________________________________________________
-					if($machine_readable and $algorithm=~/[fastassearch]+/){
-								 $out_file_sso_name="$seq_name\.msso";
-					}else{ $out_file_sso_name="$seq_name\.sso";      }
-					$out_file_sso_gz_name="$out_file_sso_name\.gz";
-					$out_file_msp_name="$seq_name\.msp";
-					$out_file_gz_name="$seq_name\.msp\.gz";
+             #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+             # Check if SSO file already there
+             #_______________________________________________________________________
+             if(-s $out_sso_file){ $existing_sso=$out_file_sso_name }
+             elsif(-s $out_sso_gz_name){ $existing_sso=$out_file_sso_gz_name }
+             if(-s $out_msp_name){ $existing_msp=$out_file_msp_name }
+             elsif(-s $out_gz_name){ $existing_msp=$out_file_gz_name }
 
-					#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-					# Check if SSO file already there
-					#_______________________________________________________________________
-					if(-s $out_sso_file){ $existing_sso=$out_file_sso_name }
-					elsif(-s $out_sso_gz_name){ $existing_sso=$out_file_sso_gz_name }
-					if(-s $out_msp_name){ $existing_msp=$out_file_msp_name }
-					elsif(-s $out_gz_name){ $existing_msp=$out_file_gz_name }
+             #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+             # If the dates of files created are long ago, overwrite to refresh
+             #____________________________________________________________________
+             if(  (localtime(time- (stat($existing_sso))[9]))[3] > $age_in_days_of_out_file ){  $over_write_sso_by_age='o';  }
+             if(  (localtime(time- (stat($existing_msp))[9]))[3] > $age_in_days_of_out_file ){  $over_write_msp_by_age='o';  }
 
-					#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-					# If the dates of files created are long ago, overwrite to refresh
-					#____________________________________________________________________
-					if(  (localtime(time- (stat($existing_sso))[9]))[3] > $age_in_days_of_out_file ){
-							 $over_write_sso_by_age='o';
-					}
-					if(  (localtime(time- (stat($existing_msp))[9]))[3] > $age_in_days_of_out_file ){
-							 $over_write_msp_by_age='o';
-					}
+             #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+             #  To check if the target seq DB is in ../
+             #________________________________________________
+             if(-s $sequence_DB){     #print "\n# (i) Good, target \$sequence_DB $sequence_DB is in this working dir\n";
+             }elsif( -s "../$sequence_DB"){ $sequence_DB="../$sequence_DB"; }
 
-					#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-					#  To check if the target seq DB is in ../
-					#________________________________________________
-					if(-s $sequence_DB){
-							#print "\n# (i) Good, target \$sequence_DB $sequence_DB is in this working dir\n";
-					}elsif( -s "../$sequence_DB"){ $sequence_DB="../$sequence_DB"; }
+             #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+             # [1.1] Searching: Making MSP files directly,  MSP file format is the major format used in prescop!, Default
+             #_____________________________________________________________________________________________________________
+             if($char_opt =~/D/){ #### To make MSP file
+                 print "\n [1.1] \$char_opt = D";
+                 if( !(-s $out_file_gz_name or -s $out_file_msp_name) or $over_write or $over_write_msp_by_age){
+                      #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                      # (2.1) Running  run_fasta_sequence_search !!
+                      #_______________________________________________________
+                      print "\n  [1.1.1] Running  run_fasta_sequence_search, \$create_sso = $create_sso!!\n";
+                      $gzipped_msp_file=${&run_fasta_sequence_search(
+                                                  "a=$algorithm",
+                                                  "O=$out_file_msp_name",
+                                                  "File=$temp_file_name", "u=$upper_expect_limit", "E=$Evalue_thresh",
+                                                  "DB=$sequence_DB", "k=$k_tuple", "$machine_readable", $create_sso,
+                                                  $verbose)};
 
-					#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-					# (2) Searching: Making MSP files directly,  MSP file format is the major format used in geanfammer!, Default
-					#_____________________________________________________________________________________________________________
-					if($char_opt =~/D/){ #### To make MSP file
-							 if( !(-s $out_file_gz_name or -s $out_file_msp_name) or $over_write or $over_write_msp_by_age){
-										#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-										# (2.1) Running  run_fasta_sequence_search !!
-										#_______________________________________________________
-										#print "\n# (i) Running  run_fasta_sequence_search, \$create_sso = $create_sso!!\n";
-										$gzipped_msp_file=${&run_fasta_sequence_search(
-																			 "a=$algorithm",
-																			 "O=$out_file_msp_name",
-																			 "File=$temp_file_name", "u=$upper_expect_limit", "E=$Evalue_thresh",
-																			 "DB=$sequence_DB", "k=$k_tuple", "$machine_readable", $create_sso,
-																			 $verbose)};
+                      $gzipped_sso_file=${&compress_files_by_gzip($out_file_sso_name)};
+                   }else{
+                      print "\n#  [1.1.2] Line No. ", __LINE__,", $out_file_gz_name already exists or
+                                     \$over_write is set or NOT older than $age_in_days_of_out_file\n";
+                   }
+             }
+             #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+             # [1.2] To make gzipped SSO files and MSP files
+             #_______________________________________________
+             elsif($create_sso or $char_opt=~/m/){ ### To make gzipped SSO files
+                  print "\n [1.2] \$char_opt = D";
+                      if( !(-s $out_file_sso_name or -s $out_file_sso_gz_name ) or $over_write or $over_write_sso_by_age){
+                          print "\n#  [1.2.1] Running  run_fasta_sequence_search with \"\$create_sso option\"!!\n\n";
+                          $gzipped_msp_file=${&run_fasta_sequence_search(
+                                               "a=$algorithm",
+                                               "O=$out_file_msp_name", "$create_sso",
+                                               "File=$temp_file_name", "u=$upper_expect_limit", "E=$Evalue_thresh",
+                                               "DB=$sequence_DB", "k=$k_tuple", "$machine_readable", $create_sso,
+                                               $verbose)};
 
-										$gzipped_sso_file=${&compress_files_by_gzip($out_file_sso_name)};
-							 }else{
-									 print "\n#  Line No. ", __LINE__,", $out_file_gz_name already exists or
-												 \$over_write is set or NOT older than $age_in_days_of_out_file\n";
-							 }
-					}
-					#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-					# To make gzipped SSO files and MSP files
-					#_______________________________________________
-					elsif($create_sso or $char_opt=~/m/){ ### To make gzipped SSO files
-							 if( !(-s $out_file_sso_name or -s $out_file_sso_gz_name ) or $over_write or $over_write_sso_by_age){
-									 print "\n# (i) Running  run_fasta_sequence_search with \"\$create_sso option\"!!\n\n";
-									 $gzipped_msp_file=${&run_fasta_sequence_search(
-																			 "a=$algorithm",
-																			 "O=$out_file_msp_name", "$create_sso",
-																			 "File=$temp_file_name", "u=$upper_expect_limit", "E=$Evalue_thresh",
-																			 "DB=$sequence_DB", "k=$k_tuple", "$machine_readable", $create_sso,
-																			 $verbose)};
-
-									 $gzipped_sso_file=${&compress_files_by_gzip($out_file_sso_name)};
-							 }else{
-									 print "\n#  Line No. ", __LINE__,", $out_file_gz_name already exists or
-												 \$over_write is set or NOT older than $age_in_days_of_out_file\n";
-							 }
-					}else{
-							 if( !(-s $out_file_sso_name or -s $out_file_sso_gz_name ) or $over_write or $over_write_sso_by_age){
-									 system(" $algorithm -m 10 -H  -E $upper_expect_limit $temp_file_name $sequence_DB $k_tuple > $out_file_sso_name");
-									 system("gzip $out_file_sso_name");
-							 }else{
-									 print "\n#  Line No. ", __LINE__,", $out_file_gz_name already exists or
-												 \$over_write is set or NOT older than $age_in_days_of_out_file\n";
-							 }
-					}
-					if(-s "$seq_name.fa"){  unlink("$seq_name.fa")
-					}elsif(-s "$first_char/$seq_name.fa"){ unlink("$first_char/$seq_name\.fa") ; }
-					#print "\n# Sub dir $first_char and $seq_name\.msp has been made, finishing do_sequence_search\n";
-					chdir ('..');
-			}
-			#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-			# F I N I S H
-			#________________________________________
-			goto EXIT;
+                          $gzipped_sso_file=${&compress_files_by_gzip($out_file_sso_name)};
+                      }else{
+                          print "\n#  [1.2.2]Line No. ", __LINE__,", $out_file_gz_name already exists or
+                                      \$over_write is set or NOT older than $age_in_days_of_out_file\n";
+                      }
+             }else{
+                  if( !(-s $out_file_sso_name or -s $out_file_sso_gz_name ) or $over_write or $over_write_sso_by_age){
+                          system(" $algorithm -m 10 -H  -E $upper_expect_limit $temp_file_name $sequence_DB $k_tuple > $out_file_sso_name");
+                          system("gzip $out_file_sso_name");
+                  }else{
+                          print "\n#  Line No. ", __LINE__,", $out_file_gz_name already exists or
+                                      \$over_write is set or NOT older than $age_in_days_of_out_file\n";
+                  }
+             }
+             if(-s "$seq_name.fa"){  unlink("$seq_name.fa")
+             }elsif(-s "$first_char/$seq_name.fa"){ unlink("$first_char/$seq_name\.fa") ; }
+             #print "\n# Sub dir $first_char and $seq_name\.msp has been made, finishing do_sequence_search\n";
+             chdir ('..');
+          }
+          #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          # F I N I S H
+          #________________________________________
+          goto EXIT;
 	 } # if ($char_opt =~/[dD]/){  is finished
 
 
@@ -1554,20 +1552,19 @@ sub do_sequence_search{
 					 #________________________________________________________________________________
 					 if(-s $out_sso_file and !$over_write ){ ## If SSO is already present, JUST READ IT!
 								print "\n# (i) Just opening existing $out_sso_file $out_sso_file $out_msp_file $over_write_msp_by_age $over_write\n";
-								open(SSO_ALREADY, "$out_sso_file");
+                                open(SSO_ALREADY, "$out_sso_file") || warn "\nWarnning. Can not open $out_sso_file\n";
 								@temp=<SSO_ALREADY>;
 								print "\n# (i) \@temp has ", scalar(@temp), " lines\n";
 								close(SSO_ALREADY);
 								&compress_files_by_gzip($out_sso_file);
 					 }else{ ## Run FASTA HERE
-								print "\n# (i) Running \"run_fasta_sequence_search\" ";
-								$gzipped_msp_file=${&run_fasta_sequence_search(
-																	 "a=$algorithm",
-																	 "O=$out_msp_file", "$create_sso",
-																	 "File=$each_seq_fasta", "E=$upper_expect_limit",
-																	 "DB=$sequence_DB", "k=$k_tuple", "$machine_readable")};
-								push(@final_out, $gzipped_msp_file) if -s $gzipped_msp_file ;
-								unlink($each_seq_fasta) if $Lean_output;
+							print "\n# (i) Running \"run_fasta_sequence_search\" ";
+							$gzipped_msp_file=${&run_fasta_sequence_search( "a=$algorithm",
+																 "O=$out_msp_file", "$create_sso",
+																 "File=$each_seq_fasta", "E=$upper_expect_limit",
+																 "DB=$sequence_DB", "k=$k_tuple", "$machine_readable")};
+							push(@final_out, $gzipped_msp_file) if -s $gzipped_msp_file ;
+							unlink($each_seq_fasta) if $Lean_output;
 					 }
 			 }
 			 if($machine_readable and $create_sso and -s $out_sso_file){ &cp($out_sso_file, $out_msso_file); }
@@ -1576,6 +1573,8 @@ sub do_sequence_search{
 	 EXIT:
 
 } # do_sequence_search
+
+
 
 #______________________________________________________________________________
 # Title     : compress_files_by_gzip
@@ -3826,7 +3825,7 @@ sub cluster_merged_seqlet_sets{
 	 my ($optimize, @splited1, @splited2, $verbose, $link_or_not);
 	 my @seq_names_in_clu=@{$array[0]};
 	 $link_or_not=0;
-	 my $factor=7; # 7 means 70% now
+	 my $factor=7.5; # 7 means 70% now
 
 	 if($vars{'f'}=~/(\S+)$/){ $factor=$1 }
 	 if($char_opt=~/o/){ $optimize=1 }
@@ -4728,70 +4727,66 @@ sub convert_clu_to_sso_to_msp{
 #              clu_to_sso_to_msp
 # Options   :
 # Category  :
-# Version   : 2.6
+# Version   : 2.7
 #--------------------------------------------------------------------------------
 sub convert_clu_to_msp{
-		 my($i, $j, $k, $s, $u, $v, $p, $m, $n, $y, @possible_extensions, $single_file_name,
-				@seq_names, @final_files, @U_L_case, $file, @file, @name_types,
-				@poss_sub_dir_heads, @written_msp_files, $Lean_output, $subdir_char_size,
-				$search_file_base, $found_real_subdir_name, $found_search_prog_exention_used,
-				$no_of_ext_to_be_checked, $extension_type_found);
+    my($i, $j, $k, $s, $u, $v, $p, $m, $n, $y, @possible_extensions, $single_file_name,
+           @seq_names, @final_files, @U_L_case, $file, @file, @name_types,
+           @poss_sub_dir_heads, @written_msp_files, $Lean_output, $subdir_char_size,
+           $no_of_ext_to_be_checked, $extension_type_found);
 
-		 $subdir_char_size=2; # default
-		 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		 # Opening cluster file (xx.clu)
-		 # %clus looks like this:  2-507     YGR041W YLR353W
-		 #                         3-308     YDR222W YDR346C YLR225C
-		 #                         2-184     YCL066W YCR040W
-		 #______________________________________________________________
-		 my $clu=${$_[0]} || $_[0];
-		 $Lean_output=${$_[1]} || $_[1];
+    $subdir_char_size=2; # default
+    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # Opening cluster file (xx.clu)
+    # %clus looks like this:  2-507     YGR041W YLR353W
+    #                         3-308     YDR222W YDR346C YLR225C
+    #                         2-184     YCL066W YCR040W
+    #______________________________________________________________
+    my $clu=${$_[0]} || $_[0];
+    $Lean_output=${$_[1]} || $_[1];
 
-		 if($verbose){
-					 print "\n# convert_clu_to_msp : \"$clu\" is given
-								and I am processing it with clu_to_sso_to_msp\n" if defined $clu;
-		 }
-		 my %clus=%{&open_clu_files(\$clu)};
-		 my @clusters= keys %clus;
-		 my $num_of_cluster=@clusters=@{&sort_by_cluster_size(\@clusters)};
+    if($verbose){   print "\n# convert_clu_to_msp : \"$clu\" is given and I am processing it with clu_to_sso_to_msp\n" if defined $clu;     }
+    my %clus=%{&open_clu_files(\$clu)};
+    my @clusters= keys %clus;
+    my $num_of_cluster=@clusters=@{&sort_by_cluster_size(\@clusters)};
 
-		 print "# (i) $0: convert_clu_to_msp: No. of cluster=$num_of_cluster after open_clu_files \n" if $verbose;
+    print "# (i) $0: convert_clu_to_msp: No. of cluster=$num_of_cluster after open_clu_files \n";
 
-		 &show_array(\@clusters) if $verbose;
-		 &show_hash(\%clus) if $verbose;
-		 @possible_extensions=('msp', 'msp.gz', 'msso', 'msso.gz','fsso', 'pbla', 'pbla.gz',
-																	'ssso', 'fso', 'out', 'prot.sso', 'prot.ts');
-		 @U_L_case=('\U', '\L', ' ');  ## !! the ' ' is necessary
+    #&show_array(\@clusters) if $verbose;
+    #&show_hash(\%clus) if $verbose;
+    @possible_extensions=('msp', 'msp.gz', 'msso', 'msso.gz','fsso', 'pbla', 'pbla.gz',
+                                                               'ssso', 'fso', 'out', 'prot.sso', 'prot.ts');
+    @U_L_case=('\U', '\L', ' ');  ## !! the ' ' is necessary
 
-		 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
-		 # Making each SINGLE linkage clu to MSP file format to be ready for divclus
-		 #______________________________________________________________________________
-		 for($i=0; $i< @clusters; $i++){
-				 my (@seq_names, @final_files, $clus_name, $big_out_msp, @msp_hashes);
-				 $clus_name=$clusters[$i];
-				 unless($single_file_name=~/\S/){
+    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
+    # Making each SINGLE linkage clu to MSP file format to be ready for divclus
+    #______________________________________________________________________________
+    for($i=0; $i< @clusters; $i++){
+	   my (@seq_names, @final_files, $clus_name, $big_out_msp, @msp_hashes);
+	   $clus_name=$clusters[$i];
+	   unless($single_file_name=~/\S/){
 						 $big_out_msp="$clus_name\_cluster\.msp"; #<<<----- final output name
-				 }else{
+	   }else{
 						 $big_out_msp=$single_file_name;
-				 }
-				 push(@written_msp_files, $big_out_msp); ## This is the output of this sub
+	   }
+	   push(@written_msp_files, $big_out_msp); ## This is the output of this sub
 
-				 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-				 #  If $clus_name.msp is already there, skip
-				 #_____________________________________________
-				 if( (-s $big_out_msp) > 100  and !$over_write ){
-						 print "\n# (i) convert_clu_to_msp : $big_out_msp MSP file already exists, skipping\n";
-						 print "#    Use  \$over_write option \'o\' to start all over again or \n";
-						 print "#    delete clustering files like XX-XX_cluster.clu to go on\n";
-						 next ;
-				 }
-				 $num_of_seq_member=@seq_names=split(/ +/, $clus{$clusters[$i]}); # @seq_names has (HIU001, HI002, HI333, MJ111, etc)
-				 print "# $0: convert_clu_to_msp: No. of seq member=$num_of_seq_member after split \n" if $verbose;
+	   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	   #  If $clus_name.msp is already there, skip
+	   #_____________________________________________
+	   if( (-s $big_out_msp) > 100  and !$over_write ){
+               print "\n# (i) convert_clu_to_msp : $big_out_msp MSP file already exists, skipping\n";
+               print "#    Use  \$over_write option \'o\' to start all over again or \n";
+               print "#    delete clustering files like XX-XX_cluster.clu to go on\n";
+               next ;
+       }
+       $num_of_seq_member=@seq_names=split(/ +/, $clus{$clusters[$i]}); # @seq_names has (HIU001, HI002, HI333, MJ111, etc)
+       print "# $0: convert_clu_to_msp: No. of seq member=$num_of_seq_member after split \n" if $verbose;
 
-				 $no_of_ext_to_be_checked=@possible_extensions;
-				 $extension_type_found=0;
+       $no_of_ext_to_be_checked=@possible_extensions;
+       $extension_type_found=0;
 
-				 FOR0: for($j=0; $j < @seq_names; $j++){
+       FOR0: for($j=0; $j < @seq_names; $j++){
 							 my($sub_dir_head, $file_name_low, $file_name_up, $file_name_prot_low,
 									$file_name_prot_up, $file_name_low_gz, $file_name_up_gz,
 									$file_name_prot_low_gz, $file_name_prot_up_gz);
@@ -4822,114 +4817,114 @@ sub convert_clu_to_msp{
 										$subd=$poss_sub_dir_heads[$p];               ## Also, the '<=' not '<' cures the same problem.
 										#print "# (i) Checking sub dir $subd\n";
 										FOR2 : for($e=$extension_type_found; $e < $no_of_ext_to_be_checked; $e++){
-												 $ext=$possible_extensions[$e];
-												 #print "      (i) \$ext at $subd is  $ext\n";
-												 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-												 #  This makes all the possible lower upper case names
-												 #______________________________________________________
-												 for( $u=0; $u < @U_L_case; $u++){
-														for($v=0; $v <@name_types; $v++){
-															 $each_seq_name=$name_types[$v];
-															 if($U_L_case[$u]=~/U/){  $each_seq_name="\U$each_seq_name";
-															 }elsif($U_L_case[$u]=~/L/){ $each_seq_name="\L$each_seq_name";
-															 }else{ $each_seq_name=$each_seq_name }
+                                           $ext=$possible_extensions[$e];
+                                           #print "      (i) \$ext at $subd is  $ext\n";
+                                           #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                                           #  This makes all the possible lower upper case names
+                                           #______________________________________________________
+                                           for( $u=0; $u < @U_L_case; $u++){
+                                               for($v=0; $v <@name_types; $v++){
+                                                  $each_seq_name=$name_types[$v];
+                                                  if($U_L_case[$u]=~/U/){  $each_seq_name="\U$each_seq_name";
+                                                  }elsif($U_L_case[$u]=~/L/){ $each_seq_name="\L$each_seq_name";
+                                                  }else{ $each_seq_name=$each_seq_name }
 
-															 if(-s "$each_seq_name\.$ext"){
-																		push(@final_files, "$each_seq_name\.$ext" ) ;
-																		$extension_type_found=$e; $no_of_ext_to_be_checked=$e+1;
-																		$found_search_prog_exention_used=$ext;
-																		$found_real_subdir_name=$subd; ## This is to report the name of the actual subd found
-																		$found_search_prog_exention_used=$ext;
-																		next FOR0
-															 }elsif(-s "$each_seq_name\.$ext\.gz"){
-																		push(@final_files, "$each_seq_name\.$ext\.gz" ) ;
-																		$extension_type_found=$e; $no_of_ext_to_be_checked=$e+1;
-																		$found_search_prog_exention_used=$ext;
-																		$found_real_subdir_name=$subd; ## This is to report the name of the actual subd found
-																		$found_search_prog_exention_used=$ext;
-																		next FOR0
-															 }else{
-																		$file_wanted="\.\/$subd\/$each_seq_name\.$ext";
-																		if(-s $file_wanted){
-																				push( @final_files, $file_wanted);
-																				$extension_type_found=$e; $no_of_ext_to_be_checked=$e+1;
-																				print "             (i) $file_wanted is found with $extension_type_found\n";
-																				$found_real_subdir_name=$subd; ## This is to report the name of the actual subd found
-																				$found_search_prog_exention_used=$ext;
-																				last FOR1;
-																		}elsif(-s "$file_wanted\.gz"){
-																				push( @final_files, "$file_wanted\.gz");
-																				$extension_type_found=$e; $no_of_ext_to_be_checked=$e+1;
-																				$found_search_prog_exention_used=$ext;
-																				$found_real_subdir_name=$subd; ## This is to report the name of the actual subd found
-																				next FOR0;
-																		}
-															 }
-														}
-												 }
+                                                  if(-s "$each_seq_name\.$ext"){
+                                                      push(@final_files, "$each_seq_name\.$ext" ) ;
+                                                      $extension_type_found=$e; $no_of_ext_to_be_checked=$e+1;
+                                                      $found_search_prog_exention_used=$ext;
+                                                      $found_real_subdir_name=$subd; ## This is to report the name of the actual subd found
+                                                      $found_search_prog_exention_used=$ext;
+                                                      next FOR0
+                                                  }elsif(-s "$each_seq_name\.$ext\.gz"){
+                                                      push(@final_files, "$each_seq_name\.$ext\.gz" ) ;
+                                                      $extension_type_found=$e; $no_of_ext_to_be_checked=$e+1;
+                                                      $found_search_prog_exention_used=$ext;
+                                                      $found_real_subdir_name=$subd; ## This is to report the name of the actual subd found
+                                                      $found_search_prog_exention_used=$ext;
+                                                      next FOR0
+                                                  }else{
+                                                      $file_wanted="\.\/$subd\/$each_seq_name\.$ext";
+                                                      if(-s $file_wanted){
+                                                         push( @final_files, $file_wanted);
+                                                         $extension_type_found=$e; $no_of_ext_to_be_checked=$e+1;
+                                                         $found_real_subdir_name=$subd; ## This is to report the name of the actual subd found
+                                                         $found_search_prog_exention_used=$ext;
+                                                         last FOR1;
+                                                      }elsif(-s "$file_wanted\.gz"){
+                                                         push( @final_files, "$file_wanted\.gz");
+                                                         $extension_type_found=$e; $no_of_ext_to_be_checked=$e+1;
+                                                         $found_search_prog_exention_used=$ext;
+                                                         $found_real_subdir_name=$subd; ## This is to report the name of the actual subd found
+                                                         next FOR0;
+                                                      }
+                                                  }
+                                               }
+                                           }
 										} # FOR2
 							 } # FOR1
-							 print "                   (i) \@final_files are: @final_files \n";
 				 } # FOR0
 
-				 if(@final_files < 1){
-							print "\n# (E) convert_clu_to_msp :LINE no.: ", __LINE__, " ERROR: \@final_files is empty. Serious error\n";
-							print "\n If you have sub dir which have more than 2 chars as names, you may increase the default 2 to 3 in the above\n";
-							next;
+                 if(@final_files < 1){
+					print "\n# (E) convert_clu_to_msp :LINE no.: ", __LINE__, " ERROR: \@final_files is empty. Serious error\n";
+					print "\n If you have sub dir which have more than 2 chars as names, you may increase the default 2 to 3 in the above\n";
+					next;
 				 }
 				 $write_each_msp_to_disk='';
+                 #@final_files=sort(@final_files); ## this is not really necessary
 
-				 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+				 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~``
 				 #  Check if small msp files have already made in previous steps
-				 #________________________________________________________________
+				 #__________________________________________________________________________
 				 if($final_files[0]=~/(\S+)\.msp/){ ##  concatenate msp into big_msp
 						 $search_file_base=$1;
-						 #print "\n# $search_file_base $found_real_subdir_name $found_search_prog_exention_used\n" if $verbose;
+                         open(BIG_MSP_FILE_C, ">$big_out_msp");
+                         print BIG_MSP_FILE_C "# Latest write by convert_clu_to_msp in $0\n";
+                         for($y=0; $y< @final_files; $y++){
 
-						 if($final_files[0]=~/\S\.gz$/){
-								 #print "\n# $final_files[0] is gzipped \n";
-								 system("gzip -d  $final_files[0]");
-								 $final_files[0]=~s/\.gz//;
-						 }
-						 open(BIG_MSP_FILE_C, ">$big_out_msp");
-						 print BIG_MSP_FILE_C "# written by convert_clu_to_msp in $0\n";
-						 for($y=0; $y< @final_files; $y++){
-								 open(SINGLE_MSP, "$final_files[$y]");
-								 while(<SINGLE_MSP>){
-										 print BIG_MSP_FILE_C $_;
-								 }
-								 close(SINGLE_MSP);
+                             #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
+                             # Opens single MSP file. Check if they were gzipped or not before open
+                             #________________________________________________________________________
+                             if($final_files[$y]=~/(\S+)\.gz$/){
+                                 system("gzip -d $final_files[$y]");
+                                 open(SINGLE_MSP, "$1") || warn "\n\n Can not open SINGLE_MSP $final_files[$y]";
+                             }else{                          open(SINGLE_MSP, "<$final_files[$y]") || warn "\n\n Can not open SINGLE_MSP $final_files[$y]";
+                             }
+                             while(<SINGLE_MSP>){
+							      print BIG_MSP_FILE_C $_;
+							 }
 						 }
 						 close(BIG_MSP_FILE_C);
+						 close(SINGLE_MSP);
 						 push(@written_msp_files, $big_out_msp);
 
 						 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~``
 						 # Doing something for L option ($Lean_output)
 						 #___________________________________________________
 						 if($Lean_output and -d $found_real_subdir_name and $found_search_prog_exention_used){
-								 for($y=0; $y< @seq_names; $y++){
-										 unlink("$found_real_subdir_name\/$seq_names[$y]\.$found_search_prog_exention_used");
-										 unlink("$found_real_subdir_name\/$seq_names[$y]\.$found_search_prog_exention_used\.gz");
-								 }
+                             for($y=0; $y< @seq_names; $y++){
+                                     unlink("$found_real_subdir_name\/$seq_names[$y]\.$found_search_prog_exention_used");
+                                     unlink("$found_real_subdir_name\/$seq_names[$y]\.$found_search_prog_exention_used\.gz");
+                             }
 						 }elsif($Lean_output){
-								 for($y=0; $y< @seq_names; $y++){
-										 unlink("$seq_names[$y]\.$found_search_prog_exention_used");
-										 unlink("$seq_names[$y]\.$found_search_prog_exention_used\.gz");
-								 }
+                             for($y=0; $y< @seq_names; $y++){
+                                     unlink("$seq_names[$y]\.$found_search_prog_exention_used");
+                                     unlink("$seq_names[$y]\.$found_search_prog_exention_used\.gz");
+                             }
 						 }
 				 }else{
-						 if($write_each_msp_to_disk){
-									print "\# $0 : going to run open_sso_files with $write_each_msp_to_disk opt\n";
-									$big_out_msp=${&open_sso_files(\@final_files, $uppercase_seq_name, $write_each_msp_to_disk,
-																																					"u=$upper_expect_limit", $new_format, $add_range, $add_range2, $big_out_msp, $over_write)};
-									if(-s $big_out_msp > 200){  print "\n# $0: SUCCESS to create $big_out_msp :) :) :-) :-) ?\n"; }
-						 }else{
-									print "\n# convert_clu_to_msp: I am running open_sso_files. \n";
-									@msp_hashes=@{&open_sso_files(\@final_files, $uppercase_seq_name, $write_each_msp_to_disk,
-																								 "u=$upper_expect_limit", $new_format, $add_range,
-																								 $add_range2, $big_out_msp, $over_write)};
-									&write_msp_files(@msp_hashes, $big_out_msp); ## concatenates all the hash ref to one
-						 }
+                      if($write_each_msp_to_disk){
+                           print "\# $0 : going to run open_sso_files with $write_each_msp_to_disk opt\n";
+                           $big_out_msp=${&open_sso_files(\@final_files, $uppercase_seq_name, $write_each_msp_to_disk,
+                                                                                                                                           "u=$upper_expect_limit", $new_format, $add_range, $add_range2, $big_out_msp, $over_write)};
+                           if(-s $big_out_msp > 200){  print "\n# $0: SUCCESS to create $big_out_msp :) :) :-) :-) ?\n"; }
+                      }else{
+                           print "\n# convert_clu_to_msp: I am running open_sso_files. \n";
+                           @msp_hashes=@{&open_sso_files(\@final_files, $uppercase_seq_name, $write_each_msp_to_disk,
+                                                         "u=$upper_expect_limit", $new_format, $add_range,
+                                                         $add_range2, $big_out_msp, $over_write)};
+                           &write_msp_files(@msp_hashes, $big_out_msp); ## concatenates all the hash ref to one
+                      }
 				 }
 		 }## end of  for($i=0; $i< @clusters; $i++){
 		 return(\@written_msp_files);
@@ -4948,9 +4943,8 @@ sub convert_clu_to_msp{
 #              corresponding  xxx.msp file already exists, it concatenates them to
 #              make a bigger one.
 # Example   :
-# Keywords  : clu_2_sso_2_msp, cluster_to_msp, cluster_to_sso_to_msp
-# Options   :
-# Version   : 1.7
+# Keywords  : convert_clu_to_sso_to_msp, clu_2_sso_2_msp, cluster_to_msp, cluster_to_sso_to_msp
+# Version   : 1.8
 #--------------------------------------------------------------------------------
 sub clu_to_sso_to_msp{
 		 my($i, $j, $k, $s, $u, $p, $m, $n, $y, @possible_extensions, @seq_names,
@@ -5061,7 +5055,9 @@ sub clu_to_sso_to_msp{
 				if($final_files[0]=~/\.msp *$/){ ##  concatenate msp into big_msp
 						 open(BIG_MSP_FILE, ">$big_out_msp");
 						 for($y=0; $y< @final_files; $y++){
-								 open(SINGLE_MSP, "$final_files[$y]");
+                                 if($final_files[$y]=~/\.gz$/){  open(SINGLE_MSP, "|gunzip -d $final_files[$y]") || warn "\n Can not open SINGLE_MSP $final_files[$y]";
+                                 }else{                          open(SINGLE_MSP, "<$final_files[$y]") || warn "\n Can not open SINGLE_MSP $final_files[$y]";
+                                 }
 								 while(<SINGLE_MSP>){
 										 print BIG_MSP_FILE $_;
 								 }
@@ -5369,6 +5365,7 @@ sub get_seq_fragments{
 	 if(@out_hash > 1){ return(@out_hash)
 	 }elsif(@out_hash==1){ return($out_hash[0]) }
 }
+
 #________________________________________________________________________________
 # Title     : print_clusfile_from_hash
 # Usage     : &print_clusfile_from_hash(\%hash)
@@ -5380,53 +5377,51 @@ sub get_seq_fragments{
 # Version   : 1.2
 #--------------------------------------------------------------------------------
 sub print_clusfile_from_hash {
-		my ($i, $j, $k, $gene, @subclus, %hash, $single_linkage_cluster);
-		$single_linkage_cluster="single_linkage.sclu";
-		open(SING, ">$single_linkage_cluster") or die "\n# $0: print_clusfile_from_hash: failed to open $single_linkage_cluster\n";
-		if( @_==1 and ref($_[0]) eq 'HASH'){%hash=%{$_[0]};}
+    my ($i, $j, $k, $gene, @subclus, %hash, $single_linkage_cluster);
+    $single_linkage_cluster="single_linkage.sclu";
+    open(SING, ">$single_linkage_cluster") or die "\n# $0: print_clusfile_from_hash: failed to open $single_linkage_cluster\n";
+    if( @_==1 and ref($_[0]) eq 'HASH'){%hash=%{$_[0]};}
 
-		my @clusters=values(%hash);
+    my @clusters=values(%hash);
 
-		@clusters=@{&remove_dup_in_array(\@clusters)};
-		my @genes=keys(%hash);
-		for ($i=0; $i<@genes; $i++){
-				my $clus=$hash{"$genes[$i]"};
-				push(@{"$clus"},$genes[$i]);
-				next;
-		}
+    @clusters=@{&remove_dup_in_array(\@clusters)};
+    my @genes=keys(%hash);
+    for ($i=0; $i<@genes; $i++){
+            my $clus=$hash{"$genes[$i]"};
+            push(@{"$clus"},$genes[$i]);
+            next;
+    }
 
-		my (%sizes);
-		for ($i=0; $i<@clusters; $i++){
-				my $cluster=$clusters[$i];
-				@{"$cluster"}=@{&remove_dup_in_array(\@{"$cluster"})};
-				my $size=@{"$cluster"};
-				$sizes{"$size"}.="$cluster\n";
-				next;
-		}
+    my (%sizes);
+    for ($i=0; $i<@clusters; $i++){
+            my $cluster=$clusters[$i];
+            @{"$cluster"}=@{&remove_dup_in_array(\@{"$cluster"})};
+            my $size=@{"$cluster"};
+            $sizes{"$size"}.="$cluster\n";
+            next;
+    }
+    my @clus_sizes=keys(%sizes);
+    @clus_sizes=sort {$a<=>$b} (@clus_sizes);
 
-
-		my @clus_sizes=keys(%sizes);
-		@clus_sizes=sort {$a<=>$b} (@clus_sizes);
-
-		for ($i=0; $i<@clus_sizes; $i++){
-				my $clus_size=$clus_sizes[$i];
-				unless ($clus_size>1){next;}
-				print SING "Cluster size $clus_size\n";
-				my @subclus=split(/\n/,$sizes{"$clus_size"});
-				for ($j=0; $j<@subclus; $j++){
-						my $clus=$subclus[$j];
-						print SING "Cluster $clus\n";
-						for ($k=0; $k<@{"$clus"}; $k++){
-								$gene=${"$clus"}[$k];
-								print SING " 1 1 $gene\n";
-								next
-								}
-						next;
-			 }
-			 next;
-		}
-		close(SING);
-		return(\$single_linkage_cluster);
+    for ($i=0; $i<@clus_sizes; $i++){
+            my $clus_size=$clus_sizes[$i];
+            unless ($clus_size>1){next;}
+            print SING "Cluster size $clus_size\n";
+            my @subclus=split(/\n/,$sizes{"$clus_size"});
+            for ($j=0; $j<@subclus; $j++){
+                    my $clus=$subclus[$j];
+                    print SING "Cluster $clus\n";
+                    for ($k=0; $k<@{"$clus"}; $k++){
+                            $gene=${"$clus"}[$k];
+                            print SING " 1 1 $gene\n";
+                            next
+                            }
+                    next;
+         }
+         next;
+    }
+    close(SING);
+    return(\$single_linkage_cluster);
 }
 
 #______________________________________________________________
@@ -6628,267 +6623,277 @@ sub remove_dup_in_array{
 #             u= for upper E value limit
 #             l= for lower E value limit
 # Category  :
-# Version   : 1.7
+# Version   : 1.9
 #--------------------------------------------------------------------------------
 sub read_machine_readable_sso_lines{
-	 my ($upper_expect_limit, $lower_expect_limit)=(50,0);
-	 my (%match, $name_range, @out_refs, $query_found, $query_sq_stop,
-	    $query_sq_start, $match_found, $get_alignment,
-			$match_seq, $match_found2, $i, $j,$match_found3, $overlap, $sw_score,
-			$match_sq_start, $match_sq_stop, $match_seq2, $sw_ident, $name_range, $query_seq,
-			$al_display_start, $original_target_seq, $match_seq_count, @SSO,
-			$attach_range_in_names, $attach_range_in_names2, $new_format, %temp,
-			$original_Q_sq_start, $original_Q_sq_stop, $gap_char_num,
-			$original_M_sq_start, $original_M_sq_stop, $match_align_leng, $query_align_leng);
+     my ($upper_expect_limit, $lower_expect_limit)=(50,0);
+     my (%match, $name_range, @out_refs, $query_found, $query_sq_stop, $query_sq_start, $match_found, $get_alignment,
+            $match_seq, $match_found2, $i, $j,$match_found3, $overlap, $sw_score, $match_sq_start, $match_sq_stop, $match_seq2, $sw_ident, $name_range, $query_seq,
+            $al_display_start, $original_target_seq, $match_seq_count, @SSO, $attach_range_in_names, $attach_range_in_names2, $new_format, %temp,
+            $original_Q_sq_start, $original_Q_sq_stop, $gap_char_num,  $original_M_sq_start, $original_M_sq_stop, $match_align_leng, $query_align_leng);
 
-	 for($i=0; $i< @_; $i++){
-			 if($_[$i]=~/u=(\S+)/){    $upper_expect_limit=$1 }
-			 elsif(ref($_[$i]) eq 'ARRAY'){ @SSO=@{$_[$i]};   }
-			 elsif($_[$i]=~/l=(\S+)/){ $lower_expect_limit=$1 }
-			 elsif($_[$i]=~/^c *$/){     $create_sso = 'c'; print "\n# read_machine_readable_sso_lines: \$create_sso is set"; }
-			 elsif($_[$i]=~/^a *$/){     $get_alignment='a'; }
-			 elsif($_[$i]=~/^ *r *$/){   $attach_range_in_names='r' }
-			 elsif($_[$i]=~/^r2 *$/){    $attach_range_in_names2='r2' }
-			 elsif($_[$i]=~/^n *$/){     $new_format='n' }
-	 }
-	 $attach_range_in_names='r';
+     for($i=0; $i< @_; $i++){
+             if($_[$i]=~/u=(\S+)/){    $upper_expect_limit=$1 }
+             elsif(ref($_[$i]) eq 'ARRAY'){ @SSO=@{$_[$i]};   }
+             elsif($_[$i]=~/l=(\S+)/){ $lower_expect_limit=$1 }
+             elsif($_[$i]=~/^c *$/){     $create_sso = 'c'; print "\n# read_machine_readable_sso_lines: \$create_sso is set"; }
+             elsif($_[$i]=~/^a *$/){     $get_alignment='a'; }
+             elsif($_[$i]=~/^ *r *$/){   $attach_range_in_names='r' }
+             elsif($_[$i]=~/^r2 *$/){    $attach_range_in_names2='r2' }
+             elsif($_[$i]=~/^n *$/){     $new_format='n' }
+     }
+     $attach_range_in_names='r';
+     #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     # Matching each machine readable line
+     #_______________________________________________
+     for($j=0; $j< @SSO; $j++){
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        #  >S33700_annexin
+        #_________________________________________________________
+        if($SSO[$j]=~/^ {1,3}\>(\S+)/){
+             $query_seq=$query_seq_original=$1; $j+=4;
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        #  >>>S33700_annexin.fa, 339 aa vs ../test_set.mpfa library
+        #_________________________________________________________________________________
+        }elsif($SSO[$j]=~/\>\>\> *(\S+)\,? +(\d+) +/){  ## >>>  line
+             $query_found=1;  $query_seq_leng=$2;  ## Ignoring the $1, as file name can be different from rea seq names
+             $j+=5;
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
+        #  >>S33700_annexin I; annexin repeat homology. [ Rattus norvegicus (Norway rat) ]
+        #______________________________________________________________________________________
+        }elsif( $query_found==1 and $SSO[$j]=~/^ {0,2}\>\>(\w[\S\-\.]+)([\.prot\,\:]*) */ ){ ##
+             $match_found=1;
+             $match_seq_count++;
 
-	 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	 # Matching each machine readable line
-	 #_______________________________________________
-	 for($j=0; $j< @SSO; $j++){
-			if($SSO[$j]=~/^ {1,3}\>(\S+) *$/){
-				 $query_seq=$1; $j+=4;
-			}elsif($SSO[$j]=~/\>\>\> *(\S+)\,? +(\d+) +/){  ## >>>  line
-				 $query_found=1;  $query_seq_leng=$2;  ## Ignoring the $1, as file name can be different from rea seq names
-				 $j+=5;
-	    }elsif( $query_found==1 and $SSO[$j]=~/^ {0,2}\>\>(\w[\S\-\.]+)([\.prot\,\:]*) */ ){ ##
-				 $match_found=1;
-				 $match_seq_count++;
+             $al_display_start=0; ##<--- This is necessary in reading the sequence lines to return alignment with 'a' option
 
-				 $al_display_start=0; ##<--- This is necessary in reading the sequence lines to return alignment with 'a' option
+             if(length($2)>0){  print "\n# read_machine_readable_sso_lines: Seq name has this special char \"$2\". I ignore it"; }
+             #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+             #  Changing the CASE according to the option
+             #_____________________________________________
+             if($uppercase_seq_name eq 'U'){
+                  $match_seq="$1"; $match_seq="\U$match_seq";  ## make it uppercase
+             }elsif($lowercase_seq_name eq 'L'){
+                  $match_seq="$1"; $match_seq="\L$match_seq"; ## make it lowercase
+             }else{ $match_seq="$1";  } ## make it uppercase
 
-				 if(length($2)>0){  print "\n# read_machine_readable_sso_lines: Seq name has this special char \"$2\". I ignore it"; }
-				 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-				 #  Changing the CASE according to the option
-				 #_____________________________________________
-				 if($uppercase_seq_name eq 'U'){
-								 $match_seq="$1"; $match_seq="\U$match_seq";  ## make it uppercase
-				 }elsif($lowercase_seq_name eq 'L'){
-								 $match_seq="$1"; $match_seq="\L$match_seq"; ## make it lowercase
-				 }else{ $match_seq="$1";  } ## make it uppercase
-			#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-			#  ; sw_expect:  line NOT exists in pair comparison
-			#_________________________________________________________
-			}elsif($match_found and $SSO[$j]=~/^\; +\w+_expect\:? +(\S+)/){
-					 #~~~~~~~~~~~~~~~~~~~~~~~
-					 # Filtering by E val
-					 #_______________________
-					 if( $1 > $upper_expect_limit or $1 < $lower_expect_limit ){
-							 $match_found=0; next;
-					 }else{ $expect =$1; }
-			}elsif($match_found and $SSO[$j]=~/^ *\; +sw_score *\:[\t ]+(\S+)/i){  $sw_score =$1;
-			}elsif($match_found and $SSO[$j]=~/^\; +sw_ident\: +(\S+)/){  $sw_ident =$1;
-			}elsif($match_found and $SSO[$j]=~/^ *\; +sw_overlap\: +(\S+)/){  $overlap=$1;
+             $query_seq=$query_seq_original; ## >>> BUG FIX <<< this resets ASSS_30-123 to ASSS, so that NO incremental ranges in query
 
-			#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-			#  Matching ">d2admb__17-3 368 aa .." which is QUERY
-			#_________________________________________________________
-			}elsif($match_found and $SSO[$j]=~/^ {0,2}\>(\w[\S\-\.]+)([\.prot\,\:]*)/){
-				 $match_found2=1;        $match_found=0;
-				 if( length($2)>0 ){  print "\n# read_machine_readable_sso_lines: Seq name has this special char \"$2\". I ignore it"; }
-			}elsif($match_found2==1 and $SSO[$j]=~/\; +sq_len\: +(\S+)/){
-					 $query_sq_len=$1;
-			}elsif($match_found2==1 and $SSO[$j]=~/\; +al_start\: +(\S+)/){
-					 $query_sq_start=$abs_query_seq_start=$1;
-			}elsif($match_found2==1 and $SSO[$j]=~/\; +al_stop\: +(\S+)/){
-					 $query_sq_stop=$1;
-					 $query_align_leng=$query_sq_stop-$query_sq_start+1;
-			}elsif($match_found2 and $SSO[$j]=~/\; +al_display_start: +(\d+)/){
-					#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-					# Following is important to keep track of the abs seq start point ($abs_query_seq_start=al_start-al_display_start)
-					#______________________________________________________________________________________________________________________________
-					$abs_query_seq_start-=$1;
+        }elsif($match_found and $SSO[$j]=~/^ *\; +sw_score *\:[\t ]+(\S+)/i){  $sw_score =$1;
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        #  ; sw_expect:  line NOT exists in pair comparison
+        #___________________________________________________________
+        }elsif($match_found and $SSO[$j]=~/^\; +\w+_expect\:? +(\S+)/){
+            #~~~~~~~~~~~~~~~~~~~~~~~
+            # Filtering by E val
+            #_______________________
+            if( $1 > $upper_expect_limit or $1 < $lower_expect_limit ){
+                    $match_found=0; next;
+            }else{ $expect =$1; }
+        }elsif($match_found and $SSO[$j]=~/^\; +sw_ident\: +(\S+)/){  $sw_ident =$1;
+        }elsif($match_found and $SSO[$j]=~/^ *\; +sw_overlap\: +(\S+)/){  $overlap=$1;
 
-					$al_display_start++;
-					#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
-					# When REGIONS are noted, record the original range info and adjust according to the alignment
-					#___________________________________________________________________________________________________
-					if($query_seq=~/^(\S+)_(\d+)\-(\d+)/){
-						 $query_seq=$1;
-						 $original_Q_sq_start=$2;
-						 $original_Q_sq_stop =$3;
-						 $query_sq_start +=$2-1 ;
-						 $query_sq_stop  +=$2-1;
-						 $query_seq="$query_seq\_$query_sq_start\-$query_sq_stop";
-					}else{
-					   $query_seq="$query_seq\_$query_sq_start\-$query_sq_stop" if $attach_range_in_names;
-					}
-			#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-			#  Matching ">RPOP_NEUCR_50-433" which is MATCH
-			#_________________________________________________________
-			}elsif($match_found2 and $SSO[$j]=~/^ {0,2}\>(\w[\S\-\.]+)([\.prot\,\:]*) *[\d+]*/){
-					 $match_found3=1; $match_found2=0;
-					 $match_seq=$1;
-					 if(length($2)>0){  print "\n# open_sso_files: Seq name has this special char \"$2\". I ignore it"; }
-			}elsif($match_found3 and $SSO[$j]=~/\; +sq_len\: +(\S+)/){
-					 $match_sq_len=$1;
-			}elsif($match_found3 and $SSO[$j]=~/\; +al_start\: +(\d+)/){
-					 $match_sq_start=$abs_match_seq_start=$1;
-			}elsif($match_found3 and $SSO[$j]=~/\; +al_stop\: +(\d+)/){
-					 $match_sq_stop=$1;
-					 $match_align_leng=$match_sq_stop-$match_sq_start+1;
-			}elsif($match_found3 and $SSO[$j]=~/\; +al_display_start: +(\d+)/){
-					$match_found3=0;
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        #  Matching ">d2admb__17-3 368 aa .." which is QUERY
+        #_________________________________________________________
+        }elsif($match_found and $SSO[$j]=~/^ {0,2}\>(\w[\S\-\.]+)([\.prot\,\:]*)/){
+            $match_found2=1;        $match_found=0;
+            if( length($2)>0 ){  print "\n# read_machine_readable_sso_lines: Seq name has this special char \"$2\". I ignore it"; }
+        }elsif($match_found2==1 and $SSO[$j]=~/\; +sq_len\: +(\S+)/){
+            $query_sq_len=$1;
+        }elsif($match_found2==1 and $SSO[$j]=~/\; +al_start\: +(\S+)/){
+            $query_sq_start=$abs_query_seq_start=$1;
+        }elsif($match_found2==1 and $SSO[$j]=~/\; +al_stop\: +(\S+)/){
+            $query_sq_stop=$1;
+            $query_align_leng=$query_sq_stop-$query_sq_start+1;
+        }elsif($match_found2 and $SSO[$j]=~/\;[\t ]+al_display_start: +(\d+)/){
+            #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            # Following is important to keep track of the abs seq start point ($abs_query_seq_start=al_start-al_display_start)
+            #______________________________________________________________________________________________________________________________
+            $abs_query_seq_start-=$1;
 
-					#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-					# Following is important to keep track of the abs seq start point
-					#________________________________________________________________________
-					$abs_match_seq_start-=$1;
+            $al_display_start++;
+            #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
+            # When REGIONS are noted, record the original range info and adjust according to the alignment
+            #___________________________________________________________________________________________________
+            if($query_seq=~/^(\S+)_(\d+)\-(\d+)$/){
+                 $query_seq=$1;
+                 $original_Q_sq_start=$2;
+                 $original_Q_sq_stop =$3;
+                 $query_sq_start +=$2-1 ;
+                 $query_sq_stop  +=$2-1;
+                 $query_seq="$query_seq\_$query_sq_start\-$query_sq_stop";
+            }elsif($query_seq){
+                $query_seq="$query_seq\_$query_sq_start\-$query_sq_stop" if $attach_range_in_names;
+            }else{
+               print "\n \$query_seq is empty for \n\n"; exit;
+            }
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        #  Matching ">RPOP_NEUCR_50-433" which is MATCH
+        #_________________________________________________________
+        }elsif($match_found2 and $SSO[$j]=~/^ {0,2}\>(\w[\S\-\.]+)([\.prot\,\:]*) *[\d+]*/){
+            $match_found3=1;
+            $match_found2=0;
+            $match_seq   =$1;
+            if(length($2)>0){  print "\n# open_sso_files: Seq name has this special char \"$2\". I ignore it"; }
+        }elsif($match_found3 and $SSO[$j]=~/\; +sq_len\: +(\S+)/){
+                 $match_sq_len=$1;
+        }elsif($match_found3 and $SSO[$j]=~/\; +al_start\: +(\d+)/){
+                 $match_sq_start=$abs_match_seq_start=$1;
+        }elsif($match_found3 and $SSO[$j]=~/\; +al_stop\: +(\d+)/){
+                 $match_sq_stop=$1;
+                 $match_align_leng=$match_sq_stop-$match_sq_start+1;
+        }elsif($match_found3 and $SSO[$j]=~/\; +al_display_start: +(\d+)/){
+                $match_found3=0;
 
-					$al_display_start++;
-					#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-					# To prevent Null SWscore and Eval
-					#___________________________________________________
-					if(!$expect){	$expect='0.0';
-							if((!$sw_score and $expect==0) or $sw_ident > 0.8){ $sw_score=1000; }
-					}
-					#~~~~~~~~~~~~~~~~~~~~~~~~~
-					# Attaching the ranges  (under NO e option)
-					#_________________________
-					if($attach_range_in_names){
-							 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-							 # Checks margin opt and adds it
-							 #__________________________________
-							 if($margin=~/\d+/){
-									 if($match_sq_start < $margin){  $match_sq_start=1;
-									 }else{          $match_sq_start-=$margin;   }
-									 $match_sq_stop += $margin;
-							 }
-							 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-							 # adding the offset for names with ranges
-							 #__________________________________________________
-							 if($match_seq=~/^(\S+)_(\d+)\-(\d+)$/){
-									 $match_seq=$1;
-									 $original_M_sq_start=$2;
-									 $original_M_sq_stop =$3;
-									 $match_sq_start +=$2-1;
-									 $match_sq_stop  +=$2-1;
-									 $match_seq="$match_seq\_$match_sq_start\-$match_sq_stop";
-							 }
-							 $name_range=$match_seq;
+                #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                # Following is important to keep track of the abs seq start point
+                #________________________________________________________________________
+                $abs_match_seq_start-=$1;
 
-							 if($original_target_seq=~/\S+/){ $query_seq=$original_target_seq } # for PVM version out
-							 if($new_format=~/n/){  # under NO e option
-									 $match{$name_range}=
-											sprintf("%s %s %s %s %s %s %s %s %s\n",
-											$query_seq, $query_sq_start, $query_sq_stop, $sw_score, $expect, $sw_ident,
-											$match_sq_start, $match_sq_stop, $name_range);
-							 }else{
-									 $match{$name_range}=
-											sprintf("%-5s %-9s %-6s %-4s %-5s %-30s %-4s %-5s %s\n",
-											$sw_score, $expect, $sw_ident, $query_sq_start, $query_sq_stop, $query_seq,
-											$match_sq_start, $match_sq_stop, $name_range);
-							 }
-				  }else{
-							#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-							# Checks margin opt and adds it
-							#__________________________________
-							if($margin=~/\d+/){
-									if($match_sq_start < $margin){  $match_sq_start=1;
-									}else{                          $match_sq_start-=$margin; }
-									$match_sq_stop += $margin;
-							}
-							if($original_target_seq=~/\S+/){ $query_seq=$original_target_seq } # for PVM version out
+                $al_display_start++;
+                #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                # To prevent Null SWscore and Eval
+                #___________________________________________________
+                if(!$expect){   $expect='0.0';
+                        if((!$sw_score and $expect==0) or $sw_ident > 0.8){ $sw_score=1000; }
+                }
+                #~~~~~~~~~~~~~~~~~~~~~~~~~
+                # Attaching the ranges  (under NO e option)
+                #_________________________
+                if($attach_range_in_names){
+                      #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                      # Checks margin opt and adds it
+                      #__________________________________
+                      if($margin=~/\d+/){
+                           if($match_sq_start < $margin){  $match_sq_start=1;
+                           }else{          $match_sq_start-=$margin;   }
+                           $match_sq_stop += $margin;
+                      }
+                      #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                      # adding the offset for names with ranges
+                      #__________________________________________________
+                      if($match_seq=~/^(\S+)_(\d+)\-(\d+)$/){
+                           $match_seq=$1;
+                           $original_M_sq_start=$2;
+                           $original_M_sq_stop =$3;
+                           $match_sq_start +=$2-1;
+                           $match_sq_stop  +=$2-1;
+                           $match_seq="$match_seq\_$match_sq_start\-$match_sq_stop";
+                      }
+                      $name_range=$match_seq;
 
-							if($new_format=~/n/){
-									$match{$match_seq}=
-										 sprintf("%s %s %s %s %s %s %s %s %s\n",
-										 $query_seq, $query_sq_start, $query_sq_stop, $sw_score, $expect, $sw_ident,
-										 $match_sq_start, $match_sq_stop, $match_seq);
-							}else{
-									$match{$match_seq}=sprintf("%-5s %-9s %-6s %-4s %-5s %-30s %-4s %-5s %s\n",
-										$sw_score, $expect, $sw_ident, $query_sq_start, $query_sq_stop, $query_seq,
-										$match_sq_start, $match_sq_stop, $match_seq);
-							}
-				  }
-			}
-			#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-			# When 'a' option set, for getting sequences to show alignment
-			#________________________________________________________________
-			if($get_alignment and $al_display_start==1 and $SSO[$j]=~/^([\w\-]+) *$/){
-					 ${"match_alignment\_$match_seq_count"}{"$query_seq"} .= $1;
-			}elsif($get_alignment and $al_display_start==2 and $SSO[$j]=~/^([\w\-]+) *$/){
-					 ${"match_alignment\_$match_seq_count"}{"$match_seq"} .= $1;
-			}elsif($get_alignment and ($SSO[$j]=~/^ *\;al_cons\:/ or $SSO[$j]=~/\<\<\</)){
-					 $al_display_start=0;
-					 #print ${"match_alignment\_$match_seq_count"}{"$query_seq"} , "\n";
-					 #print ${"match_alignment\_$match_seq_count"}{"$match_seq"} , "\n";
-					 my %temp=%{"match_alignment\_$match_seq_count"};
-					 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-					 # Getting seq segments Matched !!
-					 #_______________________________________________________________
-					 $Q_fragment_start=$query_sq_start-$original_Q_sq_start;
-					 $M_fragment_start=$match_sq_start-$original_M_sq_start;
-					 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-					 # (1) When Q alignment starts with gap> '-----XXXXX' + 'ADFAYXXXXX', remove gaps
-					 #__________________________________________________________________________________
-					 if($temp{$query_seq}=~/^(\-+)\w/){
-							 $leading_gap_leng=length($1);
-							 #print "\n\$leading_gap_leng : $leading_gap_leng $abs_query_seq_start, $abs_match_seq_start, $query_align_leng, $match_align_leng\n";
+                      if($original_target_seq=~/\S+/){ $query_seq=$original_target_seq } # for PVM version out
+                      if($new_format=~/n/){  # under NO e option
+                          $match{$name_range}=sprintf("%s %s %s %s %s %s %s %s %s\n",
+                          $query_seq, $query_sq_start, $query_sq_stop, $sw_score, $expect, $sw_ident,
+                          $match_sq_start, $match_sq_stop, $name_range);
+                      }else{
+                          $match{$name_range}=sprintf("%-5s %-9s %-6s %-4s %-5s %-30s %-4s %-5s %s\n",
+                          $sw_score, $expect, $sw_ident, $query_sq_start, $query_sq_stop, $query_seq,
+                          $match_sq_start, $match_sq_stop, $name_range);
+                      }
+              }else{
+                   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                   # Checks margin opt and adds it
+                   #__________________________________
+                   if($margin=~/\d+/){
+                           if($match_sq_start < $margin){  $match_sq_start=1;
+                           }else{                          $match_sq_start-=$margin; }
+                           $match_sq_stop += $margin;
+                   }
+                   if($original_target_seq=~/\S+/){ $query_seq=$original_target_seq } # for PVM version out
 
-							 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-							 # Number of gap char is important as the al_start and al_stop of FASTA does not include gap leng
-							 #_______________________________________________________________________________________________________________
-							 $temp{$query_seq}=substr($temp{$query_seq}, $leading_gap_leng+$abs_query_seq_start, ); ## <-- step 1
-							 $gap_char_num=$temp{$query_seq}=~tr/\-/\-/;                       ## <-- step 2
-							 $temp{$query_seq}=substr($temp{$query_seq}, 0, $query_align_leng+$gap_char_num); ## <-- step 3
-							 $temp{$match_seq}=substr($temp{$match_seq}, $leading_gap_leng+$abs_query_seq_start, $query_align_leng+$gap_char_num);
-							 #print "\n$temp{$query_seq}\n$temp{$match_seq} $query_align_leng + $gap_char_num \n"; #exit;
-					 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-					 # (2) When M alignment starts with gap> '-----XXXXX' + 'ADFAYXXXXX', remove gaps
-					 #____________________________________________________________________________________
-					 }elsif($temp{$match_seq}=~/^(\-+)\w/){
-							 $leading_gap_leng=length($1);
-							 #print "\n\$leading_gap_leng : $leading_gap_leng $abs_query_seq_start, $abs_match_seq_start, $query_align_leng, $match_align_leng\n";
+                   if($new_format=~/n/){
+                           $match{$match_seq}=
+                                sprintf("%s %s %s %s %s %s %s %s %s\n",
+                                $query_seq, $query_sq_start, $query_sq_stop, $sw_score, $expect, $sw_ident,
+                                $match_sq_start, $match_sq_stop, $match_seq);
+                   }else{
+                           $match{$match_seq}=sprintf("%-5s %-9s %-6s %-4s %-5s %-30s %-4s %-5s %s\n",
+                               $sw_score, $expect, $sw_ident, $query_sq_start, $query_sq_stop, $query_seq,
+                               $match_sq_start, $match_sq_stop, $match_seq);
+                   }
+              }
+        }
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        # When 'a' option set, for getting sequences to show alignment
+        #________________________________________________________________
+        if($get_alignment and $al_display_start==1 and $SSO[$j]=~/^([\w\-]+) *$/){
+                 ${"match_alignment\_$match_seq_count"}{"$query_seq"} .= $1;
+        }elsif($get_alignment and $al_display_start==2 and $SSO[$j]=~/^([\w\-]+) *$/){
+                 ${"match_alignment\_$match_seq_count"}{"$match_seq"} .= $1;
+        }elsif($get_alignment and ($SSO[$j]=~/^ *\;al_cons\:/ or $SSO[$j]=~/\<\<\</)){
+                 $al_display_start=0;
+                 #print ${"match_alignment\_$match_seq_count"}{"$query_seq"} , "\n";
+                 #print ${"match_alignment\_$match_seq_count"}{"$match_seq"} , "\n";
+                 my %temp=%{"match_alignment\_$match_seq_count"};
+                 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                 # Getting seq segments Matched !!
+                 #_______________________________________________________________
+                 $Q_fragment_start=$query_sq_start-$original_Q_sq_start;
+                 $M_fragment_start=$match_sq_start-$original_M_sq_start;
+                 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                 # (1) When Q alignment starts with gap> '-----XXXXX' + 'ADFAYXXXXX', remove gaps
+                 #__________________________________________________________________________________
+                 if($temp{$query_seq}=~/^(\-+)\w/){
+                         $leading_gap_leng=length($1);
+                         #print "\n\$leading_gap_leng : $leading_gap_leng $abs_query_seq_start, $abs_match_seq_start, $query_align_leng, $match_align_leng\n";
 
-							 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-							 # Number of gap char is important as the al_start and al_stop of FASTA does not include gap leng
-							 #_______________________________________________________________________________________________________________
-							 $temp{$query_seq}=substr($temp{$query_seq}, $leading_gap_leng+$abs_match_seq_start, ); ## <-- step 1
-							 $gap_char_num=$temp{$query_seq}=~tr/\-/\-/;                       ## <-- step 2
-							 $temp{$query_seq}=substr($temp{$query_seq}, 0, $query_align_leng+$gap_char_num); ## <-- step 3
-							 $temp{$match_seq}=substr($temp{$match_seq}, $leading_gap_leng+$abs_match_seq_start, $query_align_leng+$gap_char_num);
-							 #print "\n$temp{$query_seq}\n$temp{$match_seq} $query_align_leng + $gap_char_num \n"; #exit;
-					 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-					 # (3) When Alignment is like> 'YYY----XXzz' + 'YYYDFAYXXzz'
-					 #____________________________________________________________________________
-					 }else{
-							 #print "\n $abs_query_seq_start, $abs_match_seq_start, \$query_align_leng $query_align_leng, $match_align_leng\n";
-							 $temp{$query_seq}=substr($temp{$query_seq}, $abs_query_seq_start, );
-							 $gap_char_num=$temp{$query_seq}=~tr/\-/\-/;
-							 $temp{$query_seq}=substr($temp{$query_seq}, 0, $query_align_leng+$gap_char_num);
-							 $temp{$match_seq}=substr($temp{$match_seq}, $abs_match_seq_start, $query_align_leng + $gap_char_num);
-							 #print "\n$temp{$query_seq}\n$temp{$match_seq} $query_align_leng + $gap_char_num $match_align_leng $gap_char_num\n"; exit;
-					 }
-					 push(@out_refs, \%temp );
-					 %{"match_alignment\_$match_seq_count"}=();
-			}
-	 } ## <-- for($j=0; $j< @SSO; $j++)
-	 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	 # If create sso option is set, it creates SSO files(array input case)
-	 #________________________________________________________________________
-	 if( $create_sso and !$get_alignment){
-			open (SSO2, ">$query_seq\.msso");
-			print SSO2 @SSO, "\n";
-			print "\n# read_machine_readable_sso_lines : $query_seq\.msso file  is created by \"c\" opt ";
-			close SSO2
-	 }
-	 unless($get_alignment){
-			push(@out_refs, \%match);
-	 }
-	 return(\@out_refs);
+                         #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                         # Number of gap char is important as the al_start and al_stop of FASTA does not include gap leng
+                         #_______________________________________________________________________________________________________________
+                         $temp{$query_seq}=substr($temp{$query_seq}, $leading_gap_leng+$abs_query_seq_start, ); ## <-- step 1
+                         $gap_char_num=$temp{$query_seq}=~tr/\-/\-/;                       ## <-- step 2
+                         $temp{$query_seq}=substr($temp{$query_seq}, 0, $query_align_leng+$gap_char_num); ## <-- step 3
+                         $temp{$match_seq}=substr($temp{$match_seq}, $leading_gap_leng+$abs_query_seq_start, $query_align_leng+$gap_char_num);
+                         #print "\n$temp{$query_seq}\n$temp{$match_seq} $query_align_leng + $gap_char_num \n"; #exit;
+                 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                 # (2) When M alignment starts with gap> '-----XXXXX' + 'ADFAYXXXXX', remove gaps
+                 #____________________________________________________________________________________
+                 }elsif($temp{$match_seq}=~/^(\-+)\w/){
+                      $leading_gap_leng=length($1);
+                      #print "\n\$leading_gap_leng : $leading_gap_leng $abs_query_seq_start, $abs_match_seq_start, $query_align_leng, $match_align_leng\n";
+
+                      #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                      # Number of gap char is important as the al_start and al_stop of FASTA does not include gap leng
+                      #_______________________________________________________________________________________________________________
+                      $temp{$query_seq}=substr($temp{$query_seq}, $leading_gap_leng+$abs_match_seq_start, ); ## <-- step 1
+                      $gap_char_num=$temp{$query_seq}=~tr/\-/\-/;                       ## <-- step 2
+                      $temp{$query_seq}=substr($temp{$query_seq}, 0, $query_align_leng+$gap_char_num); ## <-- step 3
+                      $temp{$match_seq}=substr($temp{$match_seq}, $leading_gap_leng+$abs_match_seq_start, $query_align_leng+$gap_char_num);
+                      #print "\n$temp{$query_seq}\n$temp{$match_seq} $query_align_leng + $gap_char_num \n"; #exit;
+                 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                 # (3) When Alignment is like> 'YYY----XXzz' + 'YYYDFAYXXzz'
+                 #____________________________________________________________________________
+                 }else{
+                      #print "\n $abs_query_seq_start, $abs_match_seq_start, \$query_align_leng $query_align_leng, $match_align_leng\n";
+                      $temp{$query_seq}=substr($temp{$query_seq}, $abs_query_seq_start, );
+                      $gap_char_num=$temp{$query_seq}=~tr/\-/\-/;
+                      $temp{$query_seq}=substr($temp{$query_seq}, 0, $query_align_leng+$gap_char_num);
+                      $temp{$match_seq}=substr($temp{$match_seq}, $abs_match_seq_start, $query_align_leng + $gap_char_num);
+                      #print "\n$temp{$query_seq}\n$temp{$match_seq} $query_align_leng + $gap_char_num $match_align_leng $gap_char_num\n"; exit;
+                 }
+                 push(@out_refs, \%temp );
+                 %{"match_alignment\_$match_seq_count"}=();
+            }
+     } ## <-- for($j=0; $j< @SSO; $j++)
+     #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     # If create sso option is set, it creates SSO files(array input case)
+     #________________________________________________________________________
+     if( $create_sso and !$get_alignment){
+         open (SSO2, ">$query_seq\.msso");
+         print SSO2 @SSO, "\n";
+         print "\n# read_machine_readable_sso_lines : $query_seq\.msso file  is created by \"c\" opt ";
+         close SSO2
+     }
+     unless($get_alignment){
+         push(@out_refs, \%match);
+     }
+     return(\@out_refs);
 }
+
+
 
 
 
@@ -7107,7 +7112,7 @@ sub merge_sequence_in_msp_file{
 # Function  : runs FASTA or SSEARCH algorithm (given by a= option)
 # Example   :
 # Keywords  : run_ssearch_sequence_search, do_fasta_sequence_search,
-#             do_fasta_search
+#             do_fasta_search, run_fasta_ssearch_sequence_search
 # Options   :
 #             Query_seqs=  for enquiry sequences eg)  "Query_seqs=$ref_of_hash"
 #             DB=   for target DB  "DB=$DB_used"
@@ -7139,164 +7144,165 @@ sub merge_sequence_in_msp_file{
 #       FILE_AGE for defining the age of file in days to be overwritten.
 # Author    : Jong Park, jong@salt2.med.harvard.edu, for commercial use, ask me.
 # Category  :
-# Version   : 1.5
+# Version   : 1.7
 #------------------------------------------------------------------------------
 sub run_fasta_sequence_search{
-		#"""""""""""""""""< handle_arguments{ head Ver 4.1 >"""""""""""""""""""
-		my(@A)=&handle_arguments(@_);my($num_opt)=${$A[7]};my($char_opt)=${$A[8]};
-		my(@hash)=@{$A[0]};my(@file)=@{$A[4]};my(@dir)=@{$A[3]};my(@array)=@{$A[1]};
-		my(@string)=@{$A[2]};my(@num_opt)=@{$A[5]};my(@char_opt)=@{$A[6]};
-		my(@raw_string)=@{$A[9]};my(%vars)=%{$A[10]};my(@range)=@{$A[11]};
-		my($i,$j,$c,$d,$e,$f,$g,$h,$k,$l,$m,$n,$o,$p,$q,$r,$s,$t,$u,$v,$w,$x,$y,$z);
-		if($debug==1){print "\n\t\@hash=\"@hash\"
-		\@raw_string=\"@raw_string\"\n\t\@array=\"@array\"\n\t\@num_opt=\"@num_opt\"
-		\@char_opt=\"@char_opt\"\n\t\@file=\"@file\"\n\t\@string=\"@string\"\n" }
-		#""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-		my($algorithm, $upper_expect_limit, $sequence_DB, $k_tuple, $machine_readable,$create_sso,
-			 @msp_from_temp, $gzipped_msp_file, @temp, $temp_file_name, $add_range,
-			 $out_file_msp_name, $input_file_name, $out_file_sso_name,
-			 $gzipped_sso_file, $machine_readable, $Evalue_thresh);
-		$algorithm='fasta';    $out_file_msp_name='default_out_file.msp';
-		$upper_expect_limit=1;              $sequence_DB=$ENV{'NRDB_FASTA'};
-		$k_tuple=1;            $machine_readable='M';
-		$upper_expect_limit=1; $lower_expect_limit=0;
-		$Score_thresh=100;
+    #"""""""""""""""""< handle_arguments{ head Ver 4.1 >"""""""""""""""""""
+    my(@A)=&handle_arguments(@_);my($num_opt)=${$A[7]};my($char_opt)=${$A[8]};
+    my(@hash)=@{$A[0]};my(@file)=@{$A[4]};my(@dir)=@{$A[3]};my(@array)=@{$A[1]};
+    my(@string)=@{$A[2]};my(@num_opt)=@{$A[5]};my(@char_opt)=@{$A[6]};
+    my(@raw_string)=@{$A[9]};my(%vars)=%{$A[10]};my(@range)=@{$A[11]};
+    my($i,$j,$c,$d,$e,$f,$g,$h,$k,$l,$m,$n,$o,$p,$q,$r,$s,$t,$u,$v,$w,$x,$y,$z);
+    if($debug==1){print "\n\t\@hash=\"@hash\"
+    \@raw_string=\"@raw_string\"\n\t\@array=\"@array\"\n\t\@num_opt=\"@num_opt\"
+    \@char_opt=\"@char_opt\"\n\t\@file=\"@file\"\n\t\@string=\"@string\"\n" }
+    #""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    my($algorithm, $upper_expect_limit, $sequence_DB, $k_tuple, $machine_readable,$create_sso,
+         @msp_from_temp, $gzipped_msp_file, @temp, $temp_file_name, $add_range,
+         $out_file_msp_name, $input_file_name, $out_file_sso_name,
+         $gzipped_sso_file, $machine_readable, $Evalue_thresh);
+    $algorithm='fasta';    $out_file_msp_name='default_out_file.msp';
+    $upper_expect_limit=1;              $sequence_DB=$ENV{'NRDB_FASTA'};
+    $k_tuple=1;            $machine_readable='M';
+    $upper_expect_limit=1; $lower_expect_limit=0;
+    $Score_thresh=100;
 
-		if($vars{'a'}=~/\S+/){ $algorithm          = $vars{'a'}            };
-		if($vars{'O'}=~/\S+/){ $out_file_msp_name  = $vars{'O'}            };
-		if($vars{'E'}=~/\S+/){ $Evalue_thresh      = $vars{'E'}            };
-		if($vars{'u'}=~/\d+/){ $upper_expect_limit = $vars{'u'}            };
-		if($vars{'l'}=~/\d+/){ $lower_expect_limit = $vars{'l'}            };
-		if($vars{'k'}=~/\d+/){ $k_tuple            = $vars{'k'}            };
-		if($vars{'t'}=~/\d+/){ $Score_thresh       = $vars{'t'}            };
-		if($vars{'r'}=~/\S+/){ $add_range          = 'r'                   };
-		if($vars{'s'}=~/\S+/){ $single_big_msp     = 's'                   };
-		if($vars{'DB'}=~/\S+/){            $sequence_DB=$vars{'DB'} ;
-				if(-s $sequence_DB){
-				}elsif(-s "../$sequence_DB"){  $sequence_DB= "../$sequence_DB"
-				}elsif(-s "../../$sequence_DB"){  $sequence_DB= "../../$sequence_DB";
-				}else{
-						print "\n# (ERROR) do_sequence_search: You set DB param, but I can\'t find $sequence_DB\n";
-						exit;
-				}
-		}else{  print "\n# (ERROR) do_sequence_search: I need DB param defined, sorry, aborting\n"; }
+    if($vars{'O'}=~/\S+/){ $out_file_msp_name  = $vars{'O'}            };
+    if($vars{'E'}=~/\S+/){ $Evalue_thresh      = $vars{'E'}            };
+    if($vars{'u'}=~/\d+/){ $upper_expect_limit = $vars{'u'}            };
+    if($vars{'l'}=~/\d+/){ $lower_expect_limit = $vars{'l'}            };
+    if($vars{'k'}=~/\d+/){ $k_tuple            = $vars{'k'} unless($algorithm=~/ssearch/);  };             ## Bug fix <-- ssearch does not like $ktuple set
+    if($vars{'a'}=~/\S+/){ $algorithm          = $vars{'a'}; if($algorithm=~/ssearch/i){ $k_tuple='';}  }; ## Bug fix <-- ssearch does not like ktuple
+    if($vars{'t'}=~/\d+/){ $Score_thresh       = $vars{'t'}            };
+    if($vars{'r'}=~/\S+/){ $add_range          = 'r'                   };
+    if($vars{'s'}=~/\S+/){ $single_big_msp     = 's'                   };
+    if($vars{'DB'}=~/\S+/){            $sequence_DB=$vars{'DB'} ;
+            if(-s $sequence_DB){
+            }elsif(-s "../$sequence_DB"){  $sequence_DB= "../$sequence_DB"
+            }elsif(-s "../../$sequence_DB"){  $sequence_DB= "../../$sequence_DB";
+            }else{
+                    print "\n# (ERROR) do_sequence_search: You set DB param, but I can\'t find $sequence_DB\n";
+                    exit;
+            }
+    }else{  print "\n# (ERROR) do_sequence_search: I need DB param defined, sorry, aborting\n"; }
 
-		if(    $vars{'FILE'}=~/(\S+)/i){ $input_file_name = $1;
-		}elsif($vars{'File'}=~/(\S+)/i){ $input_file_name = $1; }
-		if($vars{'FILE_AGE'}=~/\S+/){ $age_in_days_of_out_file= $vars{'FILE_AGE'};  };
-		if($vars{'Query_seqs'}=~/\S+/){ %seq_input = %{$vars{'Query_seqs'}}};
-		if($vars{'Query'}=~/\S+/){      %seq_input = %{$vars{'Query'}}};
-		if($vars{'u'}    =~/\S+/){ $upper_expect_limit          = $vars{'u'}            };
-		if($vars{'PVM'}  =~/\S+/){ $PVM_FASTA_run  = $vars{'PVM'}; print "\n# PVM opt is set\n";     };
-		if($vars{'M'}  =~/\S+/){ $machine_readable = $vars{'M'};           };
+    if(    $vars{'FILE'}=~/(\S+)/i){ $input_file_name = $1;
+    }elsif($vars{'File'}=~/(\S+)/i){ $input_file_name = $1; }
+    if($vars{'FILE_AGE'}=~/\S+/){ $age_in_days_of_out_file= $vars{'FILE_AGE'};  };
+    if($vars{'Query_seqs'}=~/\S+/){ %seq_input = %{$vars{'Query_seqs'}}};
+    if($vars{'Query'}=~/\S+/){      %seq_input = %{$vars{'Query'}}};
+    if($vars{'u'}    =~/\S+/){ $upper_expect_limit          = $vars{'u'}            };
+    if($vars{'PVM'}  =~/\S+/){ $PVM_FASTA_run  = $vars{'PVM'}; print "\n# PVM opt is set\n";     };
+    if($vars{'M'}  =~/\S+/){ $machine_readable = $vars{'M'};           };
 
-		if($char_opt=~/r/){    $add_range          = 'r' }
-		if($char_opt=~/o/){    $over_write         = 'o' }
-		if($char_opt=~/c/){    $create_sso         = 'c' }
-		if($char_opt=~/s/){    $single_big_msp     = 's'; print "\n# Single file opt is set\n"; }
-		if($char_opt=~/M/){    $machine_readable   = 'M' }
-		if($char_opt=~/N/){    $No_processing      = 'N'; $create_sso='c'; }
-		#print "\n# (INFO) run_fasta_sequence_search: $algorithm,$out_file_msp_name,$input_file_name,$upper_expect_limit,DB=$sequence_DB,$k_tuple,$machine_readable\n";
+    if($char_opt=~/r/){    $add_range          = 'r' }
+    if($char_opt=~/o/){    $over_write         = 'o' }
+    if($char_opt=~/c/){    $create_sso         = 'c' }
+    if($char_opt=~/s/){    $single_big_msp     = 's'; print "\n# Single file opt is set\n"; }
+    if($char_opt=~/M/){    $machine_readable   = 'M' }
+    if($char_opt=~/N/){    $No_processing      = 'N'; $create_sso='c'; }
+    #print "\n# (INFO) run_fasta_sequence_search: $algorithm,$out_file_msp_name,$input_file_name,$upper_expect_limit,DB=$sequence_DB,$k_tuple,$machine_readable\n";
 
-		if(!$algorithm or !$input_file_name or !$sequence_DB){
-				print "\n# (ERROR) One of \$sequence_DB, \$input_file_name, \$algorithm is missing\n";
-				exit;
-		}
+    if(!$algorithm or !$input_file_name or !$sequence_DB){
+         print "\n# (ERROR) One of \$sequence_DB, \$input_file_name, \$algorithm is missing\n";
+         exit;
+    }
 
-		#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		# (1) Machine readable opt for fasta and ssearch set ??
-		#____________________________________________________
-		if($machine_readable=~/M/){
-		   if(-x "./Bin/$algorithm"){
-					 #print "\n# (INFO) Running $algorithm -m 10 -H  -E $upper_expect_limit $input_file_name $sequence_DB $k_tuple\n";
-					 @temp=`./Bin/$algorithm -m 10 -H  -E $upper_expect_limit $input_file_name $sequence_DB $k_tuple`;
-			 }else{
-					 #print "\n# (INFO) Running $algorithm -m 10 -H  -E $upper_expect_limit $input_file_name $sequence_DB $k_tuple\n";
-					 @temp=`$algorithm -m 10 -H  -E $upper_expect_limit $input_file_name $sequence_DB $k_tuple`;
-			 }
-		}else{
-		   if(-s "./Bin/$algorithm"){
-					 #print "\n# (INFO) Running $algorithm -m 10 -H  -E $upper_expect_limit $input_file_name $sequence_DB $k_tuple\n";
-					 @temp=`./Bin/$algorithm -H  -E $upper_expect_limit $input_file_name $sequence_DB $k_tuple`;
-			 }else{
-					 #print "\n# (INFO) Running $algorithm -m 10 -H  -E $upper_expect_limit $input_file_name $sequence_DB $k_tuple\n";
-					 @temp=`$algorithm -H  -E $upper_expect_limit $input_file_name $sequence_DB $k_tuple`;
-			 }
-		}
-		print "\n# (i) \@temp has ", scalar(@temp), " lines @temp!\n" if $verbose;
+    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # (1) Machine readable opt for fasta and ssearch set ??
+    #____________________________________________________
+    if($machine_readable=~/M/){
+       #print "\n \$machine_readable for FASTA/SSEARCH is SET\n";
+       if(-x "./Bin/$algorithm"){
+              #print "\n# (INFO) Running $algorithm -m 10 -H  -E $upper_expect_limit $input_file_name $sequence_DB $k_tuple\n";
+              @temp=`./Bin/$algorithm -m 10 -H  -E $upper_expect_limit $input_file_name $sequence_DB $k_tuple`;
+         }else{
+              #print "\n# (INFO) Running $algorithm -m 10 -H  -E $upper_expect_limit $input_file_name $sequence_DB $k_tuple\n";
+              @temp=`$algorithm -m 10 -H  -E $upper_expect_limit $input_file_name $sequence_DB $k_tuple`;
+         }
+    }else{
+       print "\n \$machine_readable for FASTA/SSEARCH is NOT set\n";
+       if(-s "./Bin/$algorithm"){
+                 #print "\n# (INFO) Running $algorithm -m 10 -H  -E $upper_expect_limit $input_file_name $sequence_DB $k_tuple\n";
+                 @temp=`./Bin/$algorithm -H  -E $upper_expect_limit $input_file_name $sequence_DB $k_tuple`;
+         }else{
+                 #print "\n# (INFO) Running $algorithm -m 10 -H  -E $upper_expect_limit $input_file_name $sequence_DB $k_tuple\n";
+                 @temp=`$algorithm -H  -E $upper_expect_limit $input_file_name $sequence_DB $k_tuple`;
+         }
+    }
 
-		#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		# (2) @temp is parsed directly by open_sso_files to make MSP hashes
-		#_______________________________________________________________________
-		@msp_hashes_from_temp = @{&open_sso_files(\@temp, $add_range, "u=$upper_expect_limit", "l=$lower_expect_limit")};
+    #print "\n# (i) \@temp has ", scalar(@temp), " lines @temp!\n";
 
-		if(@msp_hashes_from_temp < 1){
-				print "\n# (ERROR) run_fasta_sequence_search : Error, something is wrong with open_sso_files, LINE=", __LINE__, "\n";
-				exit;
-		}else{
-				#print "\n# (i) run_fasta_sequence_search: Good, \@msp_from_temp has ",scalar(@msp_hashes_from_temp), " lines !\n";
-		}
+    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # (2) @temp is parsed directly by open_sso_files to make MSP hashes
+    #_______________________________________________________________________
+    @msp_hashes_from_temp = @{&open_sso_files(\@temp, $add_range, "u=$upper_expect_limit", "l=$lower_expect_limit")};
 
-		#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		# Following is to prevent empty @msp_hashes_from_temp due to low upper expec or any error
-		#___________________________________________________________________________________________
-		@msp_from_temp= values %{$msp_hashes_from_temp[0]};
-		if($msp_from_temp[0]=~/\S{3}/){
-				#print "\n# (i) run_fasta_sequence_search: Good, \@msp_from_temp has ",scalar(@msp_hashes_from_temp), " lines !\n";
-		}else{
-				#print "\n# (E) the content of \@temp has @temp\n";
-				open(SSO_FILE_TO_DEBUG, ">$input_file_name\.$algorithm\.sso");
-				for(@temp){ print SSO_FILE_TO_DEBUG $_ }; close(SSO_FILE_TO_DEBUG);
-				#print "\n# (E) run_fasta_sequence_search: \@msp_from_temp seems empty (?open_sso_files?)\a";
-				#print "\n# A file $input_file_name\.$algorithm\.sso is created to DEBUG!\n\n";
-				#print "\n   \$upper_expect_limit $upper_expect_limit, \$lower_expect_limit $lower_expect_limit, \$add_range $add_range\n";
-				#print "\n   Your \$upper_expect_limit may be too low. The default set is 1 and sometimes FASTA reports higher values\n";
-				$upper_expect_limit=$upper_expect_limit*10;
-				@msp_hashes_from_temp = @{&open_sso_files(\@temp, $add_range, "u=$upper_expect_limit", "l=$lower_expect_limit")};
-				@msp_from_temp= values %{$msp_hashes_from_temp[0]};
-				if($msp_from_temp[0]=~/\S{3}/){ print "\n# (I) I set \$upper_expect_limit to $upper_expect_limit, to run save open_sso_files sub \n";
-				}else{
-						print "\n I tried to run open_sso_files again with hihger \$upper_expect_limit, but failed, dying \n";
-						exit;
-				}
-		}
+    if(@msp_hashes_from_temp < 1){
+        print "\n# (ERROR) run_fasta_sequence_search : Error, something is wrong with open_sso_files, LINE=", __LINE__, "\n";
+        exit;
+    }else{
+        print "\n# (i) run_fasta_sequence_search: Good, \@msp_from_temp has ",scalar(@msp_hashes_from_temp), " hashes !\n";
+    }
 
-		#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		# (3) Writing MSP file, and gzipping if possible
-		#________________________________________________
-		open(MSP_RUN_FASTA, ">$out_file_msp_name") or die "\n# (ERROR) $out_file_msp_name could not be open\n";
-		for(@msp_from_temp){    print MSP_RUN_FASTA $_;  }
-		close MSP_RUN_FASTA;
-		$gzipped_msp_file=${&compress_files_by_gzip($out_file_msp_name)};
+    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # Following is JUST to prevent empty @msp_hashes_from_temp due to low upper expec or any error
+    #___________________________________________________________________________________________
+    @msp_from_temp= values %{$msp_hashes_from_temp[0]};
+    if($msp_from_temp[0]=~/\S{3}/){
+        #print "\n# (i) run_fasta_sequence_search: Good, \@msp_from_temp has ",scalar(@msp_hashes_from_temp), " lines !\n";
+    }else{
+        #print "\n# (E) the content of \@temp has @temp\n";
+        open(SSO_FILE_TO_DEBUG, ">$input_file_name\.$algorithm\.sso");
+        for(@temp){ print SSO_FILE_TO_DEBUG $_ }; close(SSO_FILE_TO_DEBUG);
+        $upper_expect_limit=$upper_expect_limit*10;
+        @msp_hashes_from_temp = @{&open_sso_files(\@temp, $add_range, "u=$upper_expect_limit", "l=$lower_expect_limit")};
+        @msp_from_temp= values %{$msp_hashes_from_temp[0]};
+        if($msp_from_temp[0]=~/\S{3}/){ print "\n# (I) I set \$upper_expect_limit to $upper_expect_limit, to run save open_sso_files sub \n";
+        }else{
+             print "\n I tried to run open_sso_files again with hihger \$upper_expect_limit, but failed, dying \n";
+             exit;
+        }
+    }
 
-		#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		# (4) making SSO file if asked : 'c' option
-		#__________________________________________________
-		if($create_sso){
-			 $seq_name=${&get_base_names($input_file_name)};
-			 if($algorithm=~/ssearch/){
-					$out_file_sso_name="$seq_name\.ssso";
-					$out_file_sso_name_gz="$seq_name\.ssso\.gz";
-			 }elsif($algorithm=~/fasta/){
-					$out_file_sso_name="$seq_name\.fsso";
-					$out_file_sso_name_gz="$seq_name\.fsso\.gz";
-			 }
-			 open(SSO, ">$out_file_sso_name");
-			 for(@temp){  print SSO $_;  }; close (SSO);
-			 if($machine_readable){
-					 $out_file_msso_name="$seq_name\.msso";
-					 &cp( $out_file_sso_name, $out_file_msso_name);
-			 }
-			 @gzipped_sso_files=@{&compress_files_by_gzip($out_file_sso_name, $out_file_msso_name)};
+    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # (3) Writing MSP file, and gzipping if possible
+    #________________________________________________
+    open(MSP_RUN_FASTA, ">$out_file_msp_name") or die "\n# (ERROR) $out_file_msp_name could not be open\n";
+    @msp_from_temp= map {$_->[0]} sort { $a->[1] <=> $b->[1]} map { [$_,  ($_=~/^\S+ +(\S+)/) ] } @msp_from_temp; # sorting by the E-value
+    print MSP_RUN_FASTA "# Written by $0 : run_fasta_sequence_search sub, from \@msp_from_temp $algorithm used\n";
+    for(@msp_from_temp){   print MSP_RUN_FASTA $_;    }
+    close MSP_RUN_FASTA;
+    $gzipped_msp_file=${&compress_files_by_gzip($out_file_msp_name)};
 
-		}
-		if(-s $gzipped_msp_file and !(-s $out_file_msp_name)){
-			 #print "\n# (INFO) $gzipped_msp_file is found and will be returned";
-			 return(\$gzipped_msp_file);
-		}elsif(-s $out_file_msp_name){
-			 #print "\n# (INFO) $out_file_msp_name is found and will be returned";
-			 return(\$out_file_msp_name);
-		}
+    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # (4) making SSO file if asked : 'c' option
+    #__________________________________________________
+    if($create_sso){
+         $seq_name=${&get_base_names($input_file_name)};
+         if($algorithm=~/ssearch/){
+                $out_file_sso_name="$seq_name\.ssso";
+                $out_file_sso_name_gz="$seq_name\.ssso\.gz";
+         }elsif($algorithm=~/fasta/){
+                $out_file_sso_name="$seq_name\.fsso";
+                $out_file_sso_name_gz="$seq_name\.fsso\.gz";
+         }
+         open(SSO, ">$out_file_sso_name");
+         for(@temp){  print SSO $_;  }; close (SSO);
+         if($machine_readable){
+                 $out_file_msso_name="$seq_name\.msso";
+                 &cp( $out_file_sso_name, $out_file_msso_name);
+         }
+         @gzipped_sso_files=@{&compress_files_by_gzip($out_file_sso_name, $out_file_msso_name)};
+
+    }
+    if(-s $gzipped_msp_file and !(-s $out_file_msp_name)){
+         #print "\n# (INFO) $gzipped_msp_file is found and will be returned";
+         return(\$gzipped_msp_file);
+    }elsif(-s $out_file_msp_name){
+         #print "\n# (INFO) $out_file_msp_name is found and will be returned";
+         return(\$out_file_msp_name);
+    }
 }## end of run_fasta_sequence_search
 
 
