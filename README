@@ -7,12 +7,17 @@
                       Cyrus Chothia group. MRC, Cambridge
 
 
+
+
 Version.
 
+  "geanfammer_suite_1.4.tar.gz"   16th/Aprial/98
+   1.4 was put in ftp dir of LMB
+     1.4 was a bug fix version. Helped mainly Lily Fu (lily@tigr.org)
+     1.4 is also found in major CPAN sites.
 
-  "geanfammer_suite_1.4.tar.gz"
+  "geanfammer_suite_1.3.tar.gz"
 
-   1.4    was put in the ftp dir of LMB on 20th Mar. 1998
    1.3    was put in the ftp dir of LMB on 25th Jan. 1998
    1.0.1. was put into the ftp directory of LMB on 14th Oct. 1997.
    (ftp://ftp.mrc-lmb.cam.ac.uk/genomes/Software/Geanfammer)
@@ -25,7 +30,7 @@ Requirements:
         http://www.perl.com/
 
    2) FASTA pairwise search program must be installed in the executable path.
-        (I am sure you have it, if you are in Biology field lab)
+        (I am sure you have it, if you are in Biology field)
         FASTA can be found: ftp://ftp.virginia.edu/pub/fasta/
    3) Linux OS is recommanded. It is fastest and cheapest with cheapest hardware.
 
@@ -44,7 +49,7 @@ Introduction.
    (Usage example)
 
            "geanfammer.pl Your_Genome_or_DB.fa"        or
-           "geanfammer.pl Your_Genome.fa E=0.01 e=0.01"
+           "geanfammer.pl Your_Genome.fa E=10 e=10"
 
    Above will produce "Your_Genome.gclu" or "sorted_cluster_file.gclu".
    The extension of gclu means 'good clustering'. The word good does not mean
@@ -97,7 +102,7 @@ Real Genome TEST!!
    According to your choice of E value threshold geanfammer should produce
    a domain level clustering.
 
-   Try:   geanfammer.pl MG.fa E=0.01 e=0.01
+   Try:   geanfammer.pl MG.fa E=0.2 e=0.2
 
    and see what it produces. The search part of the program will take
    the most time. It will produce a subdirectory called MG in which
@@ -155,7 +160,7 @@ References.
 
 Contacts.
 
-   Sarah A. Teichmann and Jong H. Park*
+   Sarah A. Teichmann and Jong H. Park
    sat@mrc-lmb.cam.ac.uk,  jong@mrc-lmb.cam.ac.uk
 
    Division of Structural Studies,
@@ -163,14 +168,12 @@ Contacts.
    MRC Centre, Hills Road, Cambridge, CB22QH, UK,
    Tel: +44 01223 402479
 
-   *Jong H. Park, Genetics, Harvard Med. School, 200 Longwood Av. Boston, MA02115,
 
 Copyright problem.
 
    The codes in the package are under the same term of Perl itself. This essentially
    means, as long as you respect the developers time and work, it is freely
-   available. However, for commercial use, the programs are copyrighted to
-   Harvard University (as Jong has signed a form).
+   available.
 
 
 Acknowledgement.
@@ -185,10 +188,11 @@ Appendix.
 
    Following is the header of the program geanfammer.pl.
 
+
 #________________________________________________________________________
 # Title     : geanfammer.pl
 # Usage     : geanfammer.pl DATABASE(or GENOME) [e= ] [f=]
-#                  * look at the Example section down below!
+#
 # Function  : Creates a domain level clustering file from a given
 #              FASTA format sequence DB. It has been used for complete
 #              genome sequence analysis.
@@ -281,7 +285,6 @@ Appendix.
 #             k= for k-tuple value. default is 1 (ori. FASTA prog.
 #                                                   default is 2)
 #             a= for choosing either fasta or ssearch algorithm
-#                    You can set absolute path like (/usr/bin/fasta)
 #             E= for Evalue cutoff for single linkage clustering
 #                    $E_cut_main
 #             e= for Evalue cutoff for divide_clusters subroutine.
@@ -317,7 +320,7 @@ Appendix.
 #
 # Author    : Sarah A Teichmann, Jong Park, sat@mrc-lmb.cam.ac.uk,
 #                                      jong@salt2.med.harvard.edu
-# Version   : 1.4
+# Version   : 1.3
 #------------------------------------------------------------------
 
 

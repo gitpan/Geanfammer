@@ -53,7 +53,7 @@
 ##  give information on the subroutines. It is used by Jong as a template.
 
 
-#________________________________________________________________________________
+#______________________________________________________________________________
 # Title     :
 # Usage     :
 # Function  :
@@ -62,7 +62,7 @@
 # Options   :
 # Author    :
 # Version   : 1.0
-#--------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 
 
 ## Following variables in 'my' are very commonly used ones. I have
@@ -264,12 +264,12 @@ sub sort_hash_value_by_column{
       $sort_numerically=1;
       if(@_ < 2  ){ print "\n# FATAL: sort_by_column needs 2 arguments\n"; exit }
       for (@_){
-                       if(ref $_ eq 'HASH'){ %in =%{$_}; }
-                       elsif( ref $_ eq 'SCALAR'){ $col=${$_}; }
-                       elsif(/^\d+$/){ $col=$_ }
-                       elsif(/^ *[nd] *$/i){ $sort_numerically=1; $sort_non_numerically=0; }
-                       elsif(/^ *n[umerically]* *$/i){ $sort_numerically=1; $sort_non_numerically=0; }
-                       elsif(/^ *s *$/i){ $sort_non_numerically=1; $sort_numerically=0; }
+          if(ref $_ eq 'HASH'){ %in =%{$_}; }
+          elsif( ref $_ eq 'SCALAR'){ $col=${$_}; }
+          elsif(/^\d+$/){ $col=$_ }
+          elsif(/^ *[nd] *$/i){ $sort_numerically=1; $sort_non_numerically=0; }
+          elsif(/^ *n[umerically]* *$/i){ $sort_numerically=1; $sort_non_numerically=0; }
+          elsif(/^ *s *$/i){ $sort_non_numerically=1; $sort_numerically=0; }
       }
       $col--;
 
@@ -980,12 +980,12 @@ sub write_iss_file{
 		 ($inter_seq_name, $sw_score, $evalue)=$intermediate_seq=~/(\S+)\((\S+)\)\((\S+)\)/;
 		 @final_matches=sort split(/ +/,  $merged_msp2{$inter_seq_name});
 		 for($k=0; $k < @final_matches; $k ++){
-			 $final_matched_seq = $final_matches[$k];
-			 if($char_opt=~/v/){
-			    printf ("%-18s %-40s %-38s\n", $enquiry_seq, $intermediate_seq, $final_matched_seq);
-			 }
-			 $final_out{$final_matched_seq}=
-			    sprintf ("%-18s %-40s %-38s\n", $enquiry_seq, $intermediate_seq, $final_matched_seq);
+		     $final_matched_seq = $final_matches[$k];
+		     if($char_opt=~/v/){
+			 printf ("%-18s %-40s %-38s\n", $enquiry_seq, $intermediate_seq, $final_matched_seq);
+		     }
+		     $final_out{$final_matched_seq}=
+	             sprintf ("%-18s %-40s %-38s\n", $enquiry_seq, $intermediate_seq, $final_matched_seq);
 		 }
 		 #print "\n";
 	  }
@@ -1261,91 +1261,91 @@ sub get_stat_FASTA_search_result_in_msp_0_files{
 # Usage     : %correct=%{&get_scop_correcting_pairs()};
 # Function  :
 # Example   :
-# Keywords  : get_pdb_correcting_pairs
+# Keywords  : get_pdb_correcting_pairs ,
 # Options   :
 # Version   : 1.3
 #--------------------------------------------------------------------------------
 sub get_scop_correcting_pairs{
-		my (%correcting_pairs, @correcting_pairs);
+    my (%correcting_pairs, @correcting_pairs);
 
-		#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		# %correcting_pairs is a correcting table for old pdb40d file classi
-		#_____________________________________________________________________
-		@correcting_pairs=(  # should be pairs
-								'd2kauc1 d2kauc2',              'd1pkya1 d1pkya2',
-								'd1pvda2 d1trka1', 				'd1pbe_1 d1pbe_2',
-				'd1poxa3 d1pvda2',				'd1efga1 d1efga2',
-				'd1dsba1 d1dsba2',				'd2gsta1 d2gsta2',
-				'd1bct__ d1brd__',				'd1qora1 d1qora2',
-				'd2ohxa1 d2ohxa2',				'd1efga2 d1eft_1',
-				'd1tada1 d1tada2',				'd1gsea1 d1gsea2',
-				'd1gesa2 d2tmda3',				'd1lvl_2 d2tmda3',
-				'd2tmda3 d2tpra2',				'd1tde_1 d2tmda3',
-				'd1nhp_2 d2tmda3',				'd1gesa1 d2tmda3',
-				'd1lvl_1 d2tmda3',				'd2tmda3 d2tpra1',
-				'd1fcda1 d2tmda3',				'd1nhp_1 d2tmda3',
-				'd1tde_2 d2tmda3',				'd1pbe_1 d2tmda3',
-				'd1ebha1 d1ebha2',				'd1gesa2 d2dlda2', ## 3.4.1  with
-				'd1gesa2 d1psda2',				'd1nhp_2 d2dlda2',
-				'd1ldm_1 d1tde_2',				'd1coy_1 d1ldb_1',
-				'd1lvl_2 d1psda2',				'd1psda2 d1tde_2',
-				'd1hyha1 d1tde_2',				'd1fcda1 d1ldm_1',
-				'd1hdca_ d1nhp_2',				'd1fcda1 d1hlpa1',
-				'd1llda1 d1lvl_2',				'd2dlda2 d2tpra2',
-				'd1ldm_1 d1nhp_2',				'd1llda1 d1pbe_1',
-				'd1gdha2 d2tpra1',				'd1ldb_1 d1nhp_2',
-								'd1gesa2 d1scua2',              'd1fcda1 d1hyha1',
-								'd1gesa1 d1hlpa1',              'd1gdha2 d1gesa2',
-								'd1lvl_2 d2dlda2',              'd1gesa1 d2dlda2',
-								'd1nhp_2 d2ohxa2',              'd1tde_2 d2dlda2', # 3.4.1. with 3.18.1, 3.17.1.
-								'd1nhp_1 d2cmd_1',              'd1fcda1 d1ldb_1',
-								'd1lvl_1 d2ohxa2',              'd1nhp_2 d2naca2',
-								'd1pbe_1 d2ohxa2',              'd1gdha2 d1nhp_2',
-								'd2cmd_1 d2tpra1',              'd1tde_1 d2cmd_1',
-								'd1llda1 d1nhp_2',              'd1hlpa1 d1nhp_2',
-								'd1nhp_1 d2dlda2',              'd1hyha1 d1nhp_2',
-								'd1nhp_2 d1psda2',              'd1fcda1 d2cmd_1',
-								'd1fcda1 d1llda1',              'd1lvl_2 d1udpa_',
-								'd1psda2 d2tpra2',              'd1hdca_ d1lvl_2',
-								'd1gesa2 d1llda1',              'd1nhp_2 d1qora2',
-								'd1ldm_1 d2tpra1',              'd1coy_1 d2dlda2',
-								'd2dlda2 d2tpra1',              'd1hdca_ d1pbe_1',
-								'd1coy_1 d1gdha2',              'd1nhp_2 d2cmd_1',
-								'd1llda1 d1tde_1',              'd1llda1 d1lvl_1',
-								'd1bdma1 d2tpra1',              'd1gd1o1 d2tpra2',
-								'd1ldb_1 d1lvl_1',              'd1hlpa1 d1tde_2',
-								'd1coy_1 d1psda2',              'd1nhp_2 d1udpa_',
-								'd1llda1 d1tde_2',              'd1tde_2 d2cmd_1',
-								'd1llda1 d2tpra2',              'd1ldb_1 d1tde_1',
-								'd1coy_1 d1hlpa1',              'd1coy_1 d2cmd_1',
-								'd1bdma1 d1gesa2',              'd1hyha1 d2tpra2',
-								'd1gesa2 d1hyha1',              'd1gesa2 d2ohxa2',
-								'd1ldb_1 d1tde_2',              'd1hlpa1 d1pbe_1',
-								'd1ldm_1 d2tpra2',              'd2ohxa2 d2tpra1',
-								'd1ldb_1 d2tpra2',              'd1gesa2 d1ldm_1',
-								'd1lvl_2 d1qora2',              'd1gesa1 d2naca2',
-								'd1coy_1 d1llda1',              'd1coy_1 d1hyha1',
-								'd1coy_1 d1ldm_1',              'd1ldm_1 d1lvl_2',
-								'd1eny__ d1nhp_2',              'd1pbe_1 d2pgd_2',
-								'd1ldb_1 d1pbe_1',              'd1ldb_1 d1lvl_2',
-								'd1gesa2 d1hlpa1',              'd1dhr__ d1nhp_2',
-								'd1hdca_ d1tde_1',              'd1gesa1 d1psda2',
-								'd1pbe_1 d2cmd_1',              'd1tde_2 d1udpa_',
-								'd1pbe_1 d2dlda2',              'd1hdca_ d1tde_2',
-								'd1gesa2 d1ldb_1',              'd1psda2 d2tpra1',
-								'd1gdha2 d1lvl_2',              'd1tde_1 d2dlda2',
-								'd1ldm_1 d1pbe_1',              'd1pbe_1 d1scua2',
-								'd1gesa1 d2ohxa2',              'd1lvl_2 d2naca2',
-								'd1gd1o1 d1lvl_1',              'd1fvl__ d1kst__',
-								'd1kst__ d2ech__',              'd1hsaa2 d1std__', ## d1hsaa.. is NOT homol, but to fix a problem in E_100_e_0.0005_j30_segged_2092
-								'd1afp__ d1hfi__'
-								);
+    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # %correcting_pairs is a correcting table for old pdb40d file classi
+    #_____________________________________________________________________
+    @correcting_pairs=(  # should be pairs
+        'd2kauc1 d2kauc2', 'd1pkya1 d1pkya2',
+        'd1pvda2 d1trka1', 'd1pbe_1 d1pbe_2',
+        'd1poxa3 d1pvda2', 'd1efga1 d1efga2',
+        'd1dsba1 d1dsba2', 'd2gsta1 d2gsta2',
+        'd1bct__ d1brd__', 'd1qora1 d1qora2',
+        'd2ohxa1 d2ohxa2', 'd1efga2 d1eft_1',
+        'd1tada1 d1tada2', 'd1gsea1 d1gsea2',
+        'd1gesa2 d2tmda3', 'd1lvl_2 d2tmda3',
+        'd2tmda3 d2tpra2', 'd1tde_1 d2tmda3',
+        'd1nhp_2 d2tmda3', 'd1gesa1 d2tmda3',
+        'd1lvl_1 d2tmda3', 'd2tmda3 d2tpra1',
+        'd1fcda1 d2tmda3', 'd1nhp_1 d2tmda3',
+        'd1tde_2 d2tmda3', 'd1pbe_1 d2tmda3',
+        'd1ebha1 d1ebha2', 'd1gesa2 d2dlda2', ## 3.4.1  with
+        'd1gesa2 d1psda2', 'd1nhp_2 d2dlda2',
+        'd1ldm_1 d1tde_2', 'd1coy_1 d1ldb_1',
+        'd1lvl_2 d1psda2', 'd1psda2 d1tde_2',
+        'd1hyha1 d1tde_2', 'd1fcda1 d1ldm_1',
+        'd1hdca_ d1nhp_2', 'd1fcda1 d1hlpa1',
+        'd1llda1 d1lvl_2', 'd2dlda2 d2tpra2',
+        'd1ldm_1 d1nhp_2', 'd1llda1 d1pbe_1',
+        'd1gdha2 d2tpra1', 'd1ldb_1 d1nhp_2',
+        'd1gesa2 d1scua2', 'd1fcda1 d1hyha1',
+        'd1gesa1 d1hlpa1', 'd1gdha2 d1gesa2',
+        'd1lvl_2 d2dlda2', 'd1gesa1 d2dlda2',
+        'd1nhp_2 d2ohxa2', 'd1tde_2 d2dlda2', # 3.4.1. with 3.18.1, 3.17.1.
+        'd1nhp_1 d2cmd_1', 'd1fcda1 d1ldb_1',
+        'd1lvl_1 d2ohxa2', 'd1nhp_2 d2naca2',
+        'd1pbe_1 d2ohxa2', 'd1gdha2 d1nhp_2',
+        'd2cmd_1 d2tpra1', 'd1tde_1 d2cmd_1',
+        'd1llda1 d1nhp_2', 'd1hlpa1 d1nhp_2',
+        'd1nhp_1 d2dlda2', 'd1hyha1 d1nhp_2',
+        'd1nhp_2 d1psda2', 'd1fcda1 d2cmd_1',
+        'd1fcda1 d1llda1', 'd1lvl_2 d1udpa_',
+        'd1psda2 d2tpra2', 'd1hdca_ d1lvl_2',
+        'd1gesa2 d1llda1', 'd1nhp_2 d1qora2',
+        'd1ldm_1 d2tpra1', 'd1coy_1 d2dlda2',
+        'd2dlda2 d2tpra1', 'd1hdca_ d1pbe_1',
+        'd1coy_1 d1gdha2', 'd1nhp_2 d2cmd_1',
+        'd1llda1 d1tde_1', 'd1llda1 d1lvl_1',
+        'd1bdma1 d2tpra1', 'd1gd1o1 d2tpra2',
+        'd1ldb_1 d1lvl_1', 'd1hlpa1 d1tde_2',
+        'd1coy_1 d1psda2', 'd1nhp_2 d1udpa_',
+        'd1llda1 d1tde_2', 'd1tde_2 d2cmd_1',
+        'd1llda1 d2tpra2', 'd1ldb_1 d1tde_1',
+        'd1coy_1 d1hlpa1', 'd1coy_1 d2cmd_1',
+        'd1bdma1 d1gesa2', 'd1hyha1 d2tpra2',
+        'd1gesa2 d1hyha1', 'd1gesa2 d2ohxa2',
+        'd1ldb_1 d1tde_2', 'd1hlpa1 d1pbe_1',
+        'd1ldm_1 d2tpra2', 'd2ohxa2 d2tpra1',
+        'd1ldb_1 d2tpra2', 'd1gesa2 d1ldm_1',
+        'd1lvl_2 d1qora2', 'd1gesa1 d2naca2',
+        'd1coy_1 d1llda1', 'd1coy_1 d1hyha1',
+        'd1coy_1 d1ldm_1', 'd1ldm_1 d1lvl_2',
+        'd1eny__ d1nhp_2', 'd1pbe_1 d2pgd_2',
+        'd1ldb_1 d1pbe_1', 'd1ldb_1 d1lvl_2',
+        'd1gesa2 d1hlpa1', 'd1dhr__ d1nhp_2',
+        'd1hdca_ d1tde_1', 'd1gesa1 d1psda2',
+        'd1pbe_1 d2cmd_1', 'd1tde_2 d1udpa_',
+        'd1pbe_1 d2dlda2', 'd1hdca_ d1tde_2',
+        'd1gesa2 d1ldb_1', 'd1psda2 d2tpra1',
+        'd1gdha2 d1lvl_2', 'd1tde_1 d2dlda2',
+        'd1ldm_1 d1pbe_1', 'd1pbe_1 d1scua2',
+        'd1gesa1 d2ohxa2', 'd1lvl_2 d2naca2',
+        'd1gd1o1 d1lvl_1', 'd1fvl__ d1kst__',
+        'd1kst__ d2ech__', 'd1hsaa2 d1std__', ## d1hsaa.. is NOT homol, but to fix a problem in E_100_e_0.0005_j30_segged_2092
+        'd1afp__ d1hfi__'
+        );
 
 
-		for($i=0; $i< @correcting_pairs; $i++){
-				$correcting_pairs{$correcting_pairs[$i]}=$correcting_pairs[$i];
-		}
-		return(\%correcting_pairs);
+     for($i=0; $i< @correcting_pairs; $i++){
+                     $correcting_pairs{$correcting_pairs[$i]}=$correcting_pairs[$i];
+     }
+     return(\%correcting_pairs);
 }
 
 #__________________________________________________________________
@@ -1571,16 +1571,16 @@ sub get_isearch_result_stat{
 # Version   : 1.0
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 sub strip_sequence_ranges{
-	 my (@out, $i);
-	 my @in=@{$_[0]} or @_;
-	 for($i=0; $i< @in; $i++){
-	  if($in[$i]=~/^(\S+)_\d+\-\d+/){
-		  push(@out, $1);
-	  }else{
-		  push(@out, $in[$i]);
-	  }
-	 }
-	 return(\@out);
+    my (@out, $i);
+    my @in=@{$_[0]} or @_;
+    for($i=0; $i< @in; $i++){
+        if($in[$i]=~/^(\S+)_\d+\-\d+/){
+	     push(@out, $1);
+	}else{
+	     push(@out, $in[$i]);
+        }
+    }
+    return(\@out);
 }
 
 
@@ -1612,23 +1612,23 @@ sub open_sequence_index_files{
 	#""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 	my( %final_index, %long_index);
 
-	for($i=0; $i< @file; $i++){
-	   open(INDEX, "$file[$i]");
-	   while(<INDEX>){
-		  if(/^(\S+) +(\S+)$/){
-			 $long_index{$1}=$2;
-		  }
+    for($i=0; $i< @file; $i++){
+        open(INDEX, "$file[$i]");
+	while(<INDEX>){
+           if(/^(\S+) +(\S+)$/){
+		$long_index{$1}=$2;
 	   }
-	   for($j =0; $j < @string; $j++){ #<<<< @string has the sequence NAMEs >>>>
+	}
+	for($j =0; $j < @string; $j++){ #<<<< @string has the sequence NAMEs >>>>
 		  if($input_seq_names[$j]=~/^(\S+)_\d+\-\d+/){
 			 $seq_with_index{$input_seq_names[$j]}=$long_index{$1};
 		  }else{
 			 $seq_with_index{$input_seq_names[$j]}=$long_index{$input_seq_names[$j]};
 		  }
-	   }
-
 	}
-	return(\%final_index);
+
+    }
+    return(\%final_index);
 }
 
 #__________________________________________________________________
@@ -4664,7 +4664,44 @@ sub get_overlapping_range{
 	 return(\@new_range);
 }
 
+#______________________________________________________________________________
+# Title     : find_source_perl_library
+# Usage     : $source_library=${&find_source_perl_library};
+# Function  : gets the default perl sub source library from ENV setenv
+# Example   :
+# Keywords  :
+# Options   :
+# Author    :
+# Version   : 1.1
+#------------------------------------------------------------------------------
+sub find_source_perl_library{
+     my($source_library);
+     print "\n# $0: You did not use \"s=\" option for \$source_library\n";
+     print "\n#     I am trying to retrieve your default source lib. \n";
 
+     if( defined( $ENV{'MY_PERL_LIB'} ) ){
+            $source_library=$ENV{'MY_PERL_LIB'};
+     }elsif( defined( $ENV{'BIO_PERL'} ) ){
+            $bioperl_lib=$ENV{'BIO_PERL'};
+     }elsif(-e "/gn0/jong/Perl/B.pl"){
+            $source_library="/gn0/jong/Perl/B.pl";
+     }elsif(-e "/home/jong/Perl/B.pl"){
+            $source_library="/home/jong/Perl/B.pl";
+     }elsif(-e "/Perl/B.pl"){
+            $source_library="/Perl/B.pl";
+     }elsif(-e "B.pl"){
+            $source_library="B.pl";
+     }elsif(-e "/usr/Perl/B.pl"){
+            $source_library="/usr/Perl/B.pl";
+     }elsif(-e "/ss0/sat/Script/B.pl"){
+            $source_library="/ss0/sat/Script/B.pl";
+     }elsif(-e "/ss0/agb/Script/B.pl"){
+            $source_library="/ss0/agb/Script/B.pl";
+     }else{
+            print "\n $0 can not find source library, please set BIO_PERL env\n";
+     }
+     return(\$source_library);
+}
 
 #______________________________________________________________
 # Title     : find_central_seq_msp_chunk
@@ -9428,7 +9465,7 @@ sub is_html{
 #             # where prompt is like: column.pl temp.txt 1 2 3 4
 # Function  : Prints any specified columns, can change order of them,
 #             can filter values of columns to filter (max or min value)
-#
+#             Skipps blank line.
 # Example   : For getting only necessary columns
 #             Input: %Hash=(1, 'col1 col2 col3',
 #                           2, 'col1 col2 col3',
@@ -9440,7 +9477,6 @@ sub is_html{
 #                2     col3 col2 col1
 #                3     col3 col2 col1
 #
-# Warning   : Skipps blank line.
 # Keywords  : columns, column.pl, column, get_columns, take_columns,
 # Options   : #  for debugging.
 #             _  for debugging.
@@ -9459,7 +9495,7 @@ sub is_html{
 #
 # Returns   : Ref of
 # Argument  : Ref of Hash, Array or just filename, and wanted column numbers.
-# Version   : 1.4
+# Version   : 1.5
 #---------------------------------------------------------------
 sub get_column{
 	#"""""""""""""""""< handle_arguments{ head Ver 4.1 >"""""""""""""""""""
@@ -9476,18 +9512,18 @@ sub get_column{
 	my $len =4;
 	my @v_keys= sort keys %vars; ## To be able to exchange order of column.
 	if($char_opt=~/i/i){
-	   $ignore =1;
+	    $ignore =1;
 	}elsif($char_opt=~/c/i){
-	   $combine=1;
+	    $combine=1;
 	}
 
 	if(@v_keys > 0){
 	   for($i=0; $i< @v_keys; $i++){
 	      if($v_keys[$i]=~/\d*(m..)(\d+)/i){
-			 $M=$1.$2;
-			 ${"$1$2"}= $vars{$&};
+		 $M=$1.$2;
+		 ${"$1$2"}= $vars{$&};
 	         push(@columns, $2);
-		  }
+	      }
 	   }
 	}else{
 	   @columns=@num_opt;
@@ -9498,47 +9534,48 @@ sub get_column{
 
 	#""""""""""" When combine option is set """"""""""""""""""""""
 	if(($combine==1)&&(@file > 1)){
-	  for ($f=0; $f<@file; $f++){
+	   for ($f=0; $f<@file; $f++){
 		open(IN, "$file[$f]"); # real showing is now.
 		my @all_lines=<IN>;
 		if((@all_lines != $previous)&&($ignore !=1)){
-		   print "\n The column lengths do not match in the inputs\n";
-		   print "\n you can use -i option \n";
-		   exit;
+		    print "\n The column lengths do not match in the inputs\n";
+		    print "\n you can use -i option \n";
+		    exit;
 		}
 		$previous=@all_lines;
 		for($w=0; $w< @all_lines; $w++){
-		   if($all_lines[$w]=~/^[\t ]*$/){ next }  # skipping blank line
-		   chomp($all_lines[$w]);
-		   $out[$w].="$all_lines[$w] ";
+		    if($all_lines[$w]=~/^[\t ]*$/){ next }  # skipping blank line
+		    chomp($all_lines[$w]);
+		    $out[$w].="$all_lines[$w] ";
 		}
 		close IN;
-	  }
-	  push(@array, \@out);
+	   }
+	   push(@array, \@out);
 	}
 
 	###### File is given as input #######""""""""""""""""""""""""""""""""""""""
 	if((@file >=1)&&(@array < 1)){
-	  my $file;
-	  for $file(@file){
+  	   my $file;
+	   for $file(@file){
 		 my $line_num, $line_read;
 		 my $change=0.1;
 		 open(IN, "$file");
 		 my @all_lines=<IN>;
-		 for($q=0; $q < @all_lines; $q++){ # This open is only for getting largest column width size
-		    $line_read++;
-		    @splited=split(/ +/, $all_lines[$q]);
-			$l=${&get_longest_str_size(\@splited)};
-			if($l>$len){ $len=$l; $change++ }
-			if( ($line_read/$change) > 50 ){ last } # this is to check the column
+                 for($q=0; $q < @all_lines; $q++){ # This open is only for getting largest column width size
+		     $line_read++;
+                     @splited=split(/ +/, $all_lines[$q]);
+		     $l=${&get_longest_str_size(\@splited)};
+		     if($l>$len){ $len=$l; $change++ }
+		     if( ($line_read/$change) > 50 ){ last } # this is to check the column
 		 }                                          # consistency and stops after some
 		 if($debug==1){
-		   print "\n$line_read lines read to get right column size\n";
+		     print "\n$line_read lines read to get right column size\n";
 		 }
 		 close(IN);
 		 my $line_counter;
 		 for($x=0; $x < @all_lines; $x++){
-		    if($all_lines[$x]=~/^[\t ]*$/){ next }  # skipping blank line
+                    if($all_lines[$x]=~/^[\t \#]*$/){ next }  # skipping blank line and comment lines
+                    if($all_lines[$x]=~/^#/){ next }  # skipping  comment lines
 		    $line_counter++;
 		    if(($char_opt=~/n/i)&&($line_counter==1)){ next } ## NO title #
 		    if(@M=$all_lines[$x]=~/(\S+)/g){
@@ -9582,12 +9619,12 @@ sub get_column{
 	}    ###### Array is given as input #######""""""""""""""""""""""""""""""""""
 	elsif(@array>0){  # if input is ('x y xx y','k t yy zz',,,,)
 	  for($t=0; $t<@array; $t++){
-		 my @arr=@{$array[$t]};
+             my @arr=@{$array[$t]};
 	     print "\n Array input\n" if $debug ==1;
 		 for($i=0; $i<@arr;$i++){
 		   @splited=split(/ +/,$arr[$i]);
 		   $l=${&get_longest_str_size(\@splited)};
-			   $len=$l if $l>$len;
+  		   $len=$l if $l>$len;
 	    }
 	    for($i=0; $i< @arr; $i++){
 			if($arr[$i]=~/^[\t ]*$/){ splice(@arr, $i, 1); $i--; next }
@@ -9686,6 +9723,7 @@ sub get_column{
 	  }
 	}
 }
+
 
 
 
@@ -11209,257 +11247,374 @@ print $final_out_subs;
 #             'h'  for headbox only output.
 # Returns   :
 # Argument  :
-# Version   : 2.4
+# Version   : 2.5
 #--------------------------------------------------------------------
 sub fetch_subroutines{
-	#"""""""""""""""""< handle_arguments{ head Ver 4.1 >"""""""""""""""""""
-	my(@A)=&handle_arguments(@_);my($num_opt)=${$A[7]};my($char_opt)=${$A[8]};
-	my(@hash)=@{$A[0]};my(@file)=@{$A[4]};my(@dir)=@{$A[3]};my(@array)=@{$A[1]};
-	my(@string)=@{$A[2]};my(@num_opt)=@{$A[5]};my(@char_opt)=@{$A[6]};
-	my(@raw_string)=@{$A[9]};my(%vars)=%{$A[10]};my(@range)=@{$A[11]};
-	my($i,$j,$c,$d,$e,$f,$g,$h,$k,$l,$m,$n,$o,$p,$q,$r,$s,$t,$u,$v,$w,$x,$y,$z);
-	if($debug==1){print "\n\t\@hash=\"@hash\"
-	\@raw_string=\"@raw_string\"\n\t\@array=\"@array\"\n\t\@num_opt=\"@num_opt\"
-	\@char_opt=\"@char_opt\"\n\t\@file=\"@file\"\n\t\@string=\"@string\"\n" }
-	#""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-	my($each_sub, %hash2, %out_subs, %left_out, @lib, $ver);
+   #"""""""""""""""""< handle_arguments{ head Ver 4.1 >"""""""""""""""""""
+   my(@A)=&handle_arguments(@_);my($num_opt)=${$A[7]};my($char_opt)=${$A[8]};
+   my(@hash)=@{$A[0]};my(@file)=@{$A[4]};my(@dir)=@{$A[3]};my(@array)=@{$A[1]};
+   my(@string)=@{$A[2]};my(@num_opt)=@{$A[5]};my(@char_opt)=@{$A[6]};
+   my(@raw_string)=@{$A[9]};my(%vars)=%{$A[10]};my(@range)=@{$A[11]};
+   my($i,$j,$c,$d,$e,$f,$g,$h,$k,$l,$m,$n,$o,$p,$q,$r,$s,$t,$u,$v,$w,$x,$y,$z);
+   if($debug==1){print "\n\t\@hash=\"@hash\"
+   \@raw_string=\"@raw_string\"\n\t\@array=\"@array\"\n\t\@num_opt=\"@num_opt\"
+   \@char_opt=\"@char_opt\"\n\t\@file=\"@file\"\n\t\@string=\"@string\"\n" }
+   #""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+   my($each_sub, %hash2, %out_subs, %left_out, @lib, $ver);
 
-	@array=@{&remove_dup_in_array(\@string)};
+   @array=@{&remove_dup_in_array(\@string)};
 
-	for($i=0; $i < @file; $i++){
+   print "\n# $0: I am fetching @array from @file\n\n";
 
-		open(LIB_FILE, "<$file[$i]")|| die  "\n $file[$i]  <- $! \n";
-		@lib =<LIB_FILE>;
-		for($j=0; $j < @lib; $j++){
-		     my $title_found;
+   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   # (1) Processing each file of sub lib file(yes, it can read many source lib
+   #__________________________________________________________________________
+   for($i=0; $i < @file; $i++){
+        open(LIB_FILE, "<$file[$i]")|| die  "\n $file[$i]  <- $! \n";
 
-			  for($s=0; $s < @array; $s++){
-				  $each_sub = $array[$s];
-				  #"""" Taking the headbox """""""""""""
-				  if( ($lib[$j]=~/^#+[_\-\*]{8,140} *$/)
-				  &&($lib[$j+1]=~/^(#+ *Title[ \t]*\:[ \t]*$each_sub\b).*/i) ){
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        # (2) reading the whole lib. file into array
+        #__________________________________________
+	@lib =<LIB_FILE>;
 
-					  $out_subs{"$each_sub"}.="$lib[$j]$1\n";
-					  $j+=2; $title_found=1;
-					  until( ($lib[$j]=~/^#+[\-_\*]{8,150} *$/)||
-					  ($lib[$j]=~/^sub *$each_sub *\{/)  ){
+	for($j=0; $j < @lib; $j++){
+	     my $title_found;
 
-							 $lib[$j]=~s/ *$//;  #<-- removing ending space
+	     for($s=0; $s < @array; $s++){ # array has subroutine names
+	         $each_sub = $array[$s];
 
-							 #"""""""""""""""""""""""""""""""""""
-							 #  Taking version no.
-							 #"""""""""""""""""""""""""""""""""""
-							 if( ($char_opt !~ /nv/i)
-							 && ($lib[$j]=~/^# *Version *\: *([\d+\.\d+]*) */i) ){
-								  if( $1=~/^[ ]*$/){ $ver = '1.0'; }     ##  make null to 1.0
-								  elsif( $1=~/^(\d+)$/){ $ver = "$1\.0"; } ### make  2   to 2.0
-								  elsif($1=~/^([\d+\.\d+]+)$/){ $ver = $1; } ##  assign version
-							 }
-							 $out_subs{"$each_sub"}.="$lib[$j]";
-							 $j++;
-					  }
-					  $out_subs{"$each_sub"}.="$lib[$j]";
-					  $j++;    ## essential to remove #------------- line
+	         #"""" Taking the headbox """""""""""""
+	         if( ($lib[$j]=~/^#+[_\-\*]{8,140} *$/)
+		     and ($lib[$j+1]=~/^(#+ *Title[ \t]*\:[ \t]*$each_sub\b).*/i) ){
 
-				  }
-				  if($char_opt =~ /h/i){
-					  goto SPLICE2;
-				  }
-				  #"""""""" Reading sub {  } """""""
-				  if(($title_found==1)&&($lib[$j]=~/^sub +$each_sub\b *\{/) ){
-					  $out_subs{"$each_sub"}.="$lib[$j]";
-					  $j++; $title_found='';
-					  until($lib[$j]=~/^\}/){
-						  $out_subs{"$each_sub"}.="$lib[$j]";  $j++;
-					  }
-					  $out_subs{"$each_sub"}.="$lib[$j]";  ## to fetch '}'
-					  $j++;
+		     $out_subs{"$each_sub"} .="$lib[$j]$1\n";
+		     $j+=2;
+		     $title_found=1;
+		     until( ($lib[$j]=~/^#+[\-_\*]{8,150} *$/) or
+		           ($lib[$j]=~/^ {0,2}sub *$each_sub *\{ *[version]*\:?(\S*)/)  ){
+                            $version_number=$1;
+			    $lib[$j]=~s/ *$//;  #<-- removing ending space
 
-					  SPLICE2:
-					  splice(@array, $s, 1); ## removing the subnames found
-					  $s--;
-					  unless(defined($ver)){ $ver = '1.0' }
-					  unless($char_opt=~/nv/i){ ## if No version attachment option is set
-						  $hash2{"$each_sub${ver}"}=$out_subs{$each_sub};
-						  %out_subs=();
-					  }else{
-					     $hash2{"$each_sub"}=$out_subs{$each_sub};
-					     %out_subs=();
-					  }
-				  }
-			  }
-			  if($char_opt =~/[rt]/i){
-			     $left_out{$file[$i]}.=$lib[$j]; ## Remnant file content of the operation
-			  }
-		}
-		close LIB_FILE;
-		if($char_opt =~/t/i){
-		   open (LIB_FILE, ">$file[$i]");
-		   print LIB_FILE $left_out{$file[$i]};
-			close LIB_FILE;
-		}
-
-	}#""""""""""""" end of for (@file)
-
-	$no_of_subs_fetched = keys %out_subs;
-	if(@array>0){
-		print chr(7);
-		print "\n# Following subs are not found in \"", "@file","\"\n  ", "@array", "\n\n";
+			    #"""""""""""""""""""""""""""""""""""
+			    #  Taking version no.
+			    #"""""""""""""""""""""""""""""""""""
+			    if( ($char_opt !~ /nv/i)
+			        and ($lib[$j]=~/^# *Version *\: *([\d+\.\d+]*) */i) ){
+				  if( $1=~/^[ ]*$/){ $ver = '1.0'; }     ##  make null to 1.0
+				  elsif($1=~/^(\d+)$/){ $ver = "$1\.0"; } ### make  2   to 2.0
+				  elsif($1=~/^([\d+\.\d+]+)$/){ $ver = $1; } ##  assign version
+			    }
+			    unless($ver){
+			        $ver=$version_number;
+			    }
+			    $out_subs{"$each_sub"}.="$lib[$j]";
+			    $j++;
+		     }
+		     $out_subs{"$each_sub"}.="$lib[$j]";
+		     $j++;    ## essential to remove #------------- line
+		 }
+		 if($char_opt =~ /h/i){ # 'h'  for headbox only output.
+		      goto SPLICE2;
+		 }
+	         #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	         # Reading sub {  }, when headbox is included, for JONG's lib
+	         #____________________________________________________________
+                 if( $title_found==1  and  $lib[$j]=~/^sub +$each_sub\b *\{/ ){
+                      $out_subs{"$each_sub"}.="$lib[$j]";
+                      $j++; $title_found='';
+                      until($lib[$j]=~/^\}/){
+                           $out_subs{"$each_sub"}.="$lib[$j]";  $j++;
+                      }
+                      $out_subs{"$each_sub"}.="$lib[$j]";  ## to fetch '}'
+                      $j++;
+                      SPLICE2:
+                      splice(@array, $s, 1); ## removing the subnames found
+                      $s--;
+                      unless(defined($ver)){ $ver = '1.0' }
+                      unless($char_opt=~/nv/i){ ## if No version attachment option is set
+                           $hash2{"$each_sub${ver}"}=$out_subs{$each_sub};
+                           %out_subs=();
+                      }else{
+                           $hash2{"$each_sub"}=$out_subs{$each_sub};
+                           %out_subs=();
+                      }
+		  }
+                  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
+	          # Reading sub {  }, when headbox is NOT included
+	          #_________________________________________________________
+		  elsif($lib[$j]=~/^ {0,2}sub +$each_sub\b *\{[\t ]*#* *(.*)/ ){
+                      print "\n# (W) $0: $file[$i] does not have headbox(jong\' lib style)\n";
+                      print "\n#    I will assume you do NOT have it in your sub lib. All subs will have 1.0 version no.\n";
+                      if($1=~/(\d+\.?\d*)/){
+                           $version_number=$ver=$1;
+                      }
+                      $out_subs{"$each_sub"}.="$lib[$j]";
+                      $j++; $title_found='';
+                      until($lib[$j]=~/^\}/){
+                           $out_subs{"$each_sub"}.="$lib[$j]";  $j++;
+                      }
+                      $out_subs{"$each_sub"}.="$lib[$j]";  ## to fetch '}'
+                      $j++;
+                      goto SPLICE2; # it is in a previous line
+                  }
+	     }
+	     if($char_opt =~/[rt]/i){
+		     $left_out{$file[$i]}.=$lib[$j]; ## Remnant file content of the operation
+	     }
+	}
+	close LIB_FILE;
+	if($char_opt =~/t/i){
+             open (LIB_FILE, ">$file[$i]");
+	     print LIB_FILE $left_out{$file[$i]};
+	     close LIB_FILE;
 	}
 
-	if($char_opt =~ /r/i){
-	   return( \%left_out ); # to get the files sans the subroutines.
-	}else{
-	   return( \%hash2 );
-	}
+   }#""""""""""""" end of for (@file)
+
+   $no_of_subs_fetched = keys %out_subs;
+   if(@array>0){
+       print chr(7), chr(7);
+       print "\n# Following subs are not found in \"", "@file","\"\n  ", "@array", "\n\n";
+   }
+
+   if($char_opt =~ /r/i){
+       return( \%left_out ); # to get the files sans the subroutines.
+   }else{
+       return( \%hash2 );
+   }
 }
 
 
 #________________________________________________________________________
 # Title     : update_subroutines
-# Usage     : &update_subroutines(\@file, \%fetched);
+# Usage     : &update_subroutines(\@file, \%fetched_subs);
 # Function  : replaces subroutines of given file(s) with supplied subs.
 #             If the given subroutine versions are not higher than the
 #             ones in the program, no upgrade would happen.
-# Example   : &update_subroutines($file, \%fetched);
+#             This can read version information from '# Version  : 1.0' line
+#              or sub xxxxx{  # Version : 1.0   line
+# Example   : &update_subroutines($file, \%fetched_subs);
 # Warning   :
 # Keywords  : upgrade_subroutines,
 # Options   :
 # Returns   :
 # Argument  :
-# Version   : 2.6
+# Version   : 2.8
 #--------------------------------------------------------------------
 sub update_subroutines{
-	#"""""""""""""""""< handle_arguments{ head Ver 4.1 >"""""""""""""""""""
-	my(@A)=&handle_arguments(@_);my($num_opt)=${$A[7]};my($char_opt)=${$A[8]};
-	my(@hash)=@{$A[0]};my(@file)=@{$A[4]};my(@dir)=@{$A[3]};my(@array)=@{$A[1]};
-	my(@string)=@{$A[2]};my(@num_opt)=@{$A[5]};my(@char_opt)=@{$A[6]};
-	my(@raw_string)=@{$A[9]};my(%vars)=%{$A[10]};my(@range)=@{$A[11]};
-	my($i,$j,$c,$d,$e,$f,$g,$h,$k,$l,$m,$n,$o,$p,$q,$r,$s,$t,$u,$v,$w,$x,$y,$z);
-	if($debug==1){print "\n\t\@hash=\"@hash\"
-	\@raw_string=\"@raw_string\"\n\t\@array=\"@array\"\n\t\@num_opt=\"@num_opt\"
-	\@char_opt=\"@char_opt\"\n\t\@file=\"@file\"\n\t\@string=\"@string\"\n" }
-	#""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-	my %hash=%{&merge_hash(@hash)};
-	my @SUBS = keys %hash;            # subroutine names
-	for($i=0; $i < @file; $i++){
-		open(TARGET_FILE, "<$file[$i]") or die  "\n $file[$i]  <- $! \n";
-		my @lines =<TARGET_FILE>;
-		close TARGET_FILE;
-		my (%temp, %final_out, %hash2, $VER, $sub_name,$ver, $first_line, @updated, $sub_name2);
+  #"""""""""""""""""< handle_arguments{ head Ver 4.1 >"""""""""""""""""""
+  my(@A)=&handle_arguments(@_);my($num_opt)=${$A[7]};my($char_opt)=${$A[8]};
+  my(@hash)=@{$A[0]};my(@file)=@{$A[4]};my(@dir)=@{$A[3]};my(@array)=@{$A[1]};
+  my(@string)=@{$A[2]};my(@num_opt)=@{$A[5]};my(@char_opt)=@{$A[6]};
+  my(@raw_string)=@{$A[9]};my(%vars)=%{$A[10]};my(@range)=@{$A[11]};
+  my($i,$j,$c,$d,$e,$f,$g,$h,$k,$l,$m,$n,$o,$p,$q,$r,$s,$t,$u,$v,$w,$x,$y,$z);
+  if($debug==1){print "\n\t\@hash=\"@hash\"
+  \@raw_string=\"@raw_string\"\n\t\@array=\"@array\"\n\t\@num_opt=\"@num_opt\"
+  \@char_opt=\"@char_opt\"\n\t\@file=\"@file\"\n\t\@string=\"@string\"\n" }
+  #""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-		#~~~~~ READING lines ~~~~~~~~~~~~~~~~~~~
- 		for($j=0; $j < @lines; $j++){
- 		      my ($loop_count, $title_found, %temp, $sub_name, $sub_name, $title_found, $sub_found, $VER, $ver);
-			  if( $lines[$j]=~/^(#\!\/\w+)/){ ## first line match
-			      $final_out{$file[$i]}.=$lines[$j];
-			      $j++;
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # (1) %subs_from_lib is a default variable from &handle_arguments
+  #______________________________________________________
+  my %subs_from_lib=%{&merge_hash(@hash)};
+  my @subs_from_lib = keys %subs_from_lib;            # @subs_from_lib are subroutine names
 
-				  ##~~~~ replacing the update info ~~~~~~~~
-				  if($lines[$j]=~/^# *last *update */i){ $final_out{$file[$i]}.="# Last Update by $0: ".`date`;  $j++;
-				  }elsif($lines[$j+1]=~/^# *last *update */i){ $final_out{$file[$i]}.="$lines[$j]# Last Update by $0: ".`date`;  $j=$j+2;
-				  }else{ $final_out{$file[$i]}.="# Last Update by $0: ".`date`.$lines[$j]; $j++; }  }
-			  if($lines[$j]=~/^__END__/){ last }
+  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~``
+  # update_subroutines can handle many input perl files
+  #__________________________________________________________________
+  for($i=0; $i < @file; $i++){
+        open(TARGET_FILE, "<$file[$i]") or die  "\n $file[$i]  <- $! \n";
 
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
+        # (2) Reading in all the perl_file_lines into arrary
+        #___________________________________________________
+	my @perl_file_lines =<TARGET_FILE>;
+	close TARGET_FILE;
+        my (%temp, %temp_with_version_info, %final_out, %latest_sub_hash, $VER, $sub_name,$ver,
+	    $first_line, @found_subs, $sub_name2);
 
-			  until( (($lines[$j]=~/^#+[_\-\*\~]{8,160} *$/)  #~~~~~ look for delimiters ~~~~~~~~
-			     &&($lines[$j+1]=~/^(#+ *Title *[:]* *\S+\b)[^\.pl] */i) ) ## NO 'xxxx.pl'
-			     || ($lines[$j]=~/^sub +[\w\-\.]+ *\{/) ||(EOF) ){          ## when htere is no headbox
-				 $final_out{$file[$i]}.=$lines[$j];
-				 $j++;
-			  }
+	#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        # (3) checking each line in @perl_file_lines of target file with already provided %subs_from_lib of subroutines
+        #____________________________________________________________________________________________________
+        for($j=0; $j < @perl_file_lines; $j++){
+	      my ($loop_count, $title_found, $sub_name,
+                  $title_found, $sub_found, $VER, $ver);
+              if( $perl_file_lines[$j]=~/^(#\!\/\w+.+perl)/){ ## first line match
+                  $final_out{$file[$i]}.=$perl_file_lines[$j];
+		  $j++;
+		  print "\n# (i) Good! I found the very first line, $1 !!\n";
+              }
+              #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+              # (4) Putting update information  line-> # Last Update by ./update_subrout
+              #______________________________________________________________________________
+              if($perl_file_lines[$j]=~/^# *last *update */i){
+                  $final_out{$file[$i]}.="# Last Update by $0: ".`date`;
+                  $j++;
+              }elsif($perl_file_lines[$j+1]=~/^# *last *update */i){
+                  $final_out{$file[$i]}.="$perl_file_lines[$j]# Last Update by $0: ".`date`;
+                  $j+=2;
+              }elsif($j < 4 and (!$perl_file_lines[$j]=~/^# *last *update */i) ){
+                  $final_out{$file[$i]}.="# Last Update by $0: ".`date`.$perl_file_lines[$j];
+                  $j++;
+              }
 
-			  for($s=0; $s < @SUBS; $s++){
-				    if($SUBS[$s] =~/^([_a-zA-Z\-\d]+)(\d+\.*\d*) *$/){ $sub_name=$1; $VER =$2;  }
-				    if( ($lines[$j]=~/^#+[_\-\*\~]{8,160} *$/) &&
-				        ($lines[$j+1]=~/^(#+ *Title *[:]* *$sub_name\b)[^\.] */i) ){
-					    $temp{"$sub_name"}.="$lines[$j]$1\n";
-					    $j+=2; $title_found=1;
-					    until( $lines[$j]=~/^#+[\-_\*]{10,140} *$/ ){ $lines[$j]=~s/ *$//;
-							 if($lines[$j] =~ /^# *Version *\: *([\d*\.*\d*]*) */i){
-								  if( $1 =~/^[ ]*$/){ $ver = '1.0';  }     ##  make null to 1.0
-								  elsif($1 =~/^(\d+)$/){ $ver = "$1\.0"; } ### make  2   to 2.0
-								  elsif($1 =~/^(\d+\.\d+)$/){ $ver = $1; }  }
-							 $temp{"$sub_name"}.="$lines[$j]";	 $j++;   }
-					    $temp{"$sub_name"}.="$lines[$j]";   $j++;	  }
-				    if($lines[$j]=~/^sub +$sub_name *\{/){
-					    $sub_found =1; $temp{"$sub_name"}.="$lines[$j]"; $j++;
-					    until( $lines[$j] =~/^\}/){ $temp{"$sub_name"}.="$lines[$j]"; $j++;
-						   if( ($lines[$j] =~/^#[_\-\*]{8,150} *$/)
-						   &&($lines[$j+1]=~/^(# *Title *[:]* *$sub_name)[^\.pl]/i) ){
-								$temp{"$sub_name"}.="\n\}\n"; $j++; # fixes missing '}' in the read sub hash.
-								goto SPLICE;  }
-						   elsif($lines[$j+1]=~/^sub +[\w\-]+ *\{/){
-								$temp{"$sub_name"}.="\n\}\n";
-								goto SPLICE;  }
-						   $loop_count++;
-						   if($loop_count > 10000){
-								$final_out{$file[$i]} .="\n\}\n";    # fixes missing '}' in the input file
-								$temp{"$sub_name"}.="\n\}\n";   # fixes missing '}' in the read sub hash.
-						  	   goto SPLICE;  }  }
-					    if($lines[$j]=~/^\}/){ $temp{"$sub_name"}.=$lines[$j];  }
-					    SPLICE:
-					    push(@updated, splice(@SUBS, $s, 1) );
-					    $s--;
-					    unless(defined($ver)){ $ver = '1.0' }
-					    $temp{"$sub_name$ver"}=$temp{$sub_name};
-					    undef( $temp{$sub_name} );
-					    last;
-				    }# end of  if ($lines[$j]=~/sub xxxxxx{)
+	      if($perl_file_lines[$j]=~/^__END__/){ last } ## this is to stop $0 reading in junk sub calls after __END__ line
 
-			    }## END of for(@SUBS)
-				if( ($title_found==1)&&($sub_found==1)&&( $VER < $ver) ){
-					  print "\nTitle Yes SUB Yes for $sub_name VER $sub_name${VER} \< ver $ver";
-				      $hash2{ "$sub_name$ver" }= $temp{ "$sub_name$ver" };
-					  undef($temp{"$sub_name$ver"} );
-					  undef($hash{"$sub_name$VER"} );
-					  undef($VER, $ver, $title_found, $sub_found);
-			    }elsif( ($title_found==1) && ($sub_found==1) && ($VER >=$ver) ){
-					  print "\nTitle Yes  SUB Yes for $sub_name  VER \>= ver ";
-					  $hash2{ "$sub_name$VER" }= $hash{"$sub_name$VER"};
-					  delete($temp{"$sub_name$ver"});
-					  delete($hash{"$sub_name$VER"});
-					  undef($VER, $ver,$title_found, $sub_found);
-				}elsif( ($title_found != 1)&&($sub_found==1) ){
-					  print "\nTitle NO SUB Yes for $sub_name";
-					  $hash2{ "$sub_name$VER" }= $hash{"$sub_name$VER"};
-					  delete($hash{"$sub_name$VER"});
-					  delete($temp{"$sub_name$ver"});
-					  undef($VER, $ver,$title_found, $sub_found);
-				}elsif( ($title_found ==1)&&($sub_found !=1 ) ){
-					  print "\nTitle Yes SUB No for $sub_name";
-				      delete( $temp{$sub_name} );
-				      undef( $VER, $ver, $title_found, $sub_found);
-				      next;
-				}elsif(  ($title_found !=1)&&($sub_found !=1) ){
-				      $final_out{$file[$i]}.=$lines[$j];
-				}
-			    ## $title_found and $sub_found are relevant only to names in @SUBS !!!!!!!!!
-			    #""""""""""""""" Two things to consider """""""""
-			    # both title and sub found or none of them found
-			    #""""""""""""""""""""""""""""""""""""""""""""""""
-			    for($t=0; $t< @updated; $t++){
-			        if($updated[$t] =~/^([\w\-]+)(\d+\.\d*)$/){
-			  		    $sub_name2=$1;   }
-					    if( ($lines[$j]=~/^#+[_\-\*]{8,150} *$/)
-				  	    &&($lines[$j+1]=~/^(#+ *Title *[:]* *${sub_name2})\b/i) ){  $j++;
-			  		    until($lines[$j]=~/^#[\-_\*]{10,140} *$/ ){  $j++;   }   $j++;     }
-			        if($lines[$j]=~/^sub +${sub_name2}\b *\{/){
-			            until($lines[$j]=~/^\}/){   $j++; }
-			            $j++;
-				    }
-			    }
-		} # for (@lines)
+              #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~````
+              # (5) this is to read non-subroutine related stuff
+              #_______________________________________________________
+              until( ($perl_file_lines[$j]=~/^#+[_\-\*\~]{8,160} *$/
+                  and $perl_file_lines[$j+1]=~/^(#+ *Title *[:\;]* *\S+\b)[^\.]? */i )   ## NO 'xxxx.pl'
+                  or ($perl_file_lines[$j]=~/^ {0,1}sub +[\w\-\.]+ *\{/)                # until we hit  sub xxxx{  line
+                  or $j == $#perl_file_lines ){          ## when there is no headbox
+                     $final_out{$file[$i]}.=$perl_file_lines[$j];  ## %final_out is the final output hash with perl_file_lines!!
+                     $j++;                                         # %final_out stores only non-subroutine stuff until the end
+              }
+              print "\n# (i) \$final_out\{\$file\[\$i\]\} so far is: \n$final_out{$file[$i]}\n" if $verbose;
 
-		@values= (values %hash2, values %hash);
-		print "@values";
-		open (LEFT_FILE, ">$file[$i]");
-		for($h= 0; $h < @values; $h++){ ### appending the new subs.
-			  $final_out{$file[$i]} .= $values[$h];		}
-		print LEFT_FILE $final_out{$file[$i]};
-		close LEFT_FILE;	}#""""""""""""" end of for (@file)
-	return( \%final_out ); # this has all the sub routines and other lines.
+              #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~``~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
+              # (6) NOW we found the headbox and let's go through all @subs_from_lib entry to match
+              #     Going through all sub names. Now I am reading sub routine parts. @subs_from_lib has the names of subs to fetch
+              #__________________________________________________________________________________________________________
+              SUBS: for($s=0; $s < @subs_from_lib; $s++){
+                  if($subs_from_lib[$s] =~/^([_a-zA-Z\-\d]+)(\d+\.*\d*) *$/){
+                       $sub_name=$1;
+                       if($2){  $VER =$2; }else{ $VER='1.0' } ## <--- this line is redundant
+		  }elsif($subs_from_lib[$s] =~/^(\S+) *$/){  #### This is critically necessary
+		       $sub_name=$1;
+		       print "\n# (W) $0: \$subs_from_lib\[\$s\] doesnt seem to have ver info. Is this O.K?\n";
+                       $VER='1.0';
+		  }
+
+                  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                  # (7) matching #______________ and # Title :,  IE, matching HEADBOX region
+                  #___________________________________________________________________________
+                  if( ($perl_file_lines[$j]=~/^#+[_\-\*\~]{8,160} *$/)
+                        && ($perl_file_lines[$j+1]=~/^(#+ *Title *[\:]* *$sub_name)[^\.]? */i) ){
+
+                        $temp{"$sub_name"}.="$perl_file_lines[$j]$1\n";
+
+                        $j+=2;
+                        $title_found=1;
+                        until( $perl_file_lines[$j]=~/^#+[\-_\*]{10,180} *$/ ){
+                           $perl_file_lines[$j]=~s/ *$//;
+                           if($perl_file_lines[$j] =~ /^# *Version *[\:\;]? *([\d*\.*\d*]*) */i){
+                               if( $1 =~/^ *$/){ $ver = '1.0';  }     ##  make null to 1.0
+                               elsif($1 =~/^(\d+)$/){ $ver = "$1\.0"; } ### make  1   to 1.0
+                               elsif($1 =~/^(\d+\.\d+)$/){ $ver = $1; }
+                           }
+                           $temp{"$sub_name"}.="$perl_file_lines[$j]";
+                           $j++;
+                        }
+                        $temp{"$sub_name"}.="$perl_file_lines[$j]";
+                        $j++;
+		  }
+
+                  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                  # (8) matching sub xxxxx{
+                  #_____________________________________________
+	          if($perl_file_lines[$j]=~/^sub +$sub_name *\{ *(.*)/){
+                       $possible_version_info=$1;
+                       if($possible_version_info=~/(\d+\.?\d*)/){
+                           $ver=$1;
+                       }
+		       $sub_found =1;
+                       $temp{"$sub_name"}.="$perl_file_lines[$j]";
+
+		       $j++;
+		       until( $perl_file_lines[$j] =~/^\}/){
+                            $temp{"$sub_name"}.="$perl_file_lines[$j]";
+                            $j++;
+
+                            #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`````
+                            # following is out of paranoia
+                            #___________________________________________
+                            if( $perl_file_lines[$j] =~/^#[_\-\*]{8,150} *$/
+                                and $perl_file_lines[$j+1]=~/^(# *Title *[:]* *$sub_name)[^\.pl]/i ){
+                                $temp{"$sub_name"}.="\n\}\n"; $j++; # fixes missing '}' in the read sub hash.
+                                goto SPLICE;
+                            }elsif($perl_file_lines[$j+1]=~/^sub +[\w\-\.]+ *\{/){
+                                $temp{"$sub_name"}.="\n\}\n";
+                                goto SPLICE;
+                            }
+                            $loop_count++;
+                            if($loop_count > 10000){
+                                $final_out{$file[$i]} .="\n\}\n";    # fixes missing '}' in the input file
+                                $temp{"$sub_name"}.="\n\}\n";   # fixes missing '}' in the read sub hash.
+                                goto SPLICE;
+                            }
+		       }
+		       if($perl_file_lines[$j]=~/^\}/){ $temp{"$sub_name"}.=$perl_file_lines[$j];  }
+
+		       SPLICE:
+                       push(@found_subs, splice(@subs_from_lib, $s, 1) );
+		       $s--;
+		       unless(defined($ver)){ $ver = '1.0' }
+                       #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                       # Changing  $temp{$sub_name}  to  $temp{"$sub_name$ver"}
+                       #_________________________________________________________
+                       if(!$temp_with_version_info{"$sub_name$ver"}){
+                           $temp_with_version_info{"$sub_name$ver"}=$temp{$sub_name};
+                       }
+                       %temp=();
+                       last;
+		  }else{ # end of  if ($perl_file_lines[$j]=~/sub xxxxxx/)
+                       next; # next to for(@subs_from_lib)
+                  }
+              }## END of for(@subs_from_lib)
+
+              #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+              # (9) putting %temp hash to %latest_sub_hash
+              #____________________________________________________
+              if( $title_found and $sub_found and  $VER < $ver ){
+                    print "\nTitle found, SUB found for $sub_name VER $sub_name${VER} \< ver $ver";
+                    unless($latest_sub_hash{ "$sub_name$ver" }){
+                        $latest_sub_hash{ "$sub_name$ver" }= $temp_with_version_info{ "$sub_name$ver" };
+                    }
+                    delete($subs_from_lib{"$sub_name$VER"} );
+                    $VER=$ver=$title_found=$sub_found='';
+              }elsif( $title_found and $sub_found and  $VER >=$ver ){
+                    print "\nTitle found,  SUB found for $sub_name  VER \>= ver ";
+                    unless($latest_sub_hash{ "$sub_name$VER" }){
+                        $latest_sub_hash{ "$sub_name$VER" }= $subs_from_lib{"$sub_name$VER"};
+                    }
+                    delete($temp_with_version_info{"$sub_name$ver"});
+                    delete($subs_from_lib{"$sub_name$VER"});
+                    $VER=$ver=$title_found=$sub_found='';
+              }elsif( !$title_found  and $sub_found ){
+                    print "\nTitle Not found, SUB found for $sub_name";
+                    unless($latest_sub_hash{ "$sub_name$VER" }){
+                        $latest_sub_hash{ "$sub_name$VER" }= $subs_from_lib{"$sub_name$VER"};
+                    }
+                    delete($subs_from_lib{"$sub_name$VER"});
+                    delete($temp_with_version_info{"$sub_name$ver"});
+                    $VER=$ver=$title_found=$sub_found='';
+
+              }elsif( $title_found  and !$sub_found   ){
+                    print "\nTitle found, SUB not found for $sub_name";
+                    $VER=$ver=$title_found=$sub_found='';
+                    next;
+              }elsif( !$title_found and !$sub_found  ){
+                    $final_out{$file[$i]}.=$perl_file_lines[$j];
+              }
+        } # for (@perl_file_lines)
+
+        %merged_final_hash=%{&merge_hash(\%subs_from_lib, \%latest_sub_hash)};
+        @values= values %merged_final_hash;
+
+        open (LEFT_FILE, ">$file[$i]");
+        for($h= 0; $h < @values; $h++){ ### appending the new subs.
+             $final_out{$file[$i]} .= $values[$h];
+        }
+        print LEFT_FILE $final_out{$file[$i]};
+        close LEFT_FILE;
+    }#""""""""""""" end of for (@file)
+    return( \%final_out ); # this has all the sub routines and other lines.
 }
+
+
+
+
 
 
 #________________________________________________________________________
@@ -18746,7 +18901,11 @@ sub write_msp3_files{
 #  $pdb95d_2092_seq =2092 by 2092 -2092
 #  $ISS_2nd_Eval_factor= by E= ## "E=$eval"
 #  $PDB40D_935_FASTA= 935 by 935
-# Version   : 2.1
+#  $use_raw_score=r
+#  $use_eval_but_show_raw_score=e by e -e  ## eval order but only raw score is shown.
+#                                            This is to make a special graph
+#                                           requested by David Haussler
+# Version   : 2.4
 #--------------------------------------------------------------------------------
 sub write_parf_files{
 	#"""""""""""""""""< handle_arguments{ head Ver 4.1 >"""""""""""""""""""
@@ -18761,10 +18920,17 @@ sub write_parf_files{
 	#""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     my (%fix_hash, $pdbd_seq_only, $sam_571_seq_only, %hash_classification,
         %hash_super,  $pdb95d_2092_seq, @final_parf_files, %hash_super_fam_pairs,
-        $PDB40D_935_FASTA);
+        $PDB40D_935_FASTA, $use_raw_score, %hash_raw_score,
+        $use_eval_but_show_raw_score);
     my $ISS_2nd_Eval_factor=191; ## for ISS only
     print "\n# write_parf_files: \$char_opt is $char_opt\n\n";
 
+    if($char_opt=~/r/){       $use_raw_score='r';
+        print "\n# (W) You put r opt, so I will use RAW score than Evalue for PARF file\n\n";
+    }
+    if($char_opt=~/e/){       $use_eval_but_show_raw_score='e'; $use_raw_score='';
+        print "\n# (W) You put e opt, so I will use Eval but show score for PARF file\n\n";
+    }
     if($vars{'E'}=~/\d+/){        $ISS_2nd_Eval_factor=$vars{'E'}
     }elsif($char_opt=~/d/){       $pdbd_seq_only='d';
     }elsif($char_opt=~/571/){     $sam_571_seq_only=571;
@@ -18823,17 +18989,15 @@ sub write_parf_files{
         #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         print "\n# Getting the ENV settings for \$pdbg \$pdbd ";
         #_______________________________________________________________
-        if($pdb95d_2092_seq  or $File=~/2091/ or $File=~/pdb95/
-              or $File=~/2266_pdbd\.msp/ or $File=~/2092/){
-              if(-s $ENV{'PDBG95D'} or -s $ENV{'PDBB100D'}){
-                  $pdbg =$ENV{'PDBG100D'};     $pdbg =$ENV{'PDBG95D'};
+        if($pdb95d_2092_seq  or $File=~/_2231_.+msp/ or $File=~/2231\./
+              or $File=~/2231/){
+              if( -s $ENV{'PDB95D_FASTA'} ){
+                  $pdbd =$ENV{'PDB95D_FASTA'};
+                  $pdbg =$ENV{'PDB95D_PDBG'} ;
+              }elsif( $ENV{'PDB95D_PDBG'}  ){
+                  $pdbg =$ENV{'PDB95D_PDBG'};
               }else{
-                  print "\n# NO PDBG95D or PDBB100D ENV var set, write_parf_files need them\n"; exit;
-              }
-              if(-s $ENV{'PDB100D_FASTA'} or -s $ENV{'PDB95D_FASTA'}){
-                  $pdbd =$ENV{'PDB100D_FASTA'}; $pdbd =$ENV{'PDB95D_FASTA'};
-              }else{
-                  print "\n# NO PDB100D_FASTA var set, write_parf_files need them\n";  exit;
+                  print "\n# NO PDBG_OLD_571 or PDB40D_OLD_571_FASTA ENV var set, $0 need them\n"; exit;
               }
         }elsif($File=~/_571_.+msp/ or $File=~/571\./
               or $File=~/571/){
@@ -18896,18 +19060,19 @@ sub write_parf_files{
 
 
         #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         print "\n#  opening the input  MSP file $File \n";
         #____________________________________________
-        open(FILE, "$File");
-        while(<FILE>){
-           my($homol, @sorted_name, $sorted_name, $query, $match, $evalue);
+
+        open(MSP_FILE, "$File");
+        while(<MSP_FILE>){
+           my($homol, $raw_score, @sorted_name, $sorted_name, $query, $match, $evalue);
            #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
            # For handling FASTA search output ";
            #________________________________________________
-           if(/^ *\S+ +(\S+) +\S* *\d+ +\d+ +(\S+) +\d+ +\d+ +(\S+) *\d*/){
-               $evalue=$1;
-               $query=$2;
-               $match=$3;
+           if(/^ *(\S+) +(\S+) +\S* *\d+ +\d+ +(\S+) +\d+ +\d+ +(\S+) *\d*/){
+               $raw_score=$1;               $evalue   =$2;
+               $query    =$3;               $match    =$4;
                if($pdbd_seq_only and ($query !~/^[cde]\d/ or $match !~/^[cde]\d/) ){
                    print " NO pdbd \$query :$query,   \$match : $match\n";
                    print "\n# This could be due to truncated blastp output\n"; next };
@@ -18925,21 +19090,34 @@ sub write_parf_files{
                #________________________________________________________________________________
                if( ($pdb{$query} and ($pdb{$query} eq $pdb{$match}) ) or $fix_hash{$sorted_name}=~/\S/ ){
                     $homol='Homolog';
-               }else{
-                    $homol='Nomolog';
-               }
+               }else{    $homol='Nomolog';               }
 
                $pair=sprintf("%-20s %-7s", $sorted_name, $homol);
-
-               if(!$hash{$pair} or $hash{$pair} > $evalue){
-                    $hash{$pair}=$evalue;
-                    if($hash_classification{$sorted_name[0]} and $hash_classification{$sorted_name[1]}){
-                        $hash_super_fam_pairs{$pair}=
-                            sprintf("%-15s %-15s", $hash_classification{$sorted_name[0]},  $hash_classification{$sorted_name[1]});
-                    }else{
-                        delete($hash{$pair}); ## removing the entry from the hash completely
-                        print "\n# write_parf_files: classifctn info for \"$pair\" is missing, SKIPPING this line !!";
-                    }
+               #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+               # If we choose RAW score than Evalue, by $use_raw_score (r) opt
+               #___________________________________________________________
+               if($use_raw_score){
+                   if(!$hash{$pair} or $hash{$pair} < $raw_score){
+                        $hash{$pair}=$raw_score;
+                        if($hash_classification{$sorted_name[0]} and $hash_classification{$sorted_name[1]}){
+                            $hash_super_fam_pairs{$pair}=
+                                sprintf("%-15s %-15s", $hash_classification{$sorted_name[0]},  $hash_classification{$sorted_name[1]});
+                        }else{
+                            delete($hash{$pair}); ## removing the entry from the hash completely
+                            print "\n# write_parf_files: classifctn info for \"$pair\" is missing, SKIPPING this line !!";
+                        }
+                   }
+               }else{
+                   if(!$hash{$pair} or $hash{$pair} > $evalue){
+                        $hash{$pair}=$evalue;   $hash_raw_score{$pair}=$raw_score; # just storing
+                        if($hash_classification{$sorted_name[0]} and $hash_classification{$sorted_name[1]}){
+                            $hash_super_fam_pairs{$pair}=
+                                sprintf("%-15s %-15s", $hash_classification{$sorted_name[0]},  $hash_classification{$sorted_name[1]});
+                        }else{
+                            delete($hash{$pair}); ## removing the entry from the hash completely
+                            print "\n# write_parf_files: classifctn info for \"$pair\" is missing, SKIPPING this line !!";
+                        }
+                   }
                }
            }
            #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -18966,21 +19144,46 @@ sub write_parf_files{
            }
         }
         @keys=%hash;
-        @sorted=  sort { $hash{$a} <=> $hash{$b} }  @keys;
-        $outfile="$base\.parf";
+        if($use_raw_score){
+            @sorted=  sort { $hash{$b} <=> $hash{$a} }  @keys;
+        }else{
+            @sorted=  sort { $hash{$a} <=> $hash{$b} }  @keys;
+        }
+
+        if($use_eval_but_show_raw_score){
+            $outfile="e_opt\_$base\.parf";
+        }elsif($use_raw_score){
+            $outfile="r_opt\_$base\.parf";
+        }else{
+             $outfile="$base\.parf";
+        }
         if(@keys > 1 ){
              open(RANKED, ">$outfile");
         }else{
              print "\n\n\n# !!! ERROR: write_parf_files: The seq pair entry number is too small, I think something went wrong\n\n\n";
              next;
         }
-        for($j=0; $j< @sorted; $j++){
-             if($sorted[$j]=~/\S+ +\S+ +\S+/){
-                   printf RANKED ("%-28s %-22s %-30s\n", $sorted[$j], $hash{$sorted[$j]},
-                                                     $hash_super_fam_pairs{$sorted[$j]} );
-             }
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        # sorted by Eval but the result score is raw score
+        #__________________________________________________
+        if($use_eval_but_show_raw_score){
+            for($j=0; $j< @sorted; $j++){
+                 if($sorted[$j]=~/\S+ +\S+ +\S+/){
+                       printf RANKED ("%-28s %-22s %-30s\n", $sorted[$j], $hash_raw_score{$sorted[$j]},
+                                                         $hash_super_fam_pairs{$sorted[$j]} );
+                 }
+            }
+        }else{
+            for($j=0; $j< @sorted; $j++){
+                 if($sorted[$j]=~/\S+ +\S+ +\S+/){
+                       printf RANKED ("%-28s %-22s %-30s\n", $sorted[$j], $hash{$sorted[$j]},
+                                                         $hash_super_fam_pairs{$sorted[$j]} );
+                 }
+            }
         }
-        close (RANKED, FILE);
+        %hash_raw_score=%hash=();
+        close (RANKED);
+        close ( MSP_FILE );
         if(-s $outfile){
              push(@final_parf_files, $outfile);
              if(-d $ENV{'haussler'} ){
@@ -18997,6 +19200,187 @@ sub write_parf_files{
 }
 
 
+
+
+#________________________________________________________________________________
+# Title     : write_mprf_files
+# Usage     : &write_mprf_files(@files);
+# Function  :
+# Example   :
+# Keywords  : mean_position_rank_file, mean_rank_position_file
+# Options   :
+# Version   : 1.1
+#--------------------------------------------------------------------------------
+sub write_mprf_files{
+    my (@final_out_file_names, $count, $homo, $pair, %first_parf_class,
+        %second_parf_class, %homology1, %homology2, %nomolog_count2,
+        %homolog_count2, @keys_Ho, $base1, $base2, %all_count, $i, $j,
+        $answer, $diff, $av, $sum_found_rank_diff_Nomolog,
+        $sum_found_rank_diff_Homolog, $count_found_rank_diff_Nomolog,
+        $count_found_rank_diff_Homolog, $do_not_show_missing_diff,
+        $mean_position_in_rank);
+
+    for($i=0; $i< @_; $i++){
+        if($_[$i] !~/\.parf$/){
+            print "\n# write_mprf_files needs PARF file, not NHCO or others \n";
+            print "     Shall I continue? Press y to continue\n>>>>";
+            $answer=getc;
+            if($answer eq 'y'){
+                last;
+            }else{
+                exit;
+            }
+        }elsif($_[$i]=~/^[\-]?n/i){
+            $do_not_show_missing_diff='n';
+        }
+    }
+    open(F1, "$_[0]");
+    open(F2, "$_[1]");
+    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # reading in the first file
+    #_______________________________________
+    while(<F1>){
+        if(/^ *(\S+)[\t ]+(\S+)[\t ]+(\S+)[\t ]+(\S+)[\t ]+(\S+)[\t ]+(\S+)/){
+            $count++;
+            $homo=$3;
+            $pair=join(' ', sort($1, $2));
+            $first_parf_class{$pair}=sprintf("%-13s %-13s", $5, $6);
+            if($homo eq 'Nomolog'){
+                $nomolog_count1{$pair}=$count;
+            }else{
+                $homolog_count1{$pair}=$count;
+            }
+            $all_count{$pair}=$count;
+            $homology1{$pair}=$homo;
+            if($count > 10000){ last }
+        }
+    }
+    close(F1);
+    $count=0;
+    $pair='';
+
+    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # reading in the 2nd file
+    #_______________________________________
+    while(<F2>){
+       if(/^ *(\S+)[\t ]+(\S+)[\t ]+(\S+)[\t ]+(\S+)[\t ]+(\S+)[\t ]+(\S+)/){
+          $homo=$3;
+          $count++;
+          $pair=join(' ', sort($1, $2));
+          $second_parf_class{$pair}=sprintf("%-13s %-13s", $5, $6);
+          if($homo eq 'Nomolog'){
+              $nomolog_count2{$pair}=$count;
+          }else{
+              $homolog_count2{$pair}=$count;
+          }
+          $homology2{$pair}=$homo;
+          if($count > 10000){ last }
+       }
+    }
+    close(F2);
+    $count=0;
+
+
+    #================================================================================================
+
+    @keys_Ho=sort { $all_count{$a}<=> $all_count{$b}} (keys %all_count);
+
+    $base1=${&get_base_names($_[0])};
+    $base2=${&get_base_names($_[1])};
+
+    $out_mprf_file="$base1\_vs\_$base2\.mprf";
+    $out_mprf_file_sorted="$base1\_vs\_$base2\_sorted\.mprf";
+    #$out_mprf_file_Nomol="$base1\_vs\_$base2\_Nomol.mprf";
+
+    push(@final_out_file_names, $out_mprf_file, $out_mprf_file_Nomol);
+
+    open(MPRF_FILE, ">$out_mprf_file") or die "\n#  dying \n";
+ #   open(RDIF_FILE_NO, ">$out_mprf_file_Nomol") or die "\n#  dying \n";
+
+
+    for($i=0; $i< @keys_Ho; $i++){
+          $count=$i+1;
+          if($homolog_count1{$keys_Ho[$i]}=~/\S/){
+              if($homolog_count2{$keys_Ho[$i]}!~/\S/ ){
+                  $diff=-5000;
+                  if($do_not_show_missing_diff){
+                      $av = 0;
+                  }else{
+                      #$av = -5000;
+
+                      if($count < 300){
+                          $av = $homolog_count1{$keys_Ho[$i]}*0.8;   # when occurred in one place, get the poisition
+                      }elsif($count < 600){
+                          $av = $homolog_count1{$keys_Ho[$i]}*1.0;   # when occurred in one place, get the poisition
+                      }elsif($count < 1000){
+                          $av = $homolog_count1{$keys_Ho[$i]}*1.5;
+                      }elsif($count >= 1000){
+                          $av = $homolog_count1{$keys_Ho[$i]}*2;
+                      }
+                      $mean_position_in_rank=$av;
+
+                      print "\n# HOmolog: $keys_Ho[$i] occurred singly at $count with \$av $av";
+                  }
+                  if($show_missing){
+                      print "\n# $count $keys_Ho[$i] is missing in $first_parf_class{$keys_Ho[$i]} $base2. But in $base1";
+                  }
+              }else{
+                  $diff= abs($homolog_count1{$keys_Ho[$i]} - $homolog_count2{$keys_Ho[$i]}) ;
+                  $av= ($homolog_count1{$keys_Ho[$i]} + $homolog_count2{$keys_Ho[$i]} )/2 ;
+                  $mean_position_in_rank=$av;
+                  $sum_found_rank_diff_Homolog+=$diff;
+                  $count_found_rank_diff_Homolog++;
+              }
+              printf MPRF_FILE ("%-20s %-7s %-10s %-16s\n", $keys_Ho[$i], 'Homolog',
+                        $mean_position_in_rank, $first_parf_class{$keys_Ho[$i]});
+              #printf RDIF_FILE_NO ("%-6s %-6s %-6s\n", $count,  0,  $diff);
+              next;
+          }elsif($nomolog_count1{$keys_Ho[$i]}=~/\S/){
+              if($nomolog_count2{$keys_Ho[$i]}!~/\S/){
+                  $diff=5000;
+                  if($do_not_show_missing_diff){
+                      $av = 0;
+                  }else{
+                      #$av = 5000;
+                      if($count < 300){
+                           $av = $nomolog_count1{$keys_Ho[$i]}*0.8;
+                      }elsif($count < 600){
+                           $av = $nomolog_count1{$keys_Ho[$i]}*1.0;
+                      }elsif($count < 1000){
+                           $av = $nomolog_count1{$keys_Ho[$i]}*1.5; # when occurred in one place, get the poisition
+                      }elsif($count >= 1000){
+                           $av = $nomolog_count1{$keys_Ho[$i]}*2.0;
+                      }
+                      $mean_position_in_rank=$av;
+                      print "\n# NOmolog: $keys_Ho[$i] occurred singly at $count with \$av $av\n";
+                  }
+              }else{
+                  $diff= abs($nomolog_count2{$keys_Ho[$i]} - $nomolog_count1{$keys_Ho[$i]}) ;
+                  $av = ($nomolog_count2{$keys_Ho[$i]} + $nomolog_count1{$keys_Ho[$i]})/2 ;
+                  $sum_found_rank_diff_Nomolog+= $diff;
+                  $mean_position_in_rank=$av;
+                  $count_found_rank_diff_Nomolog++;
+              }
+              printf MPRF_FILE ("%-20s %-7s %-10s %-16s\n", $keys_Ho[$i],  'Nomolog',
+                                          $mean_position_in_rank, $first_parf_class{$keys_Ho[$i]});
+
+              #printf RDIF_FILE_NO ("%-6s %-6s %-6s\n", $count,  0,  $diff);
+          }
+    }
+    $av_found_rank_diff_Homolog=int($sum_found_rank_diff_Homolog/$count_found_rank_diff_Homolog);
+    $av_found_rank_diff_Nomolog=int($sum_found_rank_diff_Nomolog/$count_found_rank_diff_Nomolog);
+
+    print MPRF_FILE "\n# Abs \$sum_found_rank_diff_Homolog is $sum_found_rank_diff_Homolog with $count_found_rank_diff_Homolog pairs\n";
+    print MPRF_FILE "\n# Abs Av is: $av_found_rank_diff_Homolog\n";
+
+    close(MPRF_FILE);
+    system("sort_by_column.pl $out_mprf_file 4 > $out_mprf_file_sorted");
+    system("write_nhco_files.pl $out_mprf_file_sorted");
+    print "\n# $0 has made \"$out_mprf_file\" and $out_mprf_file_sorted \"$out_mprf_file_Nomol\" file in pwd\n\n";
+    return(\@final_out_file_names);
+}
+
+
 #________________________________________________________________________________
 # Title     : write_evss_files
 # Usage     : @files_produced=@{write_evss_files(\@files)};
@@ -19005,8 +19389,14 @@ sub write_parf_files{
 # Keywords  : get_score_vs_error_from_parf_files.pl
 # Options   :
 #  d=$query_number    for dividing the errors by all the query number
-# Author    :
-# Version   : 1.2
+#   $negate_score=n by n -n  # to make sign change for PSI scores
+#   $error_per_query=q by q -q # divide the error by query number
+#   $log_of_errors=l by l -l
+#   $log_of_evalue_or_score=e by e -e
+#   $get_log_base_10=t by t -t
+#
+# Author    : jong@salt2.med.harvard.edu
+# Version   : 1.5
 #--------------------------------------------------------------------------------
 sub write_evss_files{
      #"""""""""""""""""< handle_arguments{ head Ver 4.1 >"""""""""""""""""""
@@ -19019,14 +19409,23 @@ sub write_evss_files{
      \@raw_string=\"@raw_string\"\n\t\@array=\"@array\"\n\t\@num_opt=\"@num_opt\"
      \@char_opt=\"@char_opt\"\n\t\@file=\"@file\"\n\t\@string=\"@string\"\n" }
      #""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-     my($base, $score, $out_evss_file, @final_out_files, $query_number, $error_div_by_query_number);
+     my($base, $score, $out_evss_file, @final_out_files, $query_number,
+        $negate_score, $error_div_by_query_number, $error_per_query,
+        $log_of_errors, $log_of_evalue_or_score, $get_log_base_10,
+        @error_count, $log_of_error_count);
      $query_number=1; ## default NO query number consideration (wrong!!)
 
      if($vars{'d'}=~/\S+/){ $query_number=$vars{'d'} }
+     if($char_opt=~/n/){ $negate_score='n' };
+     if($char_opt=~/q/){ $error_per_query='q' };
+     if($char_opt=~/l/){ $log_of_errors='l' };
+     if($char_opt=~/L/){ $log_of_evalue_or_score='L' };
+     if($char_opt=~/t/){ $get_log_base_10='t' };
 
      for($i=0; $i< @file; $i++){
           $base=${&get_base_names($file[$i])};
-          $out_evss_file="$base\.evss";
+          $char_opt=~s/\,//g;
+          $out_evss_file="$base\_opt\_$char_opt\.evss";
           print "\n# Working to produce $out_evss_file\n";
           my (%score_vs_error, $j, @key_errors, $error_count );
           open(PARF_FILE, $file[$i]);
@@ -19035,7 +19434,22 @@ sub write_evss_files{
                     $score=$2;
                     if($1 eq 'Nomolog'){
                         $error_count++;
-                        $score_vs_error{$error_count}=$score;
+
+                        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                        # Do we need LOG of score or eval?
+                        #_________________________________________
+                        if($log_of_evalue_or_score){
+                            if($get_log_base_10){    # 10 base log
+                                 $score=log($score)/log(10); # log10(x) = ln(x) / ln(10)
+                            }else{ ## this is natural log
+                                 $score=log($score);
+                            }
+                        }
+                        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                        # Do we need to negate the score or eval?
+                        #_________________________________________
+                        if($negate_score){  $score_vs_error{$error_count}= -$score; # score can be eval according to input parf file
+                        }else{              $score_vs_error{$error_count}=$score;  }
                     }
                }
           }
@@ -19044,11 +19458,31 @@ sub write_evss_files{
           open(EVSS_FILE, ">$out_evss_file");
           print EVSS_FILE "# $out_evss_file was created by write_evss_files in $0 \n";
           print EVSS_FILE "# EVSS stands for Error VS Score. From PARF file\n";
-          @key_errors=sort {$a <=> $b} keys %score_vs_error;
+          @error_count=sort {$a <=> $b} keys %score_vs_error;
 
-          for($j=0; $j< @key_errors; $j++){
-               $error_div_by_query_number=$key_errors[$j]/$query_number;
-               printf EVSS_FILE ("\n%-14s %-12s", $error_div_by_query_number, $score_vs_error{$key_errors[$j]});
+          if($error_per_query and !$log_of_errors){
+              for($j=0; $j< @error_count; $j++){
+                   $error_div_by_query_number=$error_count[$j]/$query_number;
+                   printf EVSS_FILE ("\n%-14s %-14s", $score_vs_error{$error_count[$j]}, $error_div_by_query_number );
+              }
+          }elsif($error_per_query and $log_of_errors){
+              for($j=0; $j< @error_count; $j++){
+                   $error_div_by_query_number=$error_count[$j]/$query_number;
+                   printf EVSS_FILE ("\n%-14s %-14s", $score_vs_error{$error_count[$j]}, log($error_div_by_query_number) );
+              }
+          }elsif($log_of_errors){
+              for($j=0; $j< @error_count; $j++){
+                   if($get_log_base_10){
+                       $log_of_error_count=log($error_count[$j])/log(10);
+                   }else{
+                       $log_of_error_count=log($error_count[$j]);
+                   }
+                   printf EVSS_FILE ("\n%-14s %-14s", $score_vs_error{$error_count[$j]}, $log_of_error_count);
+              }
+          }else{
+              for($j=0; $j< @error_count; $j++){
+                   printf EVSS_FILE ("\n%-14s %-14s",  $score_vs_error{$error_count[$j]}, $error_count[$j]);
+              }
           }
           print EVSS_FILE "\n";
           close (EVSS_FILE);
@@ -19061,7 +19495,6 @@ sub write_evss_files{
      }
      return(\@final_out_files);
 }
-
 
 
 #________________________________________________________________________
@@ -19084,11 +19517,12 @@ sub write_evss_files{
 # Options   : v for STD out.
 #             r for rename the sequences so that Clustalw would not complain with 10 char limit
 #               so result wuld be:  0 ->ASDFASDF, 1->ASDFASFASF, 2->ADSFASDFA
+#       $write_pure_seq_only=o by o -o  ## writing only the seq (no gap chars or space)
 # Returns   :
 # Argument  :
 #   $sort_seq_names=s by s  ## in writing sorted sequences are written
 #
-# Version   : 2.6
+# Version   : 2.7
 #--------------------------------------------------------------------
 sub write_fasta{
 	#"""""""""""""""""< handle_arguments{ head Ver 4.1 >"""""""""""""""""""
@@ -19103,7 +19537,8 @@ sub write_fasta{
 	#""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 	#$| = 1;
 
-	my($sort_seq_names, $string, $string_leng, $na,$out_file_name_provided);
+	my($sort_seq_names, $string, $string_leng, $na,$out_file_name_provided,
+           $write_pure_seq_only);
 	my($output_file) ='default_out.fa'; ### when no output file name is given, this is used
 	if(@file>0){
 	$output_file = $file[0];
@@ -19111,17 +19546,18 @@ sub write_fasta{
 	}else{ $output_file='default_out.fa'; }
 
 	if($char_opt=~/s/){
-			$sort_seq_names='s';
+	     $sort_seq_names='s';
 	}
+	if($char_opt=~/o/){ $write_pure_seq_only='o' }
 
 	for ($n=0 ; $n < @hash; $n ++){
-		 my(@keys);
-	 my %hash=%{$hash[$n]};
-		 if($sort_seq_names){
-				 @keys=sort keys %hash;
-		 }else{
-				 @keys= keys %hash;
-		 }
+	   my(@keys);
+	   my %hash=%{$hash[$n]};
+	   if($sort_seq_names){
+		 @keys=sort keys %hash;
+	   }else{
+		 @keys= keys %hash;
+	   }
 	 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	 # When only one seq is given, use the seq name as output file
 	 #________________________________________________________________
@@ -19136,7 +19572,10 @@ sub write_fasta{
 	 for ($i=0; $i < @keys; $i++){
 		$na= $keys[$i];
 		$string = "\U$hash{$na}";
-		$string=~s/[\n \.-]//g;	    # replaces all non-chars to null. '_' is used for stop codon
+                if($write_pure_seq_only){
+		     $string=~s/[\n \.-]//g;	    # replaces all non-chars to null. '_' is used for stop codon
+                }
+
 		if($char_opt=~/r/){  # rename the seqeunces with '0, 1, 2, 3," etc for  clustalw
 		   $na=$i;
 		}
@@ -19375,7 +19814,7 @@ sub write_rdif_files{
 # Example   :
 # Keywords  :
 # Options   :
-# Version   : 1.1
+# Version   : 1.2
 #--------------------------------------------------------------------------------
 sub write_rdif2_files{
     my (@final_out_file_names, $count, $homo, $pair, %first_parf_class,
@@ -19483,10 +19922,159 @@ sub write_rdif2_files{
           }
     }
 
-    close(RDIF_FILE_HO, RDIF_FILE_HO);
+    close(RDIF_FILE_HO);
+    close(RDIF_FILE_NO);
     print "\n# $0 has made \"$out_rdif_file_Homol\" \"$out_rdif_file_Nomol\" file in pwd\n\n";
     return(\@final_out_file_names);
 }
+
+#________________________________________________________________________________
+# Title     : write_ardf_files
+# Usage     : &write_ardf_files(@files);
+# Function  :
+# Example   :
+# Keywords  :
+# Options   :
+# Version   : 1.2
+#--------------------------------------------------------------------------------
+sub write_ardf_files{
+    my (@final_out_file_names, $count, $homo, $pair, %first_parf_class,
+        %second_parf_class, %homology1, %homology2, %nomolog_count2,
+        %homolog_count2, @keys_Ho, $base1, $base2, %all_count, $i, $j,
+        $answer, $diff, $av, $sum_found_rank_diff_Nomolog,
+        $sum_found_rank_diff_Homolog, $count_found_rank_diff_Nomolog,
+        $count_found_rank_diff_Homolog, $do_not_show_missing_diff);
+
+    for($i=0; $i< @_; $i++){
+        if($_[$i] !~/\.parf$/){
+            print "\n# write_ardf_files needs PARF file, not NHCO or others \n";
+            print "     Shall I continue? Press y to continue\n>>>>";
+            $answer=getc;
+            if($answer eq 'y'){
+                last;
+            }else{
+                exit;
+            }
+        }elsif($_[$i]=~/^[\-]?n/i){
+            $do_not_show_missing_diff='n';
+        }
+    }
+    open(F1, "$_[0]");
+    open(F2, "$_[1]");
+    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # reading in the first file
+    #_______________________________________
+    while(<F1>){
+        if(/^ *(\S+)[\t ]+(\S+)[\t ]+(\S+)[\t ]+(\S+)[\t ]+(\S+)/){
+            $count++;
+            $homo=$3;
+            $pair=join(' ', sort($1, $2));
+            $first_parf_class{$pair}="$5 $4";
+            if($homo eq 'Nomolog'){
+                $nomolog_count1{$pair}=$count;
+            }else{
+                $homolog_count1{$pair}=$count;
+            }
+            $all_count{$pair}=$count;
+            $homology1{$pair}=$homo;
+            if($count > 10000){ last }
+        }
+    }
+    close(F1);
+    $count=0;
+    $pair='';
+
+    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # reading in the 2nd file
+    #_______________________________________
+    while(<F2>){
+       if(/^ *(\S+)[\t ]+(\S+)[\t ]+(\S+)[\t ]+(\S+)[\t ]+(\S+)/){
+          $homo=$3;
+          $count++;
+          $pair=join(' ', sort($1, $2));
+          $second_parf_class{$pair}="$5 $4";
+          if($homo eq 'Nomolog'){
+              $nomolog_count2{$pair}=$count;
+          }else{
+              $homolog_count2{$pair}=$count;
+          }
+          $homology2{$pair}=$homo;
+          if($count > 10000){ last }
+       }
+    }
+    close(F2);
+    $count=0;
+
+
+    #================================================================================================
+
+    @keys_Ho=sort { $all_count{$a}<=> $all_count{$b}} (keys %all_count);
+
+    $base1=${&get_base_names($_[0])};
+    $base2=${&get_base_names($_[1])};
+
+    $out_ardf_file_Homol="$base1\_vs\_$base2\_Homol.ardf";
+    $out_ardf_file_Nomol="$base1\_vs\_$base2\_Nomol.ardf";
+
+    push(@final_out_file_names, $out_ardf_file_Homol, $out_ardf_file_Nomol);
+
+    open(RDIF_FILE_HO, ">$out_ardf_file_Homol") or die "\n#  dying \n";
+    open(RDIF_FILE_NO, ">$out_ardf_file_Nomol") or die "\n#  dying \n";
+
+
+    for($i=0; $i< @keys_Ho; $i++){
+          $count=$i+1;
+          if($homolog_count1{$keys_Ho[$i]}=~/\S/){
+              if($homolog_count2{$keys_Ho[$i]}!~/\S/ ){
+                  #$diff=-5000;
+                  if($do_not_show_missing_diff){
+                      $av = 0;
+                  }else{
+                      $av = -5000;
+                  }
+                  print "\n# $count $keys_Ho[$i] is missing in $first_parf_class{$keys_Ho[$i]} $base2. But in $base1";
+              }else{
+                  $diff= abs($homolog_count1{$keys_Ho[$i]} - $homolog_count2{$keys_Ho[$i]}) ;
+                  $av= ($homolog_count1{$keys_Ho[$i]} + $homolog_count2{$keys_Ho[$i]} )/2 ;
+                  $sum_found_rank_diff_Homolog+=$diff;
+                  $count_found_rank_diff_Homolog++;
+              }
+
+              printf RDIF_FILE_HO "$count  $av\n";
+              printf RDIF_FILE_NO "$count  0\n";
+              next;
+          }elsif($nomolog_count1{$keys_Ho[$i]}=~/\S/){
+              if($nomolog_count2{$keys_Ho[$i]}!~/\S/){
+                  #$diff=5000;
+                  if($do_not_show_missing_diff){
+                       $av = 0;
+                  }else{
+                       $av = 5000;
+                  }
+              }else{
+                  $diff= abs($nomolog_count2{$keys_Ho[$i]} - $nomolog_count1{$keys_Ho[$i]}) ;
+                  $av = ($nomolog_count2{$keys_Ho[$i]} + $nomolog_count1{$keys_Ho[$i]})/2 ;
+                  $sum_found_rank_diff_Nomolog+= $diff;
+                  $count_found_rank_diff_Nomolog++;
+              }
+              printf RDIF_FILE_NO "$count  $av\n";
+              printf RDIF_FILE_HO "$count  0\n"; next
+          }
+    }
+    $av_found_rank_diff_Homolog=int($sum_found_rank_diff_Homolog/$count_found_rank_diff_Homolog);
+    $av_found_rank_diff_Nomolog=int($sum_found_rank_diff_Nomolog/$count_found_rank_diff_Nomolog);
+
+    print RDIF_FILE_HO "\n# Abs \$sum_found_rank_diff_Homolog is $sum_found_rank_diff_Homolog with $count_found_rank_diff_Homolog pairs\n";
+    print RDIF_FILE_HO "\n# Abs Av is: $av_found_rank_diff_Homolog\n";
+    print RDIF_FILE_NO "\n# Abs \$sum_found_rank_diff_Nomolog is $sum_found_rank_diff_Nomolog with $count_found_rank_diff_Nomolog pairs\n";
+    print RDIF_FILE_NO "\n# Abs Av is: $av_found_rank_diff_Nomolog\n";
+
+    close(RDIF_FILE_HO);
+    close(RDIF_FILE_NO);
+    print "\n# $0 has made \"$out_ardf_file_Homol\" \"$out_ardf_file_Nomol\" file in pwd\n\n";
+    return(\@final_out_file_names);
+}
+
 
 
 #________________________________________________________________________________
@@ -19498,240 +20086,249 @@ sub write_rdif2_files{
 #             write_homol_col_files
 # Options   :
 # Author    : jpark@rascal.med.harvard.edu, NHCO stands for Nomolog, Homolog Column Output file
-# Version   : 1.3
+# Version   : 1.5
 #--------------------------------------------------------------------------------
 sub write_nhco_files{
 	#"""""""""""""""""< handle_arguments{ head Ver 4.1 >"""""""""""""""""""
 	my(@A)=&handle_arguments(@_);my($num_opt)=${$A[7]};my($char_opt)=${$A[8]};
 	my(@hash)=@{$A[0]};my(@file)=@{$A[4]};my(@dir)=@{$A[3]};my(@array)=@{$A[1]};
 	my(@string)=@{$A[2]};my(@num_opt)=@{$A[5]};my(@char_opt)=@{$A[6]};
-		my(@raw_string)=@{$A[9]};my(%vars)=%{$A[10]};my(@range)=@{$A[11]};
+    my(@raw_string)=@{$A[9]};my(%vars)=%{$A[10]};my(@range)=@{$A[11]};
 	my($i,$j,$c,$d,$e,$f,$g,$h,$k,$l,$m,$n,$o,$p,$q,$r,$s,$t,$u,$v,$w,$x,$y,$z);
 	if($debug==1){print "\n\t\@hash=\"@hash\"
 	\@raw_string=\"@raw_string\"\n\t\@array=\"@array\"\n\t\@num_opt=\"@num_opt\"
 	\@char_opt=\"@char_opt\"\n\t\@file=\"@file\"\n\t\@string=\"@string\"\n" }
 	#""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-		my($out_nhco_file_name, @final_nhco_files, $answer_char, $target_direc,
-			 $query_class, $match_class, $homolog_alpha, $homolog_beta, $homolog_alpha_beta,
-			 $homolog_alpha_p_beta, %all_pair_hash);
+    my($out_nhco_file_name, @final_nhco_files, $answer_char, $target_direc,
+       $query_class, $match_class, $homolog_alpha, $homolog_beta, $homolog_alpha_beta,
+       $homolog_alpha_p_beta, %all_pair_hash);
 
-		if($vars{'E'}=~/\d+/){
-				$ISS_2nd_Eval_factor=$vars{'E'}
-		}elsif($char_opt=~/d/){
-				$pdbd_seq_only='d';
-		}elsif($char_opt=~/571/){
-				$sam_571_seq_only=571;
-		}
-
-
-		#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		print "\n# (1) gettting correcting_pairs from  \&get_scop_correcting_pairs, \%fix_hash made!\n";
-		#___________________________________
-		%correcting_pairs=%{&get_scop_correcting_pairs()};
-
-		if(@file < 1){ print "\n\n\n# \@file is empty, something is wrong, Do your input files in PWD?\n\n\n\n"; exit }
-
-		@file=@{&check_input_file_extension('parf', \@file)};
-		sub check_input_file_extension{
-				my $file_ext_wanted=$_[0];
-				my @file=@{$_[1]};
-				#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-				print "\n# (2) checking file extension \n";
-				#___________________________________________________
-				if($file[0] !~/\.$file_ext_wanted/){
-						 print "\n# write_parf_files : normally accepts xxxx.$file_ext_wanted files. Put y+return to continue";
-						 print "\n# write_parf_files : You can type \'c\' for changing the file extension to parf \n\n>>>";
-						 $answer_char=getc;
-						 if($answer_char=~/^y/i){
-								 $answer_char='';
-						 }elsif($answer_char=~/^c/i){
-								 $answer_char='';
-								 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-								 print "\n# (3) write_nhco_files: chaning all the file input extension to 'parf'";
-								 #_______________________________________________________________________________
-								 for($i=0; $i< @file; $i++){
-										 $base=${&get_base_names($file[$i])};
-										 $file[$i]="$base\.$file_ext_wanted";
-								 }
-						 }else{
-								 $answer_char='';
-								 print "\n\n\n# check_input_file_extension: You rudely put rubbish, I am dying. $0\n\n\n";
-								 print chr(7);
-								 exit;
-						 }
-				}
-				return(\@file);
-		}
-		#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		print "\n# (4) processing \"@file\" \n";
-		#_______________________________________
-		for($i=0; $i< @file; $i++){
-				my($File, $seq1, $seq2, $sorted, $base, $homolog, $nomolog);
-				$File=$file[$i];
-				$base=${&get_base_names($File)};
-				$out_nhco_file_name             ="$base\.nhco";
-				$out_nhco_file_name_alpha       ="$base\_alpha\.nhco";
-				$out_nhco_file_name_beta        ="$base\_beta\.nhco";
-				$out_nhco_file_name_alpha_beta  ="$base\_alpha_beta\.nhco";
-				$out_nhco_file_name_alpha_p_beta="$base\_alpha_p_beta\.nhco";
-				open(F, $File);
-				open(NHCO, ">$out_nhco_file_name");
-				open(NHCO_alpha, ">$out_nhco_file_name_alpha");
-				open(NHCO_beta, ">$out_nhco_file_name_beta");
-				open(NHCO_alpha_beta, ">$out_nhco_file_name_alpha_beta");
-				open(NHCO_alpha_p_beta, ">$out_nhco_file_name_alpha_p_beta");
-
-				while(<F>){
-						 if(/^ *#/){
-								 next;
-
-						 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~``
-						 # (5) This is when there is NO HOMOLogy information is written in the line as in RAW data file from Kevin Karplus
-						 #____________________________________________________________________________________________________________
-						 }elsif(/^ *(\S+)[\t ]+(\S+)[\t ]+(\S+)[\t ]+((\d+)\.\d+\.\d+)\.\d+\.\d+[\t ]+((\d+)\.\d+\.\d+)\.\d+\.\d+/){
-								 $seq1=$1; $seq2=$2;
-
-								 if($seq1=~/(\S+)_\d+\.\d+\.\d+/){ # remving attached classification info
-										 $seq1=$1;                 }
-								 if($seq2=~/(\S+)_\d+\.\d+\.\d+/){
-										 $seq2=$1;                 }
-
-								 $sorted = join(' ', sort($seq1, $seq2));
-
-								 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
-								 # This is to prevent repetitive counting.
-								 #_______________________________________________________________
-								 if( $all_pair_hash{$sorted} ){
-										 print "\n# Already $sorted\n"; next
-								 }else{
-										 $all_pair_hash{$sorted}=$sorted;
-								 }
-
-								 if($5 == 8 or $7 == 8 or $5 == 9 or $7 == 9){ ## ignore class 8 and 9
-										 next;
-								 }else{     $query_class=$5;  $match_class=$7;  $match_superfam=$4; $query_superfam=$6;               }
-
-								 if($match_class eq $query_class){
-										 $homolog++;
-										 goto HOMOLOGY_CASE;
-								 }elsif($match_class ne $query_class){
-										 $nomolog++;
-										 goto NOMOLOGY_CASE;
-								 }else{
-										 print "\n# write_nhco_files: Something is wrong, dying, \n"; exit;
-								 }
-
-						 }
-						 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~```
-						 # (6) Dealing with proper PARF file (Paired Ranking File), HOMOLOGY case
-						 #___________________________________________________________
-						 elsif(/^ *(\S+)[\t ]+(\S+)[\t ]+Homolog[\t ]+(\S+)[\t ]+(\d+)\.\d+\.\d+\.\d+\.\d+[\t ]+(\d+)\.\d+\.\d+\.\d+\.\d+/){
-								 $seq1=$1; $seq2=$2;
-								 $query_class=$4;
-								 $match_class=$5;
-								 $sorted=join(' ', sort($seq1, $seq2));
-								 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
-								 # This is to prevent repetitive counting.
-								 #_______________________________________________________________
-								 if( $all_pair_hash{$sorted} ){
-										 print "\n# Already $sorted\n"; next
-								 }else{
-										 $all_pair_hash{$sorted}=$sorted;
-								 }
+    if($vars{'E'}=~/\d+/){
+        $ISS_2nd_Eval_factor=$vars{'E'}
+    }elsif($char_opt=~/d/){
+        $pdbd_seq_only='d';
+    }elsif($char_opt=~/571/){
+        $sam_571_seq_only=571;
+    }
 
 
-								 HOMOLOGY_CASE:
+    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    print "\n# (1) gettting correcting_pairs from  \&get_scop_correcting_pairs, \%fix_hash made!\n";
+    #___________________________________
+    %correcting_pairs=%{&get_scop_correcting_pairs()};
 
-								 $homolog++;
+    if(@file < 1){ print "\n\n\n# \@file is empty, something is wrong, Do your input files in PWD?\n\n\n\n"; exit }
 
-								 if(    $query_class == 1){                     $homolog_alpha++;
-								 }elsif($query_class == 2){                     $homolog_beta++;
-								 }elsif($query_class == 3){                     $homolog_alpha_beta++;
-								 }elsif($query_class == 4){                     $homolog_alpha_p_beta++;
-								 }
+    @file=@{&check_input_file_extension('parf,mprf', \@file)};
+    sub check_input_file_extension{
+        my $file_ext_wanted=$_[0];
+        my ($extension_not_matched);
+        my @extentions=split(/[\, ]+/, $file_ext_wanted);
+        my @file=@{$_[1]};
+        for(@extentions){
+            $file_ext_wanted=$_;
+            #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            print "\n# (2) checking file extension \n";
+            #___________________________________________________
+            if($file[0] =~/\.$file_ext_wanted/){
+                 $extension_not_matched=1;
+            }
+        }
+        unless($extension_not_matched){
+             print "\n# write_nhco_files : normally accepts xxxx.$file_ext_wanted files. Put y+return to continue";
+             print "\n# write_nhco_files : You can type \'c\' for changing the file extension to parf \n\n>>>";
+             $answer_char=getc;
+             if($answer_char=~/^y/i){
+                 $answer_char='';
+             }elsif($answer_char=~/^c/i){
+                 $answer_char='';
+                 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                 print "\n# (3) write_nhco_files: chaning all the file input extension to 'parf'";
+                 #_______________________________________________________________________________
+                 for($i=0; $i< @file; $i++){
+                     $base=${&get_base_names($file[$i])};
+                     $file[$i]="$base\.$file_ext_wanted";
+                 }
+             }else{
+                 $answer_char='';
+                 print "\n\n\n# check_input_file_extension: You rudely put rubbish, I am dying. $0\n\n\n";
+                 print chr(7);
+                 exit;
+             }
+        }
+        return(\@file);
+    }
+    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    print "\n# (4) processing \"@file\" \n";
+    #_______________________________________
+    for($i=0; $i< @file; $i++){
+        my($File, $seq1, $seq2, $sorted, $base, $homolog, $nomolog);
+        $File=$file[$i];
+        $base=${&get_base_names($File)};
+        $out_nhco_file_name             ="$base\.nhco";
+        $out_nhco_file_name_alpha       ="$base\_alpha\.nhco";
+        $out_nhco_file_name_beta        ="$base\_beta\.nhco";
+        $out_nhco_file_name_alpha_beta  ="$base\_alpha_beta\.nhco";
+        $out_nhco_file_name_alpha_p_beta="$base\_alpha_p_beta\.nhco";
+        open(F, $File);
+        open(NHCO, ">$out_nhco_file_name");
+        open(NHCO_alpha, ">$out_nhco_file_name_alpha");
+        open(NHCO_beta, ">$out_nhco_file_name_beta");
+        open(NHCO_alpha_beta, ">$out_nhco_file_name_alpha_beta");
+        open(NHCO_alpha_p_beta, ">$out_nhco_file_name_alpha_p_beta");
 
-						 }
-						 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~```
-						 # (7) Dealing with proper PARF file (Paired Ranking File)
-						 #___________________________________________________________
-						 elsif(/^ *(\S+)[\t ]+(\S+)[\t ]+Nomolog[\t ]+(\S+)[\t ]+(\d+)\.\d+\.\d+\.\d+\.\d+[\t ]+(\d+)\.\d+\.\d+\.\d+\.\d+/){
-								 $seq1=$1; $seq2=$2;
+        while(<F>){
+             if(/^ *#/ or /[\t ]+Un/){ ## ignoring Unmolog
+                 next;
 
-								 if($seq1=~/(\S+)_\d+\.\d+\.\d+/){ # remving attached classification info
-										 $seq1=$1;                 }
-								 if($seq2=~/(\S+)_\d+\.\d+\.\d+/){
-										 $seq2=$1;                 }
+             #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~``
+             # (5) This is when there is NO HOMOLogy information is written in the line as in RAW data file from Kevin Karplus
+             #____________________________________________________________________________________________________________
+             }elsif(/^ *(\S+)[\t ]+(\S+)[\t ]+(\S+)[\t ]+((\d+)\.\d+\.\d+)\.\d+\.\d+[\t ]+((\d+)\.\d+\.\d+)\.\d+\.\d+/){
+                 $seq1=$1; $seq2=$2;
 
-								 $sorted=join(' ', sort($seq1, $seq2));
-								 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
-								 # This is to prevent repetitive counting.
-								 #_______________________________________________________________
-								 if( $all_pair_hash{$sorted} ){
-										 print "\n# Already $sorted\n"; next
-								 }else{
-										 $all_pair_hash{$sorted}=$sorted;
-								 }
+                 if($seq1=~/(\S+)_\d+\.\d+\.\d+/){ # remving attached classification info
+                     $seq1=$1;                 }
+                 if($seq2=~/(\S+)_\d+\.\d+\.\d+/){
+                     $seq2=$1;                 }
+
+                 $sorted = join(' ', sort($seq1, $seq2));
+
+                 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
+                 # This is to prevent repetitive counting.
+                 #_______________________________________________________________
+                 if( $all_pair_hash{$sorted} ){
+                     print "\n# Already $sorted\n"; next
+                 }else{
+                     $all_pair_hash{$sorted}=$sorted;
+                 }
+
+                 if($5 == 8 or $7 == 8 or $5 == 9 or $7 == 9){ ## ignore class 8 and 9
+                     next;
+                 }else{     $query_class=$5;  $match_class=$7;  $match_superfam=$4; $query_superfam=$6;               }
+
+                 if($match_class eq $query_class){
+                     $homolog++;
+                     goto HOMOLOGY_CASE;
+                 }elsif($match_class ne $query_class){
+                     $nomolog++;
+                     goto NOMOLOGY_CASE;
+                 }else{
+                     print "\n# write_nhco_files: Something is wrong, dying, \n"; exit;
+                 }
+
+             }
+             #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~```
+             # (6) Dealing with proper PARF file (Paired Ranking File), HOMOLOGY case
+             #___________________________________________________________
+             elsif(/^ *(\S+)[\t ]+(\S+)[\t ]+Homolog[\t ]+(\S+)[\t ]+(\d+)\.\d+\.\d+\.\d+\.\d+[\t ]+(\d+)\.\d+\.\d+\.\d+\.\d+/){
+                 $seq1=$1; $seq2=$2;
+                 $query_class=$4;
+                 $match_class=$5;
+                 $sorted=join(' ', sort($seq1, $seq2));
+                 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
+                 # This is to prevent repetitive counting.
+                 #_______________________________________________________________
+                 if( $all_pair_hash{$sorted} ){
+                     print "\n# Already $sorted\n"; next
+                 }else{
+                     $all_pair_hash{$sorted}=$sorted;
+                 }
 
 
-								 NOMOLOGY_CASE:
-								 if($4 == 8 or $5 == 8 or $4 == 9 or $5 == 9){ ## ignore class 8 and 9
-										 next;
-								 }else{     $query_class=$4;  $match_class=$5;                 }
+                 HOMOLOGY_CASE:
+
+                 $homolog++;
+
+                 if(    $query_class == 1){                     $homolog_alpha++;
+                 }elsif($query_class == 2){                     $homolog_beta++;
+                 }elsif($query_class == 3){                     $homolog_alpha_beta++;
+                 }elsif($query_class == 4){                     $homolog_alpha_p_beta++;
+                 }
+
+             }
+             #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~```
+             # (7) Dealing with proper PARF file (Paired Ranking File)
+             #___________________________________________________________
+             elsif(/^ *(\S+)[\t ]+(\S+)[\t ]+Nomolog[\t ]+(\S+)[\t ]+(\d+)\.\d+\.\d+\.\d+\.\d+[\t ]+(\d+)\.\d+\.\d+\.\d+\.\d+/){
+                 $seq1=$1; $seq2=$2;
+
+                 if($seq1=~/(\S+)_\d+\.\d+\.\d+/){ # remving attached classification info
+                     $seq1=$1;                 }
+                 if($seq2=~/(\S+)_\d+\.\d+\.\d+/){
+                     $seq2=$1;                 }
+
+                 $sorted=join(' ', sort($seq1, $seq2));
+                 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
+                 # This is to prevent repetitive counting.
+                 #_______________________________________________________________
+                 if( $all_pair_hash{$sorted} ){
+                     print "\n# Already $sorted\n"; next
+                 }else{
+                     $all_pair_hash{$sorted}=$sorted;
+                 }
 
 
-								 if($correcting_pairs{$sorted}){
-										 $homolog++;
-										 if(    $query_class == 1){                         $homolog_alpha++;
-										 }elsif($query_class == 2){                         $homolog_beta++;
-										 }elsif($query_class == 3){                         $homolog_alpha_beta++;
-										 }elsif($query_class == 4){                         $homolog_alpha_p_beta++;
-										 }
-								 }else{
-										 $nomolog++;
-										 printf NHCO ("%-8s %-6s\n", $nomolog,$homolog);
-										 printf ("%-8s %-6s\n", $nomolog,$homolog);
+                 NOMOLOGY_CASE:
+                 if($4 == 8 or $5 == 8 or $4 == 9 or $5 == 9){ ## ignore class 8 and 9
+                     next;
+                 }else{     $query_class=$4;  $match_class=$5;                 }
 
-										 # writing class only counts
-										 if(    $query_class == 1){
-												 $nomolog_alpha++;
-												 printf NHCO_alpha ("%-8s %-6s\n", $nomolog_alpha, $homolog_alpha);
-										 }elsif($query_class == 2){
-												 $nomolog_beta++;
-												 printf NHCO_beta  ("%-8s %-6s\n", $nomolog_beta, $homolog_beta);
-										 }elsif($query_class == 3){
-												 $nomolog_alpha_beta++;
-												 printf NHCO_alpha_beta  ("%-8s %-6s\n", $nomolog_alpha_beta, $homolog_alpha_beta);
-										 }elsif($query_class == 4){
-												 $nomolog_alpha_p_beta++;
-												 printf NHCO_alpha_p_beta  ("%-8s %-6s\n", $nomolog_alpha_p_beta, $homolog_alpha_p_beta);
-										 }
-								 }
-						 }
-				}
-				close (NHCO);
-				close (NHCO_alpha); ## You'd better close things separately.
-				close (NHCO_beta);
-				close(NHCO_alpha_beta);
-				close(NHCO_alpha_p_beta);
-				if(-s $out_nhco_file_name){
-						push(@final_nhco_files, $out_nhco_file_name, $out_nhco_file_name_alpha,
-																		$out_nhco_file_name_beta, $out_nhco_file_name_alpha_beta,
-																		$out_nhco_file_name_alpha_p_beta );
-						if(-d $ENV{'haussler'} ){
-								$target_direc=$ENV{'haussler'};
-								print "\n# $target_direc is found !!, You must be JONG Park, or Are you Sarah??\n";
-								print "\n# write_nhco_files : As you have haussler dir, I copy $out_nhco_file_name and others to it\n\n";
 
-								for(@final_nhco_files){
-										system("cp $_ $target_direc");
-								}
-						}
-				}else{
-						print "\n\n\n\n# write_nhco_files: \$out_nhco_file_name is not big, ERROR???\n\n\n\n";
-				}
-		}
-		return(\@final_nhco_files);
+                 if($correcting_pairs{$sorted}){
+                     $homolog++;
+                     if(    $query_class == 1){                         $homolog_alpha++;
+                     }elsif($query_class == 2){                         $homolog_beta++;
+                     }elsif($query_class == 3){                         $homolog_alpha_beta++;
+                     }elsif($query_class == 4){                         $homolog_alpha_p_beta++;
+                     }
+                 }else{
+                     $nomolog++;
+                     printf NHCO ("%-8s %-6s\n", $nomolog,$homolog);
+                     printf ("%-8s %-6s\n", $nomolog,$homolog);
+
+                     # writing class only counts
+                     if(    $query_class == 1){
+                         $nomolog_alpha++;
+                         printf NHCO_alpha ("%-8s %-6s\n", $nomolog_alpha, $homolog_alpha);
+                     }elsif($query_class == 2){
+                         $nomolog_beta++;
+                         printf NHCO_beta  ("%-8s %-6s\n", $nomolog_beta, $homolog_beta);
+                     }elsif($query_class == 3){
+                         $nomolog_alpha_beta++;
+                         printf NHCO_alpha_beta  ("%-8s %-6s\n", $nomolog_alpha_beta, $homolog_alpha_beta);
+                     }elsif($query_class == 4){
+                         $nomolog_alpha_p_beta++;
+                         printf NHCO_alpha_p_beta  ("%-8s %-6s\n", $nomolog_alpha_p_beta, $homolog_alpha_p_beta);
+                     }
+                 }
+             }
+        }
+        close (NHCO);
+        close (NHCO_alpha); ## You'd better close things separately.
+        close (NHCO_beta);
+        close(NHCO_alpha_beta);
+        close(NHCO_alpha_p_beta);
+        if(-s $out_nhco_file_name){
+            push(@final_nhco_files, $out_nhco_file_name, $out_nhco_file_name_alpha,
+                                    $out_nhco_file_name_beta, $out_nhco_file_name_alpha_beta,
+                                    $out_nhco_file_name_alpha_p_beta );
+            if(-d $ENV{'haussler'} ){
+                $target_direc=$ENV{'haussler'};
+                print "\n# $target_direc is found !!, You must be JONG Park, or Are you Sarah??\n";
+                print "\n# write_nhco_files : As you have haussler dir, I copy $out_nhco_file_name and others to it\n\n";
+
+                for(@final_nhco_files){
+                    system("cp $_ $target_direc");
+                }
+            }
+        }else{
+            print "\n\n\n\n# write_nhco_files: \$out_nhco_file_name is not big, ERROR???\n\n\n\n";
+        }
+    }
+    return(\@final_nhco_files);
 }
+
 
 
 
@@ -21952,7 +22549,7 @@ sub open_clu_files{
 # Options   :
 # Returns   : (*out, *out2)  or (@out_array_of_refs)
 # Argument  : (\$inputfile1, \$inputfile2, .... )};
-# Version   : 1.1
+# Version   : 1.2
 #--------------------------------------------------------------------
 sub open_msf_files{
 	#"""""""""""""""""< handle_arguments{ head Ver 4.1 >"""""""""""""""""""
@@ -21968,22 +22565,23 @@ sub open_msf_files{
 
 	my(@names,  %hash, @out_hash_ref_list);
 	for($i=0; $i< @file; $i++){
-	 open(FILE_1, "$file[$i]");
-	 undef(%hash);
-	 while(<FILE_1>){      # file1 needs to be xxxx.msf
-		 if((/^([\S]+)\t* +$/)||(/^\#/)||(/^\-+/)){ next; }
-		 if(/^([\S]+)\t* +([\.\w ]+)[\n]$/){
-			 $n=$1;
-			 $s=$2;
-			 $s=~s/ //g;
-			 $hash{$n}.= $s;
-		 }
-	 }
-	 push(@out_hash_ref_list, \%hash);
+            open(FILE_1, "$file[$i]");
+            undef(%hash);
+            while(<FILE_1>){      # file1 needs to be xxxx.msf
+                 if((/^\S+[\t ]*$/)||/^\#/||/^\-+/){  next;  }
+                 if(/^(\S+)[\t ]+([\.\-\w ]+) *$/){
+                         $n=$1;
+                         $s=$2;
+                         $s=~s/ //g;
+                         $hash{$n}.= $s;
+                 }
+            }
+            push(@out_hash_ref_list, \%hash);
 	}
 	if(@out_hash_ref_list  == 1 ){ return(\%hash); }
 	elsif(@out_hash_ref_list > 1){ return(@out_hash_ref_list); }
 }
+
 
 #__________________________________________________________________________
 # Title     : open_hmmls_files
@@ -33496,226 +34094,225 @@ sub interm_lib_search{
 #
 # Author    : Sarah A Teichmann, Jong Park, sat@mrc-lmb.cam.ac.uk,
 #                                      jong@salt2.med.harvard.edu
-# Version   : 2.1
+# Version   : 2.2
 #--------------------------------------------------------------------------------
 sub geanfammer{
-		my ($algorithm, $upper_expect_limit, $k_tuple, $sub_dir_size,
-				@msp_files_main, $msp_directly_opt, %hash_main, $single_linkage_file,
-				@written_msp_files, $num_of_seq_in_fa_file, $Evalue_cut_divclus,
-				$Evalue_cut_single_link, %fasta_seqs, $final_summary_file,@file,
-				@sub_clustering_clu_files, $base, $final_gclu_output, $Lean_output,
-				$dynamic_factor );
-		$algorithm         ='fasta';
-		$upper_expect_limit= 10;
-		$k_tuple=1;
-		$sub_dir_size=2;          # default
-		$msp_directly_opt='m';
-		$Evalue_cut_single_link=0.01;
-		$Evalue_cut_divclus    =0.01;
+    my ($algorithm, $upper_expect_limit, $k_tuple, $sub_dir_size,
+        @msp_files_main, $msp_directly_opt, %hash_main, $single_linkage_file,
+        @written_msp_files, $num_of_seq_in_fa_file, $Evalue_cut_divclus,
+        $Evalue_cut_single_link, %fasta_seqs, $final_summary_file,@file,
+        @sub_clustering_clu_files, $base, $final_gclu_output, $Lean_output,
+        $dynamic_factor );
+    $algorithm         ='fasta';
+    $upper_expect_limit= 10;
+    $k_tuple=1;
+    $sub_dir_size=2;          # default
+    $msp_directly_opt='m';
+    $Evalue_cut_single_link=0.01;
+    $Evalue_cut_divclus    =0.01;
 
-		#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		# STATIC set of default E value:
-		#   0.001 Evalue is very conserved for a database size roughly over 2000 seq
-		#_________________________________________________________________________
-		# $Evalue_cut_single_link=$Evalue_cut_divclus=0.001;
+    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # STATIC set of default E value:
+    #   0.001 Evalue is very conserved for a database size roughly over 2000 seq
+    #_________________________________________________________________________
+    # $Evalue_cut_single_link=$Evalue_cut_divclus=0.001;
 
-		for($i=0; $i< @_; $i++){
-				if(ref($_[$i]) eq 'ARRAY'){ @file=@{$_[$i]}; next }
-				elsif($_[$i]=~/a=(\S+)/){ $algorithm          = $1            }
-				elsif($_[$i]=~/l=(\S+)/){ $lower_expect_limit = $1            }
-				elsif($_[$i]=~/k=(\d+)/){ $k_tuple            = $1            }
-				elsif($_[$i]=~/t=(\d+)/){ $Score_thresh       = $1            }
-				elsif($_[$i]=~/m=(\d+)/){ $margin             = $1            }
-				elsif($_[$i]=~/d=(\d+)/){ $sub_dir_size       = $1            }
-				elsif($_[$i]=~/s=(\S+)/){ $single_big_msp     = $1            }
-				elsif($_[$i]=~/DB=(\S+)/){ $sequence_DB       = $1            }
-				elsif($_[$i]=~/File=(\S+)/){ $input_file_name = $1;           }
-				elsif($_[$i]=~/Query_seqs=(\S+)/){ %seq_input = %{$1}         }
-				elsif($_[$i]=~/u=(\S+)/){ $upper_expect_limit = $1            }
-				elsif($_[$i]=~/E=(\S+)/){ $Evalue_cut_single_link = $1        }
-				elsif($_[$i]=~/e=(\S+)/){ $Evalue_cut_divclus = $1            }
-				elsif($_[$i]=~/R *$/){    $add_range          = 'r' }
-				elsif($_[$i]=~/y *$/){    $dynamic_factor     = 'y' }
-				elsif($_[$i]=~/z *$/){    $optimize           = 'z' }
-				elsif($_[$i]=~/o *$/){    $over_write         = 'o' }
-				elsif($_[$i]=~/c *$/){    $create_sso         = 'c' }
-				elsif($_[$i]=~/s *$/){    $single_big_msp     = 's'; print "\n# Single file opt is set\n"; }
-				elsif($_[$i]=~/m *$/){    $msp_directly_opt   = 'm' }
-				elsif($_[$i]=~/M *$/){    $machine_readable   = 'M' }
-				elsif($_[$i]=~/d *$/){$make_gz_in_sub_dir_opt = 'd' } # for simple search and storing in gz file (sso file will be zipped
-				elsif($_[$i]=~/D *$/){$make_msp_in_sub_dir_opt= 'D' } # for simple search and storing msp file
-				elsif($_[$i]=~/b *$/){    $do_in_batch        = 'b' } # for reading in all the
-				elsif($_[$i]=~/n *$/){    $new_format         = 'n' }
-				elsif($_[$i]=~/y *$/){    $answer_for_search  = 'y' }
-				elsif($_[$i]=~/x *$/){    $answer_for_search  = 'x' }
-				elsif($_[$i]=~/r *$/){    $reverse_sequence   = 'r'  }
-				elsif($_[$i]=~/L *$/){    $Lean_output        = 'L'  };
-		}
+    for($i=0; $i< @_; $i++){
+        if(ref($_[$i]) eq 'ARRAY'){ @file=@{$_[$i]}; next }
+        elsif($_[$i]=~/a=(\S+)/){ $algorithm          = $1            }
+        elsif($_[$i]=~/l=(\S+)/){ $lower_expect_limit = $1            }
+        elsif($_[$i]=~/k=(\d+)/){ $k_tuple            = $1            }
+        elsif($_[$i]=~/t=(\d+)/){ $Score_thresh       = $1            }
+        elsif($_[$i]=~/m=(\d+)/){ $margin             = $1            }
+        elsif($_[$i]=~/d=(\d+)/){ $sub_dir_size       = $1            }
+        elsif($_[$i]=~/s=(\S+)/){ $single_big_msp     = $1            }
+        elsif($_[$i]=~/DB=(\S+)/){ $sequence_DB       = $1            }
+        elsif($_[$i]=~/File=(\S+)/){ $input_file_name = $1;           }
+        elsif($_[$i]=~/Query_seqs=(\S+)/){ %seq_input = %{$1}         }
+        elsif($_[$i]=~/u=(\S+)/){ $upper_expect_limit = $1            }
+        elsif($_[$i]=~/E=(\S+)/){ $Evalue_cut_single_link = $1        }
+        elsif($_[$i]=~/e=(\S+)/){ $Evalue_cut_divclus = $1            }
+        elsif($_[$i]=~/R *$/){    $add_range          = 'r' }
+        elsif($_[$i]=~/y *$/){    $dynamic_factor     = 'y' }
+        elsif($_[$i]=~/z *$/){    $optimize           = 'z' }
+        elsif($_[$i]=~/o *$/){    $over_write         = 'o' }
+        elsif($_[$i]=~/c *$/){    $create_sso         = 'c' }
+        elsif($_[$i]=~/s *$/){    $single_big_msp     = 's'; print "\n# Single file opt is set\n"; }
+        elsif($_[$i]=~/m *$/){    $msp_directly_opt   = 'm' }
+        elsif($_[$i]=~/M *$/){    $machine_readable   = 'M' }
+        elsif($_[$i]=~/d *$/){$make_gz_in_sub_dir_opt = 'd' } # for simple search and storing in gz file (sso file will be zipped
+        elsif($_[$i]=~/D *$/){$make_msp_in_sub_dir_opt= 'D' } # for simple search and storing msp file
+        elsif($_[$i]=~/b *$/){    $do_in_batch        = 'b' } # for reading in all the
+        elsif($_[$i]=~/n *$/){    $new_format         = 'n' }
+        elsif($_[$i]=~/y *$/){    $answer_for_search  = 'y' }
+        elsif($_[$i]=~/x *$/){    $answer_for_search  = 'x' }
+        elsif($_[$i]=~/r *$/){    $reverse_sequence   = 'r'  }
+        elsif($_[$i]=~/L *$/){    $Lean_output        = 'L'  };
+    }
 
-		#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		# creating xxx.msso.gz files in subdirs
-		#____________________________________________
-		for($i=0; $i< @file; $i++){
-				$input_db_or_genome=$file[$i];
-				if($verbose){
-						print "\n# geanfammer : input file : $input_db_or_genome, Evalue for single link:$Evalue_cut_single_link\n";
-				}
+    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # creating xxx.msso.gz files in subdirs
+    #____________________________________________
+    for($i=0; $i< @file; $i++){
+        $input_db_or_genome=$file[$i];
+        if($verbose){
+            print "\n# geanfammer : input file : $input_db_or_genome, Evalue for single link:$Evalue_cut_single_link\n";
+        }
 
-				$base=${&get_base_names($file[$i])};
-				$final_gclu_output="$base\.gclu";
+        $base=${&get_base_names($file[$i])};
+        $final_gclu_output="$base\.gclu";
 
-				%fasta_seqs=%{&open_fasta_files(\$input_db_or_genome)};
-				$num_of_seq_in_fa_file=keys %fasta_seqs;
+        %fasta_seqs=%{&open_fasta_files(\$input_db_or_genome)};
+        $num_of_seq_in_fa_file=keys %fasta_seqs;
 
-				#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-				# When you want to reverse your protein sequence for whatever crazy reason
-				#____________________________________________________________________________
-				if($reverse_sequence){ ## reverse the query seqs.
-						%fasta_seqs=%{&reverse_sequences(\%fasta_seqs)};
-				}
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        # When you want to reverse your protein sequence for whatever crazy reason
+        #____________________________________________________________________________
+        if($reverse_sequence){ ## reverse the query seqs.
+            %fasta_seqs=%{&reverse_sequences(\%fasta_seqs)};
+        }
 
-				#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-				# Ask if she wants to search the db first, as it is the first time
-				#_____________________________________________________________________
-				unless($answer_for_search and !$over_write){
-						print "\n#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
-						print "\n# (2) You should have working FASTA (or SSEARCH) in the path";
-						print "\n#     If you are doing the very first search now, Say, \"y\"es.     ";
-						print "\n#_______________________________________________________________";
-						print "\n# You did not set \$answer_for_search, shall I do the self search or not", "\n  (y/n)\n\n \t-->";
-						$answer_for_search=getc;
-				}
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        # Ask if she wants to search the db first, as it is the first time
+        #_____________________________________________________________________
+        unless($answer_for_search and !$over_write){
+            print "\n#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
+            print "\n# (2) You should have working FASTA (or SSEARCH) in the path";
+            print "\n#     If you are doing the very first search now, Say, \"y\"es.     ";
+            print "\n#_______________________________________________________________";
+            print "\n# You did not set \$answer_for_search, shall I do the self search or not", "\n  (y/n)\n\n \t-->";
+            $answer_for_search=getc;
+        }
 
-				if($answer_for_search=~/y/i){
-						$over_write='o';
+        if($answer_for_search=~/y/i){
+            $over_write='o';
 
-						#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-						#  By default, the search level E value is always higher by 2 !!!
-						#__________________________________________________________________________
-						$Evalue_cut_single_link_AT_SEARCH=$Evalue_cut_single_link+2; ## adding 2 to the given E value
+            #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            #  By default, the search level E value is always higher by 2 !!!
+            #__________________________________________________________________________
+            $Evalue_cut_single_link_AT_SEARCH=$Evalue_cut_single_link+2; ## adding 2 to the given E value
 
-						#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-						#  Searching the db self to self using default algorithm of FASTA ktup=1
-						#__________________________________________________________________________
-						$num_of_seq_in_fa_file=${&do_sequence_search(
-																			$Lean_output,
-																			\$file[$i],
-																			$over_write,
-																			$msp_directly_opt,
-																			"u=$upper_expect_limit",
-																			"a=$algorithm",
-																			$do_in_batch,
-																			$create_sso,
-																			$reverse_query,
-																			$single_big_msp,
-																			$machine_readable,
-																			"DB=$input_db_or_genome",
-																			"File=$input_db_or_genome",
-																			$make_msp_in_sub_dir_opt,
-																			$make_gz_in_sub_dir_opt,
-																			"d=$sub_dir_size",
-																			$new_format,
-																			$add_range,
-																			"E=$Evalue_cut_single_link_AT_SEARCH",
-																		) };
-				}else{
-						print "\n\n# $0; You chose NO search. I will cluster and divide now\n";
-						sleep(1);
-				}
+            #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            #  Searching the db self to self using default algorithm of FASTA ktup=1
+            #__________________________________________________________________________
+            $num_of_seq_in_fa_file=${&do_sequence_search(
+                      $Lean_output,
+                      "a=$algorithm",
+                      \$file[$i],
+                      $over_write,
+                      $msp_directly_opt,
+                      "u=$upper_expect_limit",
+                      $do_in_batch,
+                      $create_sso,
+                      $reverse_query,
+                      $single_big_msp,
+                      $machine_readable,
+                      "DB=$input_db_or_genome",
+                      "File=$input_db_or_genome",
+                      $make_msp_in_sub_dir_opt,
+                      $make_gz_in_sub_dir_opt,
+                      "d=$sub_dir_size",
+                      $new_format,
+                      $add_range,
+                      "E=$Evalue_cut_single_link_AT_SEARCH",
+                    ) };
+        }else{
+            print "\n\n# $0; You chose NO search. I will cluster and divide now\n";
+            sleep(1);
+        }
 
-				@msp_files_main=@{&get_all_msp_files};
+        @msp_files_main=@{&get_all_msp_files};
 
-				#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-				# When users didn't define E value and no STATIC Eval is set,
-				#    estimate according to the db size
-				#______________________________________________________________________
-				if( (!$Evalue_cut_single_link and !$Evalue_cut_divclus) or $dynamic_factor){
-						#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-						# following is a very rough guide for a reasonable E value thresh for different DB size
-						#______________________________________________________________________________________________
-						if(@msp_files_main > 280,000){     $Evalue_cut_single_link=$Evalue_cut_divclus=0.2;
-						}elsif(@msp_files_main > 180000){  $Evalue_cut_single_link=$Evalue_cut_divclus=0.1;
-						}elsif(@msp_files_main > 50000){   $Evalue_cut_single_link=$Evalue_cut_divclus=0.08;
-						}elsif(@msp_files_main > 10000){   $Evalue_cut_single_link=$Evalue_cut_divclus=0.07;
-						}elsif(@msp_files_main > 1000){    $Evalue_cut_single_link=$Evalue_cut_divclus=0.05;
-						}elsif(@msp_files_main > 500){     $Evalue_cut_single_link=$Evalue_cut_divclus=0.03;
-						}elsif(@msp_files_main > 100){     $Evalue_cut_single_link=$Evalue_cut_divclus=0.02;
-						}elsif(@msp_files_main > 50){      $Evalue_cut_single_link=$Evalue_cut_divclus=0.01;
-						}elsif(@msp_files_main > 20 ){     $Evalue_cut_single_link=$Evalue_cut_divclus=0.001;
-						}
-				}elsif(!$Evalue_cut_single_link ){ $Evalue_cut_single_link=$Evalue_cut_divclus
-				}elsif(!$Evalue_cut_divclus ){     $Evalue_cut_divclus    =$Evalue_cut_single_link }
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        # When users didn't define E value and no STATIC Eval is set,
+        #    estimate according to the db size
+        #______________________________________________________________________
+        if( (!$Evalue_cut_single_link and !$Evalue_cut_divclus) or $dynamic_factor){
+            #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            # following is a very rough guide for a reasonable E value thresh for different DB size
+            #______________________________________________________________________________________________
+            if(@msp_files_main > 280,000){     $Evalue_cut_single_link=$Evalue_cut_divclus=0.2;
+            }elsif(@msp_files_main > 180000){  $Evalue_cut_single_link=$Evalue_cut_divclus=0.1;
+            }elsif(@msp_files_main > 50000){   $Evalue_cut_single_link=$Evalue_cut_divclus=0.08;
+            }elsif(@msp_files_main > 10000){   $Evalue_cut_single_link=$Evalue_cut_divclus=0.07;
+            }elsif(@msp_files_main > 1000){    $Evalue_cut_single_link=$Evalue_cut_divclus=0.05;
+            }elsif(@msp_files_main > 500){     $Evalue_cut_single_link=$Evalue_cut_divclus=0.03;
+            }elsif(@msp_files_main > 100){     $Evalue_cut_single_link=$Evalue_cut_divclus=0.02;
+            }elsif(@msp_files_main > 50){      $Evalue_cut_single_link=$Evalue_cut_divclus=0.01;
+            }elsif(@msp_files_main > 20 ){     $Evalue_cut_single_link=$Evalue_cut_divclus=0.001;
+            }
+        }elsif(!$Evalue_cut_single_link ){ $Evalue_cut_single_link=$Evalue_cut_divclus
+        }elsif(!$Evalue_cut_divclus ){     $Evalue_cut_divclus    =$Evalue_cut_single_link }
 
-				print "\n#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`#\n";
-				print   "# BEfore running Sinlge linkage sub                    #\n";
-				print   "# Evalue single for clus & Divclus  : $Evalue_cut_single_link, $Evalue_cut_divclus     #\n";
-				print   "#______________________________________________________#\n";
+        print "\n#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`#\n";
+        print "# BEfore running Sinlge linkage sub                    #\n";
+        print "# Evalue single for clus & Divclus  : $Evalue_cut_single_link, $Evalue_cut_divclus     #\n";
+        print "#______________________________________________________#\n";
 
-				%hash_main=%{&msp_single_link_hash(\@msp_files_main, $Evalue_cut_single_link)};
+        %hash_main=%{&msp_single_link_hash(\@msp_files_main, $Evalue_cut_single_link)};
 
-				$single_linkage_file=${&print_clusfile_from_hash(\%hash_main)};
-				@written_msp_files=@{&clu_to_sso_to_msp(\$single_linkage_file)};
+        $single_linkage_file=${&print_clusfile_from_hash(\%hash_main)};
+        @written_msp_files=@{&clu_to_sso_to_msp(\$single_linkage_file)};
 
-				print "\n#======= \@written_msp_files are @written_msp_files\n";
+        print "\n#======= \@written_msp_files are @written_msp_files\n";
 
-				$over_write='o';
-				$average_region='A';
-				$range='r';
-				$merge='m';
-				$thresh=30;
-				$sat_file=0;
-				@sub_clustering_clu_files=@{&divide_clusters(
-																 $Lean_output,
-																 \@written_msp_files,
-																 "s=$score",
-																 "f=$factor", ## this is a very impo. parameter in the behaviour of divclus, Sarah!
-																 "t=$thresh",
-																 "e=$Evalue_cut_divclus", ## this is a very impo. parameter in the behaviour of divclus, Sarah!
-																 $dynamic_factor,
-																 $verbose,
-																 $range,
-																 $merge,
-																 $sat_file,
-																 $dindom,
-																 $indup,
-																 $over_write,
-																 $optimize,
-																 $short_region,
-																 $large_region,
-																 $average_region
-																)};
+        $over_write='o';
+        $average_region='A';
+        $range='r';
+        $merge='m';
+        $thresh=30;
+        $sat_file=0;
+        @sub_clustering_clu_files=@{&divide_clusters(
+                $Lean_output,
+                \@written_msp_files,
+                "s=$score",
+                "f=$factor", ## this is a very impo. parameter in the behaviour of divclus, Sarah!
+                "t=$thresh",
+                "e=$Evalue_cut_divclus", ## this is a very impo. parameter in the behaviour of divclus, Sarah!
+                $dynamic_factor,
+                $verbose,
+                $range,
+                $merge,
+                $sat_file,
+                $dindom,
+                $indup,
+                $over_write,
+                $optimize,
+                $short_region,
+                $large_region,
+                $average_region
+               )};
 
-				#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-				#  This is the final result now.
-				#_______________________________________________________________
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        #  This is the final result now.
+        #_______________________________________________________________
 
-				print "\n# create_sorted_cluster: Final gclu file name is $final_gclu_output\n  with @sub_clustering_clu_files";
-				$good_cluster_file=${&create_sorted_cluster(\@sub_clustering_clu_files, \$final_gclu_output)};
-				print "\n\n\n#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
-				print "\n# ! Finished create_sorted_cluster(geanfammer), result is \"$good_cluster_file\"";
-				print "\n#_________________________________________________________________\n\n\n";
+        print "\n# create_sorted_cluster: Final gclu file name is $final_gclu_output\n  with @sub_clustering_clu_files";
+        $good_cluster_file=${&create_sorted_cluster(\@sub_clustering_clu_files, \$final_gclu_output)};
+        print "\n\n\n#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
+        print "\n# ! Finished create_sorted_cluster(geanfammer), result is \"$good_cluster_file\"";
+        print "\n#_________________________________________________________________\n\n\n";
 
-				#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-				#  make_clustering_summary  became redundant after peer review
-				#_______________________________________________________________
-				$final_summary_file=${&make_clustering_summary(\$final_gclu_output, $make_separate_summary)};
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        #  make_clustering_summary  became redundant after peer review
+        #_______________________________________________________________
+        $final_summary_file=${&make_clustering_summary(\$final_gclu_output, $make_separate_summary)};
 
-				push(@files_created, $final_summary_file);
+        push(@files_created, $final_summary_file);
 
-				#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-				# Make the whole output Lean
-				#_______________________________________
-				if($Lean_output){
-						for($k=0; $k < @sub_clustering_clu_files; $k++){
-								$base_name=${&get_base_names($sub_clustering_clu_files[$k])};
-								$sub_clustering_msp_file="$base_name\.msp";
-								unlink($sub_clustering_clu_files[$k], $sub_clustering_msp_file);
-						}
-				}
-	 }# end of for loop for @file
-	 return(\@files_created);
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        # Make the whole output Lean
+        #_______________________________________
+        if($Lean_output){
+            for($k=0; $k < @sub_clustering_clu_files; $k++){
+                $base_name=${&get_base_names($sub_clustering_clu_files[$k])};
+                $sub_clustering_msp_file="$base_name\.msp";
+                unlink($sub_clustering_clu_files[$k], $sub_clustering_msp_file);
+            }
+        }
+   }# end of for loop for @file
+   return(\@files_created);
 }
-
 
 
 
@@ -34471,41 +35068,51 @@ sub split_file_by_string{
 #________________________________________________________________________________
 # Title     : check_input_file_extension
 # Usage     : @file=@{&check_input_file_extension('msp', \@file)};
+#             or @file=@{&check_input_file_extension('msp,nhco', \@file)};
+#                for multiple extension allowance
 # Function  :
 # Example   : @file=@{&check_input_file_extension('msp', \@file)};
 # Keywords  :
 # Options   :
-# Version   : 1.0
+# Version   : 1.1
 #--------------------------------------------------------------------------------
 sub check_input_file_extension{
-     my $file_ext_wanted=$_[0];
-     my @file=@{$_[1]};
-     #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     print "\n# checking file extension \n";
-     #___________________________________________________
-     if($file[0] !~/\.$file_ext_wanted/){
-           print "\n# write_parf_files : normally accepts xxxx.$file_ext_wanted files. Put y+return to continue";
-           print "\n# write_parf_files : You can type \'c\' for changing the file extension to parf \n\n>>>";
-           $answer_char=getc;
-           if($answer_char=~/^y/i){
+        my $file_ext_wanted=$_[0];
+        my ($extension_not_matched);
+        my @extentions=split(/[\, ]+/, $file_ext_wanted);
+        my @file=@{$_[1]};
+        for(@extentions){
+            $file_ext_wanted=$_;
+            #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            print "\n# (2) checking file extension \n";
+            #___________________________________________________
+            if($file[0] =~/\.$file_ext_wanted/){
+                 $extension_not_matched=1;
+            }
+        }
+        unless($extension_not_matched){
+             print "\n# write_nhco_files : normally accepts xxxx.$file_ext_wanted files. Put y+return to continue";
+             print "\n# write_nhco_files : You can type \'c\' for changing the file extension to parf \n\n>>>";
+             $answer_char=getc;
+             if($answer_char=~/^y/i){
                  $answer_char='';
-           }elsif($answer_char=~/^c/i){
+             }elsif($answer_char=~/^c/i){
                  $answer_char='';
                  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                 print "\n# $0:  chaning all the file input extension to \'$file_ext_wanted\'";
+                 print "\n# (3) write_nhco_files: chaning all the file input extension to 'parf'";
                  #_______________________________________________________________________________
                  for($i=0; $i< @file; $i++){
-                       $base=${&get_base_names($file[$i])};
-                       $file[$i]="$base\.$file_ext_wanted";
+                     $base=${&get_base_names($file[$i])};
+                     $file[$i]="$base\.$file_ext_wanted";
                  }
-           }else{
+             }else{
                  $answer_char='';
-                 print "\n\n\n# check_input_file_extension: You rudely put rubbish, I am dying. $0\n";                 print chr(7);
+                 print "\n\n\n# check_input_file_extension: You rudely put rubbish, I am dying. $0\n\n\n";
                  print chr(7);
                  exit;
-           }
-     }
-     return(\@file);
+             }
+        }
+        return(\@file);
 }
 
 
@@ -34517,15 +35124,19 @@ sub check_input_file_extension{
 # Example   :
 # Keywords  :
 # Options   :
-# Version   : 1.4
+# Version   : 1.5
 #--------------------------------------------------------------------------------
 sub geanfammer_main{
         #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         # All the defaults, Evalues are determined in geanfammer sub
         #__________________________________________________________________
         $|=1;
+        unless($algorithm){
+            $algorithm='fasta'; # default search algorithm setting(will be overridden
+                            # by 'a=xxx' prompt argument
+        }
         $sub_dir_size=2; # this is the subdirectory name char size
-        $machine_readable='M';
+        $machine_readable='M';  # this is to invoke FASTA's m=10 option
         $make_msp_in_sub_dir_opt='m';
         $make_subdir_gzipped='d';
         $make_subdir_out='D';
@@ -34554,18 +35165,21 @@ sub geanfammer_main{
         if($algorithm=~/\/([^\/]+) *$/){
               print "\n# Checking \$algorithm ($algorithm) name\n";
               $algorithm_name=$1;
+              if(-s $algorithm){
+                   print "\n# (i) $0 will use $algorithm\n";
+              }else{
+                   $result_of_which_run=`which $algorithm_name`;
+                   if($result_of_which_run=~/^ *(\/\S+\/)[fastassearch]+\d* *$/){ ## after Lily Fu's suggestion
+                         print "\n# $0: Your $algorithm_name is in $1, good, I am running it\n";
+                   }else{
+                         print "\n# (E) \$algorithm value $algorithm is not found\n";
+                         print "\n# (E) $0 ran \'which\' Linux command and the result is:\n";
+                         print "  $result_of_which_run\n";
+                         print "\n# Please check your path for $algorithm\n\n"; print chr(7);
+                         exit;
+                   }
+              }
         }
-        $result_of_which_run=`which $algorithm_name`;
-        if($result_of_which_run=~/^ *(\/\S+\/)[fastassearch]+ *$/){
-              print "\n# $0: Your $algorithm_name is in $1, good, I am running it\n";
-        }else{
-              print "\n# (E) \$algorithm value $algorithm is not found\n";
-              print "\n# (E) $0 ran \'which\' Linux command and the result is:\n";
-              print "  $result_of_which_run\n";
-              print "\n# Please check your path for $algorithm\n\n"; print chr(7);
-              exit;
-        }
-
         #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         # Running the actual big sub
         #______________________________
@@ -34592,6 +35206,7 @@ sub geanfammer_main{
         print "\n# $0 : the final output \'@final_clu_files\' is created " if $make_separate_summary;
         print "\n#__________________________________________________________________\n\n" if $verbose;
 }
+
 
 
 

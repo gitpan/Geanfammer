@@ -152,17 +152,19 @@ print "#_____________________________________________________________________\n"
 # Example   :
 # Keywords  :
 # Options   :
-# Version   : 1.4
+# Version   : 1.5
 #--------------------------------------------------------------------------------
 sub geanfammer_main{
         #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         # All the defaults, Evalues are determined in geanfammer sub
         #__________________________________________________________________
         $|=1;
-        $algorithm='fasta'; # default search algorithm setting(will be overridden
+        unless($algorithm){
+            $algorithm='fasta'; # default search algorithm setting(will be overridden
                             # by 'a=xxx' prompt argument
+        }
         $sub_dir_size=2; # this is the subdirectory name char size
-        $machine_readable='M';
+        $machine_readable='M';  # this is to invoke FASTA's m=10 option
         $make_msp_in_sub_dir_opt='m';
         $make_subdir_gzipped='d';
         $make_subdir_out='D';
@@ -191,18 +193,21 @@ sub geanfammer_main{
         if($algorithm=~/\/([^\/]+) *$/){
               print "\n# Checking \$algorithm ($algorithm) name\n";
               $algorithm_name=$1;
+              if(-s $algorithm){
+                   print "\n# (i) $0 will use $algorithm\n";
+              }else{
+                   $result_of_which_run=`which $algorithm_name`;
+                   if($result_of_which_run=~/^ *(\/\S+\/)[fastassearch]+\d* *$/){ ## after Lily Fu's suggestion
+                         print "\n# $0: Your $algorithm_name is in $1, good, I am running it\n";
+                   }else{
+                         print "\n# (E) \$algorithm value $algorithm is not found\n";
+                         print "\n# (E) $0 ran \'which\' Linux command and the result is:\n";
+                         print "  $result_of_which_run\n";
+                         print "\n# Please check your path for $algorithm\n\n"; print chr(7);
+                         exit;
+                   }
+              }
         }
-        $result_of_which_run=`which $algorithm_name`;
-        if($result_of_which_run=~/^ *(\/\S+\/)[fastassearch]+ *$/){
-              print "\n# $0: Your $algorithm_name is in $1, good, I am running it\n";
-        }else{
-              print "\n# (E) \$algorithm value $algorithm is not found\n";
-              print "\n# (E) $0 ran \'which\' Linux command and the result is:\n";
-              print "  $result_of_which_run\n";
-              print "\n# Please check your path for $algorithm\n\n"; print chr(7);
-              exit;
-        }
-
         #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         # Running the actual big sub
         #______________________________
@@ -369,7 +374,7 @@ sub geanfammer_main{
 #
 # Author    : Sarah A Teichmann, Jong Park, sat@mrc-lmb.cam.ac.uk,
 #                                      jong@salt2.med.harvard.edu
-# Version   : 2.0
+# Version   : 2.2
 #--------------------------------------------------------------------------------
 sub geanfammer{
     my ($algorithm, $upper_expect_limit, $k_tuple, $sub_dir_size,
@@ -472,6 +477,7 @@ sub geanfammer{
             #__________________________________________________________________________
             $num_of_seq_in_fa_file=${&do_sequence_search(
                       $Lean_output,
+                      "a=$algorithm",
                       \$file[$i],
                       $over_write,
                       $msp_directly_opt,
@@ -1016,47 +1022,47 @@ sub get_all_msp_files {
 # Version   : 4.7
 #----------------------------------------------------------------------------------------
 sub do_sequence_search{
-	#"""""""""""""""""< handle_arguments{ head Ver 4.1 >"""""""""""""""""""
-	my(@A)=&handle_arguments(@_);my($num_opt)=${$A[7]};my($char_opt)=${$A[8]};
-	my(@hash)=@{$A[0]};my(@file)=@{$A[4]};my(@dir)=@{$A[3]};my(@array)=@{$A[1]};
-	my(@string)=@{$A[2]};my(@num_opt)=@{$A[5]};my(@char_opt)=@{$A[6]};
-	my(@raw_string)=@{$A[9]};my(%vars)=%{$A[10]};my(@range)=@{$A[11]};
-	my($i,$j,$c,$d,$e,$f,$g,$h,$k,$l,$m,$n,$o,$p,$q,$r,$s,$t,$u,$v,$w,$x,$y,$z);
-	if($debug==1){print "\n\t\@hash=\"@hash\"
-	\@raw_string=\"@raw_string\"\n\t\@array=\"@array\"\n\t\@num_opt=\"@num_opt\"
-	\@char_opt=\"@char_opt\"\n\t\@file=\"@file\"\n\t\@string=\"@string\"\n" }
-	#""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-	my (@final_out, $add_range, $single_big_msp, $base_name, $create_sso, @nondup,
-	   $Single_msp_out_file, %duplicate, $Evalue_thresh, $Score_thresh, @SSO, $sequence_DB,
-	   @sso, @temp, $algorithm, $margin, $out_msp_file, @MSP, @final_msp_file_names_out,
-	   $upper_expect_limit, $lower_expect_limit, $k_tuple, %seq_input, %MSP, $No_processing,
-       $new_format, $PVM_FASTA_run, $over_write, $sub_dir_size, $age_in_days_of_out_file,
-       $over_write_by_age, $Lean_output );
-	my ($E_val) = 5;  ## default 5 <<<<<<<<<<<<<<<<<<<<<
+    #"""""""""""""""""< handle_arguments{ head Ver 4.1 >"""""""""""""""""""
+    my(@A)=&handle_arguments(@_);my($num_opt)=${$A[7]};my($char_opt)=${$A[8]};
+    my(@hash)=@{$A[0]};my(@file)=@{$A[4]};my(@dir)=@{$A[3]};my(@array)=@{$A[1]};
+    my(@string)=@{$A[2]};my(@num_opt)=@{$A[5]};my(@char_opt)=@{$A[6]};
+    my(@raw_string)=@{$A[9]};my(%vars)=%{$A[10]};my(@range)=@{$A[11]};
+    my($i,$j,$c,$d,$e,$f,$g,$h,$k,$l,$m,$n,$o,$p,$q,$r,$s,$t,$u,$v,$w,$x,$y,$z);
+    if($debug==1){print "\n\t\@hash=\"@hash\"
+    \@raw_string=\"@raw_string\"\n\t\@array=\"@array\"\n\t\@num_opt=\"@num_opt\"
+    \@char_opt=\"@char_opt\"\n\t\@file=\"@file\"\n\t\@string=\"@string\"\n" }
+    #""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    my (@final_out, $add_range, $single_big_msp, $base_name, $create_sso, @nondup,
+       $Single_msp_out_file, %duplicate, $Evalue_thresh, $Score_thresh, @SSO, $sequence_DB,
+       @sso, @temp, $algorithm, $margin, $out_msp_file, @MSP, @final_msp_file_names_out,
+       $upper_expect_limit, $lower_expect_limit, $k_tuple, %seq_input, %MSP, $No_processing,
+    $new_format, $PVM_FASTA_run, $over_write, $sub_dir_size, $age_in_days_of_out_file,
+    $over_write_by_age, $Lean_output );
+    my ($E_val) = 5;  ## default 5 <<<<<<<<<<<<<<<<<<<<<
 
-	#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	# DEFAULTS
-	#________________________________________
-	$k_tuple           =1;  # 1 or 2, 1 is more sensitive
-	$algorithm         ='fasta';
+    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # DEFAULTS
+    #________________________________________
+    $k_tuple           =1;  # 1 or 2, 1 is more sensitive
+    $algorithm         ='fasta';
     $sub_dir_size      =2;  # the default char number taken from seq name to make sub dirs
-	$upper_expect_limit=1;
-	$lower_expect_limit=0;
-	$Score_thresh      =75; # FASTA or SSSEARCH score
-	$margin            =0;  # sequence region margin. If it is 2, 2 more edged residues will be added
-	$add_range         ='';
-	$pwd               =`pwd`; chomp($pwd);
+    $upper_expect_limit=1;
+    $lower_expect_limit=0;
+    $Score_thresh      =75; # FASTA or SSSEARCH score
+    $margin            =0;  # sequence region margin. If it is 2, 2 more edged residues will be added
+    $add_range         ='';
+    $pwd               =`pwd`; chomp($pwd);
     $age_in_days_of_out_file=10000000000;
 
-	if($vars{'a'}=~/\S+/){ $algorithm          = $vars{'a'}            };
-	if($vars{'u'}=~/\d+/){ $upper_expect_limit = $vars{'u'}            };
-	if($vars{'l'}=~/\d+/){ $lower_expect_limit = $vars{'l'}            };
-	if($vars{'k'}=~/\d+/){ $k_tuple            = $vars{'k'}            };
-	if($vars{'t'}=~/\d+/){ $Score_thresh       = $vars{'t'}            };
-	if($vars{'m'}=~/\d+/){ $margin             = $vars{'m'}            };
+    if($vars{'a'}=~/\S+/){ $algorithm          = $vars{'a'}            };
+    if($vars{'u'}=~/\d+/){ $upper_expect_limit = $vars{'u'}            };
+    if($vars{'l'}=~/\d+/){ $lower_expect_limit = $vars{'l'}            };
+    if($vars{'k'}=~/\d+/){ $k_tuple            = $vars{'k'}            };
+    if($vars{'t'}=~/\d+/){ $Score_thresh       = $vars{'t'}            };
+    if($vars{'m'}=~/\d+/){ $margin             = $vars{'m'}            };
     if($vars{'d'}=~/\d+/){ $sub_dir_size       = $vars{'d'}            };
-	if($vars{'r'}=~/\S+/){ $add_range          = 'r'                   };
-	if($vars{'s'}=~/\S+/){ $single_big_msp     = 's'                   };
+    if($vars{'r'}=~/\S+/){ $add_range          = 'r'                   };
+    if($vars{'s'}=~/\S+/){ $single_big_msp     = 's'                   };
     if($vars{'DB'}=~/\S+/){            $sequence_DB=$vars{'DB'} ;
         if(-s $sequence_DB){
         }elsif(-s "../$sequence_DB"){  $sequence_DB= "../$sequence_DB"
@@ -1068,40 +1074,40 @@ sub do_sequence_search{
     }else{  print "\n# (E) do_sequence_search: I need DB param defined, sorry, aborting\n"; }
 
     if($vars{'FILE'}=~/\S+/){ $input_file_name = $vars{'FILE'}; push(@file,$input_file_name) };
-	if($vars{'File'}=~/\S+/){ $input_file_name = $vars{'File'}; push(@file,$input_file_name) };
+    if($vars{'File'}=~/\S+/){ $input_file_name = $vars{'File'}; push(@file,$input_file_name) };
     if($vars{'FILE_AGE'}=~/\S+/){ $age_in_days_of_out_file= $vars{'FILE_AGE'};  };
-	if($vars{'Query_seqs'}=~/\S+/){ %seq_input = %{$vars{'Query_seqs'}}};
-	if($vars{'Query'}=~/\S+/){      %seq_input = %{$vars{'Query'}}};
-	if($vars{'u'}    =~/\S+/){ $E_val          = $vars{'u'}            };
-	if($vars{'PVM'}  =~/\S+/){ $PVM_FASTA_run  = $vars{'PVM'}; print "\n# PVM opt is set\n";     };
+    if($vars{'Query_seqs'}=~/\S+/){ %seq_input = %{$vars{'Query_seqs'}}};
+    if($vars{'Query'}=~/\S+/){      %seq_input = %{$vars{'Query'}}};
+    if($vars{'u'}    =~/\S+/){ $E_val          = $vars{'u'}            };
+    if($vars{'PVM'}  =~/\S+/){ $PVM_FASTA_run  = $vars{'PVM'}; print "\n# PVM opt is set\n";     };
     if($vars{'M'}  =~/\S+/){ $machine_readable = $vars{'M'};           };
 
     if($char_opt=~/r/){    $add_range          = 'r' }
     if($char_opt=~/L/){    $Lean_output        = 'L' }
     if($char_opt=~/o/){    $over_write         = 'o' }
-	if($char_opt=~/c/){    $create_sso         = 'c' }
-	if($char_opt=~/s/){    $single_big_msp     = 's'; print "\n# Single file opt is set\n"; }
-	if($char_opt=~/m/){    $msp_directly_opt   = 'm' }
-	if($char_opt=~/M/){    $machine_readable   = 'M' }
-	if($char_opt=~/d/){    $save_in_gz_in_sub_dir  = 'd' }
-	if($char_opt=~/D/){$make_msp_in_sub_dir_opt= 'D' } # for simple search and storing msp file
-	if($char_opt=~/N/){    $No_processing      = 'N'; $create_sso='c'; }
+    if($char_opt=~/c/){    $create_sso         = 'c' }
+    if($char_opt=~/s/){    $single_big_msp     = 's'; print "\n# Single file opt is set\n"; }
+    if($char_opt=~/m/){    $msp_directly_opt   = 'm' }
+    if($char_opt=~/M/){    $machine_readable   = 'M' }
+    if($char_opt=~/d/){    $save_in_gz_in_sub_dir  = 'd' }
+    if($char_opt=~/D/){$make_msp_in_sub_dir_opt= 'D' } # for simple search and storing msp file
+    if($char_opt=~/N/){    $No_processing      = 'N'; $create_sso='c'; }
 
-	#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~``
-	# When no %seq is given, but files
-	#___________________________________________
-	if(@hash==0 and @file > 0){
-		print "\n# do_sequence_search: You did not put sequences as in \%seq, but raw sequence file @file!\n";
-		print "        I will run \'open_fasta_files\' sub to fetch sequences to store in \%seq_input\n";
-        %seq_input=%{&open_fasta_files(\@file)};
-	}else{
-		print "\n# do_sequence_search: I will use given seqs in \%seq_input from \%\{\$hash\[0\]\}\n";
-		%seq_input=%{$hash[0]};
-	}
+    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~``
+    # When no %seq is given, but files
+    #___________________________________________
+    if(@hash==0 and @file > 0){
+          print "\n# do_sequence_search: You did not put sequences as in \%seq, but raw sequence file @file!\n";
+          print "        I will run \'open_fasta_files\' sub to fetch sequences to store in \%seq_input\n";
+    %seq_input=%{&open_fasta_files(\@file)};
+    }else{
+          print "\n# do_sequence_search: I will use given seqs in \%seq_input from \%\{\$hash\[0\]\}\n";
+          %seq_input=%{$hash[0]};
+    }
     my (@list) = keys %seq_input;
-	$base_name = ${&get_base_names($input_file_name)};
-	print "\n# line:",__LINE__, ", do_sequence_search, \$algorithm => $algorithm, \$base_name:$base_name
-	           $input_file_name <--> $sequence_DB\n";
+    $base_name = ${&get_base_names($input_file_name)};
+    print "\n# line:",__LINE__, ", do_sequence_search, \$algorithm => $algorithm, \$base_name:$base_name
+               $input_file_name <--> $sequence_DB\n";
 
    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
    # Controlling which kind of search it should do. Do save_in_gz_in_sub_dir first if d is set
