@@ -11,6 +11,13 @@
 
 Version.
 
+  "Geanfammer_V1.6.1.tar.gz"   29th/Aug/98
+   1.6.1 Fixed a bug in convert_clu_to_msp
+
+  "Geanfammer_V1.6.tar.gz"   28th/Aug/98
+   1.6 Fixed a bug in msp_single_link_hash,
+   1.6 Fixed a bug in msp_single_link.pl (read_file_names_only updated)
+
   "Geanfammer_V1.5.tar.gz"   8th/Aug/98
    1.5 runs PSI-blast
    1.5 had a bug in convert_bla_to_msp and now it safely uses PSI-Blast output

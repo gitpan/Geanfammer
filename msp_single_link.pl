@@ -2,23 +2,21 @@
 #__________________________________________________________________________
 # Title     : msp_single_link.pl
 # Usage     : msp_single_link.pl <e-val>
-# Function  : to single link all the genes in msp files in a given directory and its subdirectories 
+# Function  : to single link all the genes in msp files in a given directory and its subdirectories
 #             at a given e-value threshhold and make a sorted file called "single_linkage.clus".
 # Example   :
 # Keywords  :
 # Options   :
 # Returns   : Sarah A. Teichmann on the 26th August 1997.
 # Argument  :
-# Version   : 1.0
+# Version   : 1.1
 #----------------------------------------------------------------------------
 
 $|=1;
 
 my $usage="msp_single_link.pl  <e-val> ";
 
-
 die "\nIncorrect number of arguments.\n\nUsage: $usage\n\ndied" unless ($#ARGV==0);
-
 
 my $E_cut_main=$ARGV[0];
 
@@ -32,49 +30,49 @@ my %hash_main=%{&msp_single_link_hash(\@msp_files_main, $E_cut_main)};
 
 #________________Subroutine 1: fetch all msp/msp.gz files and put them into an array________________#
 
-
-
 #________________________________________________________________________________
-# Title     :get_all_msp_files
-# Usage     :@msp_files=@{&get_all_msp_files};
-# Function  :puts the names of all msp or msp.gz files in the directory and its subdirectories into an array
+# Title     : get_all_msp_files
+# Usage     : @msp_files=@{&get_all_msp_files};
+# Function  : puts the names of all msp or msp.gz files in the directory and its subdirectories into an array
 # Example   :
-# Keywords  :read_msp_files, make_msp_file_array
+# Keywords  : read_msp_files, make_msp_file_array, get_all_msp_files_in_dir
+# Date      : 19th September 1997
 # Options   :
-# Version   : 1.0
-# Author    : Sarah A. Teichmann
+# Author    : Sarah A. Teichmann, jong@salt2.med.harvard.edu
+# Version   : 1.4
 #--------------------------------------------------------------------------------
-
 sub get_all_msp_files {
-my @msp_files_main=@{&read_file_names_only('.','msp','msp.gz')};
-my @dirs=@{&read_dir_names_only('n','.')};
-my ($i, $j, @msp_files);
-for ($i=0; $i<@dirs; $i++){
-	my $dir=$dirs[$i];
-	if (!( -d $dir)){
-	   next;
-	}
-	if( -d $dir){
-	   chdir($dir);
-	}
+   my (@msp_files_main_final);
+   my @msp_files_main=@{&read_file_names_only('.msp','.msp.gz')};
+   for(@msp_files_main){
+      if($_=~/cluster\.msp/){ next ## xxxx_cluster.msp is the processed file
+      }else{ push(@msp_files_main_final, $_) }
+   }
+   my @dirs=@{&read_dir_names_only('n', '.')};
+   my ($i, $j, @msp_files, $file_in_dir, $dir_file);
+   print "\n# (i) Trying to read in msp files in subdir\n";
+   for ($i=0; $i<@dirs; $i++){
+       my $dir=$dirs[$i];
+       unless( -d $dir){
+          next;
+       }
+       if( -d $dir){  chdir($dir);  }
 
-	my @foo=@{&read_file_names_only('.','msp','msp.gz')};
-	for ($j=0; $j<@foo; $j++){
-	   my $file_in_dir=$foo[$j];
-	   my $dir_file="$dir"."/"."$file_in_dir";
-	   push(@msp_files_dirs, $dir_file);
-	   next;
-	}
-	chdir('..');
-	next;
+       @msp_files=@{&read_file_names_only('.','.msp','.msp.gz')};
+       for ($j=0; $j<@msp_files; $j++){
+          if($msp_files[$j]=~/cluster\.msp/){ next } ## skipping already existing  20-1_cluster.msp like files
+          $file_in_dir=$msp_files[$j];
+          $dir_file="$dir"."/"."$file_in_dir";
+          push(@msp_files_dirs, $dir_file);
+          next;
+       }
+       chdir('..');
+       next;
+   }
+
+   @msp_files=sort (@msp_files_main_final, @msp_files_dirs);
+   return (\@msp_files);
 }
-
-@msp_files=(@msp_files_main, @msp_files_dirs);
-sort @msp_files;
-return (\@msp_files);
-
-}
-
 
 
 
@@ -82,79 +80,91 @@ return (\@msp_files);
 
 
 #________________________________________________________________________________
-# Title     :msp_single_link_hash
-# Usage     :%hash=%{&msp_single_link_hash(\@msp_files, E-value);
-# Function  :To make a hash with all the genes in the msp files as the keys, which are linked at or below the E-value threshhold, with the values denoting the cluster number
+# Title     : msp_single_link_hash
+# Usage     : %hash=%{&msp_single_link_hash(\@msp_files, E-value);
+# Function  : To make a hash with all the genes in the msp files as the keys,
+#             which are linked at or below the E-value threshhold,
+#             with the values denoting the cluster number
 # Example   :
-# Keywords  :single_linkage, msp_single_linkage, msp_single_linkage_hash
+# Keywords  : single_linkage, msp_single_linkage, msp_single_linkage_hash
+#              make_msp_single_link_hash
 # Options   :
-# Version   : 1.0
-# Author    : Sarah A. Teichmann with thanks to Alex Bateman
+# Author    : Sarah A. Teichmann with thanks to Alex Bateman,
+#               sat@mrc-lmb.cam.ac.uk, jong@salt2.med.harvard.edu
+# Version   : 1.5
 #--------------------------------------------------------------------------------
 sub msp_single_link_hash {
-    my (@msp_files, $i, $j, @mspcont, $gene_1, $gene_2, $E_cut, %hash, $array);
-##handle input array##
+    my (@msp_files, $i, $j, $k, $e_val, $gene_1, $gene_2,
+        @mspcont, $gene_1, $gene_2, $E_cut, %hash, $array);
+
+    $E_cut=0.001; ## Default Eval cut
+
     if( @_==2 and ref($_[0]) eq 'ARRAY'){
-	@msp_files=@{$_[0]};
-	$E_cut=$_[1];
-
-	}
-    else {print "Subroutine msp_single_link_hash takes one input array and the E-value as its arguments!!" &&die;} 
-      
-    $array=0;
-for ($i=0; $i<@msp_files; $i++){
-	my $msp_file=$msp_files[$i];
-	if ($msp_file=~/\S+\.msp$/){
-	open(MSP, "$msp_file");
-	@mspcont=<MSP>;
+        @msp_files=@{$_[0]};
+        $E_cut=${$_[1]} || $_[1];
+    }else{
+        print "Subroutine msp_single_link_hash takes one input array and the E-value as its arguments!!" && die;
     }
-	if ($msp_file=~/\S+\.msp\.gz$/){
-	open(MSP, "$msp_file");
-	@mspcont=`gunzip -c $msp_file`;
-    }
-       
-	$array++;
-	for ($j=0; $j<@mspcont; $j++){
-		if ($mspcont[$j]=~/^\d+\s+(\S+)\s+\S+\s+\d+\s+\d+\s+(\S+)\s+\d+\s+\d+\s+(\S+)/){
-			$e_val=$1;
-			unless($e_val<=$E_cut){next;}
-			$gene_1=$2;
-			$gene_2=$3;
-			if ($gene_1 eq $gene_2){next;}
-			if (! $hash{"$gene_1"} && $gene_1){
-			    $hash{"$gene_1"}="$array";
-			    push (@{"$array"}, $gene_1);
-			}
-			if (! $hash{"$gene_2"} && $gene_2){
-			    $hash{"$gene_2"}="$array";
-			    push (@{"$array"}, $gene_2);
-			}
-			if ($hash{"$gene_1"}==$hash{"$gene_2"}){next;}
-			if ( $hash{"$gene_1"} gt  $hash{"$gene_2"}){
-			    push (@{"$hash{$gene_2}"}, @{"$hash{$gene_1}"});
-			    for ($k=0; $k<@{"$hash{$gene_2}"}; $k++){
-                                 $hash{${"$hash{$gene_2}"}[$k]}=$hash{"$gene_2"};
-			         next;
-			         }
-			    next;
-			}
-			if ( $hash{"$gene_2"} gt  $hash{"$gene_1"}){
-      			    push (@{"$hash{$gene_1}"}, @{"$hash{$gene_2}"});
-			    for ($k=0; $k<@{"$hash{$gene_1}"}; $k++){
-                                 $hash{${"$hash{$gene_1}"}[$k]}=$hash{"$gene_1"};
-			         next;
-			         }
-			    next;
-			}
-			next;
-		}else{next;}
-	}
+    print "\n# (i) msp_single_link_hash : \$E_cut is $E_cut \nwith @msp_files\n" if $verbose;
 
-	next;
-    }
-return (\%hash);
+    for ($i=0; $i<@msp_files; $i++){
+        if ($msp_files[$i]=~/\S+\.msp$/){
+            open(MSP, "$msp_files[$i]");
+            @mspcont=<MSP>;
+            close(MSP);
+        }elsif ($msp_files[$i]=~/\S+\.msp\.gz$/){
+            @mspcont=`gunzip -c $msp_files[$i]`;
+        }
 
-}
+        $array++;
+        for ($j=0; $j<@mspcont; $j++){
+            if ($mspcont[$j]=~/^\S+ +(\S+) +\S+ +\d+ +\d+ +(\S+) +\d+ +\d+ +(\S+)/){
+                $e_val=$1;
+                unless($e_val<=$E_cut){next;}
+                $gene_1=$2;
+                $gene_2=$3;
+                #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
+                # Removing REGION information as Sarah's can not handle regions
+                #_______________________________________________________________
+                if($gene_1=~/^(\S+)_\d+\-\d+/){ $gene_1=$1 }
+                if($gene_2=~/^(\S+)_\d+\-\d+/){ $gene_2=$1 }
+
+                if ($gene_1 eq $gene_2){next;}
+                if ( ! $hash{"$gene_1"} and $gene_1){
+                    $hash{"$gene_1"}="$array";
+                    push (@{"$array"}, $gene_1);
+                }
+                if (! $hash{"$gene_2"} and $gene_2){
+                    $hash{"$gene_2"}="$array";
+                    push (@{"$array"}, $gene_2);
+                }
+                if ($hash{"$gene_1"}==$hash{"$gene_2"}){next;}
+                if ( $hash{"$gene_1"} gt  $hash{"$gene_2"}){
+                    push (@{"$hash{$gene_2}"}, @{"$hash{$gene_1}"});
+                    for ($k=0; $k<@{"$hash{$gene_2}"}; $k++){
+                         $hash{${"$hash{$gene_2}"}[$k]}=$hash{"$gene_2"};
+                         next;
+                    }
+                    next;
+                }
+                if ( $hash{"$gene_2"} gt  $hash{"$gene_1"}){
+                    push (@{"$hash{$gene_1}"}, @{"$hash{$gene_2}"});
+                    for ($k=0; $k<@{"$hash{$gene_1}"}; $k++){
+                         $hash{${"$hash{$gene_1}"}[$k]}=$hash{"$gene_1"};
+                         next;
+                    }
+                    next;
+                }
+                next;
+            }else{ next; }
+        }
+        next;
+    }
+    return (\%hash);
+} ## msp_single_link_hash
+
+
+
 #___________________Subroutine 3: print out the hash with the subroutine values_________________________#
 
 #________________________________________________________________________________
@@ -181,7 +191,7 @@ for ($i=0; $i<@genes; $i++){
     my $clus=$hash{"$genes[$i]"};
     push(@{"$clus"},$genes[$i]);
     next;
-} 
+}
 
 my (%sizes);
 for ($i=0; $i<@clusters; $i++){
@@ -285,7 +295,7 @@ sub remove_dup_in_array{
 }
 
 
-#_________________________________________________________________________
+#________________________________________________________________________
 # Title     : read_file_names_only
 # Usage     : @all_files=@{&read_file_names_only(<dir>, [extension])};
 # Function  : read any file names and REMOVES the '.', '..' and dir entries.
@@ -295,82 +305,198 @@ sub remove_dup_in_array{
 #               and multiple dir path (/usr/Perl, /usr/local/Perl....)
 #               It will fetch all files wanted in all the direc specified
 #
+#             It can handle file glob eg)
+#             @all_files=@{&read_file_names_only(\$abs_path_dir_name, 'G1_*.txt')};
+#               for all txt files starting with 'G1_'
+#
 # Example   : @all_files=@{&read_file_names_only(\$abs_path_dir_name, ..)};
 #             @all_files=@{&read_file_names_only(\$dir1, '.pl', '.txt')};
 #             @all_files=@{&read_file_names_only(\$dir1, '.', \$dir2, \$dir3, 'e=pl')};
+#             @all_files=@{&read_file_names_only(\$abs_path_dir_name, 'G1_*.txt')};
+#             @all_files=@{&read_file_names_only(\$abs_path_dir_name, \@target_file_names)};
 #
 # Warning   : This does not report '.', '..'
 #             Only file names are reported. Compare with &read_any_dir
 #             extension size should be less than 15 char.
 #             It sorts the results!
-# Class     :
 # Keywords  : filename only, filename_only, read_files_only, read files
 #             get_file_names_only, get_files_only, read_files_only
 # Options   : "extension name". If you put , 'pl' as an option, it will show
 #             files only with '.pl' extension.
-#             '-p'  for path also included resulting in '/path/path/file.ext'
-#                  rather than 'file.ext' in output @array
+#  '-p'      for path also included resulting in '/path/path/file.ext'
+#              rather than 'file.ext' in output @array
+#  '-s'      for sorting the results
 #  e='xxx'  for extention xxx
 #  '.pl'    for files extended by '.pl'
 #  'pl'     for files extended by 'pl', same as above
+#  D=       for dir name input
 #
-# Package   : File
-# Reference :
-# Returns   : one ref. of array.
-# Tips      :
-# Argument  : takes one or more scaler references. ('.', \$path, $path, ... )
-# Todo      :
-# Author    :  A Biomatic
-# Version   : 1.9
-# Used in   :
-# Enclosed  :
+# Category  :
+# Version   : 2.9
 #--------------------------------------------------------------------
 sub read_file_names_only{
-  my($in_dir, $i,$k, @final_files, @possible_dirs, $ext, @extensions,
-		  $path_include, @in, @in_dir, $pwd, $extension_given, @read_files);
-  $pwd=`pwd`; chomp($pwd);
-  $in_dir=$pwd;   @in=@_;
-  for($k=0; $k < @in; $k++){
-		 if   ( $in[$k] eq '.'){ push(@in_dir,$pwd); splice(@in, $k, 1);  $k--; next }
-		 if( !(ref($in[$k]))){
-				if( -d $in[$k]){ push(@in_dir, $in[$k]); splice(@in, $k, 1);    $k--;
-				}elsif(!(-f $in[$k]) and $in[$k] =~ /^\-p$/ ){$path_include=1; splice(@in, $k, 1); $k--;
-				}elsif(!(-f $in[$k]) and $in[$k] =~ /^\.?(\S+)/){       $extension_given =1; push(@extensions, $1);     splice(@in, $k, 1);       $k--;
-				}elsif(!(-f $in[$k]) and $in[$k] =~ /^e=\.?(\S+)/){ $extension_given =1; push(@extensions, $1); splice(@in, $k, 1);$k--;  }
-		 }elsif(ref($in[$k])){
-				if( -d ${$in[$k]}){     push(@in_dir,${$in[$k]});  splice(@in, $k, 1);  $k--;
-				}elsif(!(-f ${$in[$k]}) && (${$in[$k]} =~ /^\.?(\S+)/ ) ){
-				   $extension_given = 1;  push(@extensions, $1);  splice(@in, $k, 1);  $k--;
-				}elsif(!(-f ${$in[$k]}) && (${$in[$k]} =~ /^e=(\S+)/ ) ){
-				   $extension_given =1; push(@extensions, $1);  splice(@in, $k, 1);  $k--;
+    my($in_dir, $i, $j, $x, $k, $dir, @final_files, @possible_dirs, $sort_opt, $ext, @extensions,
+       $path_include, @in, $glob_given, @files_globed, @in_dir, $pwd, $extension_given,
+       %target_file_names, @target_file_names, @read_files);
+    $pwd=`pwd`; chomp($pwd);
+    $in_dir=$pwd;
+    @in=@_;
+
+    print "\n# read_file_names_only: input are @in" if $verbose;
+
+    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    #  Directory entry and opts detection
+    #_________________________________________
+    for($k=0; $k < @in; $k++){
+       if   ( $in[$k] eq '.'){ push(@in_dir,$pwd); splice(@in, $k, 1);  $k--; next }
+          if( !(ref($in[$k]))){
+	    print "\n# read_file_names_only: $in[$k] is not a reference";
+				if($in[$k]=~/D=(\S+)/){
+						print "\n# read_file_names_only : $1 is used as input dir ";
+						push(@in_dir, $1); splice(@in, $k, 1);    $k--; next;  }
+				if( -d "$in[$k]" ){
+						print "\n# read_file_names_only: $in[$k] is a dir";
+						if($in[$k]=~/\/\S+$/){
+								$path_include=1;  ## If the input dir has '/', I assume path should be added to out file names
+								print "\n# read_file_names_only: \$path_include is set to 1";
+			}
+			#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+			# Removes the last slash '/' of input dir name
+			#________________________________________________
+			if($in[$k]=~/\/$/){   chop($in[$k]);  }
+						push(@in_dir, $in[$k]);
+						splice(@in, $k, 1);    $k--; next;
+		}
+		if(!(-f $in[$k]) and $in[$k] =~ /^\-p *$/ ){ ## somehow, ' *' is essential
+			$path_include=1;
+			splice(@in, $k, 1); $k--;
+                }elsif(!(-f $in[$k]) and $in[$k] =~ /^\-s *$/   ){$sort_opt=1; splice(@in, $k, 1); $k--;
+                }else{
+                     print "\n# (W) read_file_names_only: $in[$k] not a file, nor dir, a file extnsion?\n";
+                }
+	 }elsif(ref($in[$k])){
+				if(ref($in[$k]) eq 'SCALAR'){
+					 if( -d ${$in[$k]}){
+							 if(${$in[$k]}=~/\/$/){ chop(${$in[$k]}) }
+							 push(@in_dir,${$in[$k]});
+							 splice(@in, $k, 1);
+							 $k--;
+					 }elsif(!(-f $in[$k]) and ${$in[$k]} =~ /^\-p$/ ){$path_include=1; splice(@in, $k, 1); $k--;
+					 }elsif(!(-f $in[$k]) and ${$in[$k]} =~ /^\-s$/ ){$sort_opt=1; splice(@in, $k, 1); $k--;}
+				}elsif(ref($in[$k]) eq 'ARRAY'){
+					 @target_file_names=@{$in[$k]}; splice(@in, $k, 1); $k--;
+					 for($x=0; $x < @target_file_names; $x++){  # making a hash out of @array
+							 $target_file_names{$target_file_names[$x]}=$target_file_names[$x];
+					 }
 				}
-		 }
-  }
-#print "@extensions\n";
-  ##########  Main READING PART ##########
-  for($k=0; $k< @in_dir; $k++){
-		 opendir(DIR1,"$in_dir[$k]");
-		 @read_files = readdir(DIR1);
-		 for($i=0; $i < @read_files; $i ++){
-				if( -f "$in_dir[$k]\/$read_files[$i]" ){
-				  if($extension_given ==1 ){
-						 for $ext (@extensions){
-								if( $read_files[$i] =~ /\.$ext$/){
-										if($path_include==1){
-												push(@final_files, "$in_dir[$k]\/$read_files[$i]" );
-										}else{
-												push(@final_files, "$read_files[$i]" );
-										}
-								}
-						 }
-				  }else{
-						  push(@final_files, $read_files[$i]);
-				  }
-				}
-		 }
-  }
-  sort @final_files;
-  return(\@final_files);
+	 }
+	}
+	if(@in_dir < 1){ push(@in_dir, $pwd) }
+	if($verbose){
+		 print "\n# read_file_names_only: Final input directories are : @in_dir";
+		 print "\n# read_file_names_only: going to \'File name and extension detection\' stage with \@in";
+	}
+
+	#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	#  File name and extension detection
+	#_________________________________________
+	for $dir (@in_dir){
+            print "\n# read_file_names_only: changing to subdir \'$dir\'" if $verbose;
+            chdir($dir);
+            print "\n# read_file_names_only: trying to detect extension name from \@in: @in\n" if $verbose;
+
+            for($k=0; $k < @in; $k++){
+                 if( !(ref($in[$k]))){
+                          if($in[$k]=~/\*/){
+                                          $glob_given=1;
+                                          #~~~~~~~~~~~~~~~~~~~~~  Reads globbed files and attaches path if opt -p is set
+                                          if($path_include==1){  @final_files=map{ "$dir/$_" } <$in[$k]>;
+                                          }else{ @final_files=<$in[$k]>;  }
+                                          splice(@in, $k, 1); $k--;
+                          }elsif(!(-f $in[$k]) and $in[$k] =~/e=\.?(\S+)/){ $extension_given =1; push(@extensions, $1); splice(@in, $k, 1);$k--;
+                          }elsif(!(-f $in[$k]) and $in[$k] =~/\.*(\S+)/){
+                                          print "\n# read_file_names_only: pushing $1 as an extension" if $verbose;
+                                          $extension_given =1; push(@extensions, $1);
+                                          splice(@in, $k, 1); $k--;
+                          }elsif(!(-f $in[$k]) and $in[$k] =~/^([^\-]{0,8})$/){  ## extension name can not be larger than 8 chars
+                                          print "\n# read_file_names_only: pushing $1 as an extension" if $verbose;
+                                          $extension_given =1; push(@extensions, $1);
+                                          splice(@in, $k, 1); $k--;
+                          }
+                 }elsif(ref($in[$k])){
+                                 if(ref($in[$k]) eq 'SCALAR'){
+
+                                          if(${$in[$k]}=~/\*/){
+                                                          $glob_given=1;
+                                                          if($path_include==1){  @final_files=map{ "$dir/$_" } <${$in[$k]}>;
+                                                          }else{ @final_files=<${$in[$k]}> }
+                                                          splice(@in, $k, 1); $k--;
+                                          }elsif(!(-f ${$in[$k]}) and ${$in[$k]} =~/e=(\S+)/ ){ $extension_given = 1;
+                                                          push(@extensions, $1); splice(@in, $k, 1);  $k--;
+                                          }elsif(!(-f ${$in[$k]}) and ${$in[$k]} =~/^\.?(\S+)/ ){$extension_given =1;
+                                                          push(@extensions, $1);  splice(@in, $k, 1);  $k--;
+                                          }
+                                 }
+                 }
+            }
+            chdir($pwd);
+	}
+	if( $glob_given == 1 and  $extension_given !=1 ){  # when glob input is given only(without any extension input!
+		 print "\n# read_file_names_only: You used glob for file name, but without extension name\n" if $verbose;
+	 return(\@final_files);
+	}
+	#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
+	#  Main READING PART
+	#_________________________________________________
+	print "\n# read_file_names_only: \@in_dir is  @in_dir\n";
+	for($k=0; $k< @in_dir; $k++){
+		 chdir($in_dir[$k]) or die "\n# read_file_names_only: could not get into $in_dir[$k]\n";
+	 opendir(DIR1, ".");
+	 @read_files = readdir(DIR1);
+	 print "\n# read_file_names_only: content of \@read_files in $in_dir[$k] : @read_files\n" if $verbose;
+	 if(@read_files < 1){ print "\n# read_file_names_only: ERROR??, \@read_files is empty\n\n\n"; }
+	 for($i=0; $i < @read_files; $i ++){
+            #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            # If the user has specified the target file names
+            #____________________________________________________
+	    if( @target_file_names > 0){
+                  if( -f "$read_files[$i]" and -s $target_file_names{$read_files[$i]} ){ ##
+                       if($extension_given ==1 ){
+                           for $ext (@extensions){
+                                if( $read_files[$i] =~ /\.$ext$/){
+                                     if($path_include==1){
+                                                     push(@final_files, "$in_dir[$k]\/$read_files[$i]" );
+                                     }else{
+                                                     push(@final_files, "$read_files[$i]" );
+                                     }
+                                }
+                           }
+                       }else{ ## reading everything !!!
+                                       push(@final_files, $read_files[$i]);
+                       }
+                  }
+              }else{
+                  if( -f "$read_files[$i]" ){ ##
+                       if($extension_given ==1 ){
+                            for $ext (@extensions){
+                                 if( $read_files[$i] =~ /\.?$ext$/){
+                                      if($path_include==1){
+                                           push(@final_files, "$in_dir[$k]\/$read_files[$i]" );
+                                      }else{
+                                           push(@final_files, "$read_files[$i]" );
+                                      }
+                                 }
+                            }
+                       }else{ ## reading everything !!!
+                            push(@final_files, $read_files[$i]);
+                       }
+                  }
+              }
+	 }
+	 chdir($pwd);
+     }
+     @final_files=sort @final_files if $sort_opt == 1;
+     return(\@final_files);
 }
 
 

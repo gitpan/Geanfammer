@@ -75,7 +75,7 @@ for($i=0; $i < @sso_files; $i++){
 #     If clu file is given, let's open it
 #_______________________________________________________________
 if(defined($clu)){
-    &clu_to_sso_to_msp(\$clu);
+    &convert_clu_to_msp(\$clu);
 }else{
     print "\n# No clu file is given. I open individual fasta or ssearch output\n";
     if($make_each_msp=~/e/){
@@ -2245,6 +2245,215 @@ sub get_base_names{
 	}
 	if(@base == 1 ){ \$base[0] }else{ \@base }
 }
+
+#________________________________________________________________________________
+# Title     : convert_clu_to_msp
+# Usage     : @written_msp_files=@{&convert_clu_to_msp(\$single_linkage_file)};
+# Function  : reads in a big single linkage cluster file(or normal cluster file)
+#              and creates a big msp file which contains all the entries in the
+#              cluster file (usually with the extension of sclu or clu)
+#             This normally reads in xxxx.mso, xxxx.sso like files, but if the
+#              corresponding  xxx.msp file already exists, it concatenates them to
+#              make a bigger one.
+# Example   :
+# Keywords  : clu_2_sso_2_msp, cluster_to_msp, cluster_to_sso_to_msp
+#              clu_to_sso_to_msp
+# Options   :
+# Category  :
+# Version   : 2.3
+#--------------------------------------------------------------------------------
+sub convert_clu_to_msp{
+     my($i, $j, $k, $s, $u, $v, $p, $m, $n, $y, @possible_extensions, $single_file_name,
+        @seq_names, @final_files, @U_L_case, $file, @file, @name_types,
+        @poss_sub_dir_heads, @written_msp_files, $Lean_output, $subdir_char_size,
+        $search_file_base, $found_real_subdir_name, $found_search_prog_exention_used);
+
+     $subdir_char_size=2; # default
+     #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     # Opening cluster file (xx.clu)
+     # %clus looks like this:  2-507     YGR041W YLR353W
+     #                         3-308     YDR222W YDR346C YLR225C
+     #                         2-184     YCL066W YCR040W
+     #______________________________________________________________
+     my $clu=${$_[0]} || $_[0];
+     $Lean_output=${$_[1]} || $_[1];
+
+     if($verbose){
+           print "\n# convert_clu_to_msp : \"$clu\" is given
+                and I am processing it with clu_to_sso_to_msp\n" if defined $clu;
+     }
+     my %clus=%{&open_clu_files(\$clu)};
+     my @clusters= keys %clus;
+     my $num_of_cluster=@clusters=@{&sort_by_cluster_size(\@clusters)};
+
+     print "# (i) $0: convert_clu_to_msp: No. of cluster=$num_of_cluster after open_clu_files \n" if $verbose;
+
+     &show_array(\@clusters) if $verbose;
+     &show_hash(\%clus) if $verbose;
+     @possible_extensions=('msp', 'msp.gz', 'msso', 'msso.gz','fsso', 'pbla', 'pbla.gz',
+                                  'ssso', 'fso', 'out', 'prot.sso', 'prot.ts');
+     @U_L_case=('\U', '\L');
+
+     #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
+     # Making each SINGLE linkage clu to MSP file format to be ready for divclus
+     #______________________________________________________________________________
+     for($i=0; $i< @clusters; $i++){
+         my (@seq_names, @final_files, $clus_name, $big_out_msp, @msp_hashes);
+         $clus_name=$clusters[$i];
+         unless($single_file_name=~/\S/){
+             $big_out_msp="$clus_name\_cluster\.msp"; #<<<----- final output name
+         }else{
+             $big_out_msp=$single_file_name;
+         }
+         push(@written_msp_files, $big_out_msp); ## This is the output of this sub
+
+         #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+         #  If $clus_name.msp is already there, skip
+         #_____________________________________________
+         if( (-s $big_out_msp) > 100  and !$over_write ){
+             print "\n# (i) convert_clu_to_msp : $big_out_msp MSP file already exists, skipping\n";
+             print "#    Use  \$over_write option \'o\' to start all over again or \n";
+             print "#    delete clustering files like XX-XX_cluster.clu to go on\n";
+             next ;
+         }
+         $num_of_seq_member=@seq_names=split(/ +/, $clus{$clusters[$i]}); # @seq_names has (HIU001, HI002, HI333, MJ111, etc)
+         print "# $0: convert_clu_to_msp: No. of seq member=$num_of_seq_member after split \n" if $verbose;
+
+         FOR0: for($j=0; $j < @seq_names; $j++){
+               my($sub_dir_head, $file_name_low, $file_name_up, $file_name_prot_low,
+                  $file_name_prot_up, $file_name_low_gz, $file_name_up_gz,
+                  $file_name_prot_low_gz, $file_name_prot_up_gz);
+                  $each_seq_name=$seq_names[$j];
+               my @poss_sub_dir_heads=('.'); ## <<<<------- This is critically important, when 'D' opt is not used!
+
+               if($each_seq_name=~/(\S+)_\d+\-\d+$/){
+                   $each_seq_name_range=$each_seq_name;
+                   $each_seq_name=$1;
+                   @name_types=($each_seq_name, $each_seq_name_range);
+               }else{
+                   @name_types=($each_seq_name);
+               }
+               #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+               #  Here I take chars from the sequ names, as dirs have fragments of chars
+               #_______________________________________________________________________________
+               for($s=1; $s <= $subdir_char_size ; $s++){  ## here, number 2 indicates, I check single or 2 char sub dir names
+                   $sub_dir_head= substr($seq_names[$j], 0, $s);
+                   push(@poss_sub_dir_heads, "\L$sub_dir_head") if (-d "\L$sub_dir_head" );
+                   push(@poss_sub_dir_heads, "\U$sub_dir_head") if (-d "\U$sub_dir_head" );
+               }
+               #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+               #  Checking all the possible subdirectories to crop all the sso files
+               #_______________________________________________________________________________
+               FOR1: for($p=0; $p <= @poss_sub_dir_heads; $p++){ ## Default has '.' will make things like '././fam_8_8.pbla.gz'
+                    $subd=$poss_sub_dir_heads[$p];               ## Also, the '<=' not '<' cures the same problem.
+                    FOR2 : for($e=0; $e <  @possible_extensions; $e++){
+                         $ext=$possible_extensions[$e];
+                         #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                         #  This makes all the possible lower upper case names
+                         #______________________________________________________
+                         for( $u=0; $u < @U_L_case; $u++){
+                            for($v=0; $v <@name_types; $v++){
+                               $each_seq_name=$name_types[$v];
+                               if($U_L_case[$u]=~/U/){  $each_seq_name="\U$each_seq_name";
+                               }else{                   $each_seq_name="\L$each_seq_name"; }
+
+                               if(-s "$each_seq_name\.$ext"){
+                                    push(@final_files, "$each_seq_name\.$ext" ) ;
+                                    $found_search_prog_exention_used=$ext;
+                                    $found_real_subdir_name=$subd; ## This is to report the name of the actual subd found
+                                    $found_search_prog_exention_used=$ext;
+                                    next FOR0
+                               }elsif(-s "$each_seq_name\.$ext\.gz"){
+                                    push(@final_files, "$each_seq_name\.$ext\.gz" ) ;
+                                    $found_search_prog_exention_used=$ext;
+                                    $found_real_subdir_name=$subd; ## This is to report the name of the actual subd found
+                                    $found_search_prog_exention_used=$ext;
+                                    next FOR0
+                               }else{
+                                    $file_wanted="\.\/$subd\/$each_seq_name\.$ext";
+                                    if(-s $file_wanted){
+                                        push( @final_files, $file_wanted);
+                                        $found_real_subdir_name=$subd; ## This is to report the name of the actual subd found
+                                        $found_search_prog_exention_used=$ext;
+                                        next FOR0
+                                    }elsif(-s "$file_wanted\.gz"){
+                                        push( @final_files, "$file_wanted\.gz");
+                                        $found_search_prog_exention_used=$ext;
+                                        $found_real_subdir_name=$subd; ## This is to report the name of the actual subd found
+                                        next FOR0;
+                                    }
+                               }
+                            }
+                         }
+                    } # FOR2
+               } # FOR1
+               print @final_files, "\n";
+         } # FOR0
+
+         #print "\n# @final_files \n=============> $big_out_msp  \n\n";
+
+         if(@final_files < 1){
+              print "\n# convert_clu_to_msp :LINE no.: ", __LINE__, " ERROR: \@final_files is empty. Serious error\n";
+              print "\n If you have sub dir which have more than 2 chars as names, you may increase the default 2 to 3 in the above\n";
+              next;
+         }
+         $write_each_msp_to_disk='';
+
+         #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+         #  Check if small msp files have already made in previous steps
+         #________________________________________________________________
+         if($final_files[0]=~/(\S+)\.msp/){ ##  concatenate msp into big_msp
+             $search_file_base=$1;
+             print "\n# $search_file_base $found_real_subdir_name $found_search_prog_exention_used\n" if $verbose;
+
+             if($final_files[0]=~/\S\.gz$/){
+                 print "\n# $final_files[0] is gzipped \n";
+                 system("gzip -d  $final_files[0]");
+                 $final_files[0]=~s/\.gz//;
+             }
+             open(BIG_MSP_FILE, ">$big_out_msp");
+             for($y=0; $y< @final_files; $y++){
+                 open(SINGLE_MSP, "$final_files[$y]");
+                 while(<SINGLE_MSP>){
+                     print BIG_MSP_FILE $_;
+                 }
+             }
+             close(BIG_MSP_FILE);
+             close(SINGLE_MSP);
+             push(@written_msp_files, $big_out_msp);
+
+             #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~``
+             # Doing something for L option ($Lean_output)
+             #___________________________________________________
+             if($Lean_output and -d $found_real_subdir_name and $found_search_prog_exention_used){
+                 for($y=0; $y< @seq_names; $y++){
+                     unlink("$found_real_subdir_name\/$seq_names[$y]\.$found_search_prog_exention_used");
+                     unlink("$found_real_subdir_name\/$seq_names[$y]\.$found_search_prog_exention_used\.gz");
+                 }
+             }elsif($Lean_output){
+                 for($y=0; $y< @seq_names; $y++){
+                     unlink("$seq_names[$y]\.$found_search_prog_exention_used");
+                     unlink("$seq_names[$y]\.$found_search_prog_exention_used\.gz");
+                 }
+             }
+         }else{
+             if($write_each_msp_to_disk){
+                  print "\# $0 : going to run open_sso_files with $write_each_msp_to_disk opt\n";
+                  $big_out_msp=${&open_sso_files(\@final_files, $uppercase_seq_name, $write_each_msp_to_disk,
+                                                                          "u=$upper_expect_limit", $new_format, $add_range, $add_range2, $big_out_msp, $over_write)};
+                  if(-s $big_out_msp > 200){  print "\n# $0: SUCCESS to create $big_out_msp :) :) :-) :-) ?\n"; }
+             }else{
+                  print "\n# convert_clu_to_msp: I am running open_sso_files. \n";
+                  @msp_hashes=@{&open_sso_files(\@final_files, $uppercase_seq_name, $write_each_msp_to_disk,
+                                                 "u=$upper_expect_limit", $new_format, $add_range,
+                                                 $add_range2, $big_out_msp, $over_write)};
+                  &write_msp_files(@msp_hashes, $big_out_msp); ## concatenates all the hash ref to one
+             }
+         }
+     }## end of  for($i=0; $i< @clusters; $i++){
+     return(\@written_msp_files);
+}# end of
+
 
 
 

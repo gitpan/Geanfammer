@@ -982,35 +982,34 @@ my ($qdb, $tdb, @qdbcont, $fastaver, $gene, $seq, @genes, %genes, $genes,
 # Usage     : @msp_files=@{&get_all_msp_files};
 # Function  : puts the names of all msp or msp.gz files in the directory and its subdirectories into an array
 # Example   :
-# Keywords  : read_msp_files, make_msp_file_array
+# Keywords  : read_msp_files, make_msp_file_array, get_all_msp_files_in_dir
 # Date      : 19th September 1997
 # Options   :
-# Version   : 1.2
 # Author    : Sarah A. Teichmann, jong@salt2.med.harvard.edu
+# Version   : 1.4
 #--------------------------------------------------------------------------------
 sub get_all_msp_files {
    my (@msp_files_main_final);
    my @msp_files_main=@{&read_file_names_only('.msp','.msp.gz')};
    for(@msp_files_main){
-      if($_=~/cluster\.msp/){ next
+      if($_=~/cluster\.msp/){ next ## xxxx_cluster.msp is the processed file
       }else{ push(@msp_files_main_final, $_) }
    }
    my @dirs=@{&read_dir_names_only('n', '.')};
-   my ($i, $j, @msp_files);
+   my ($i, $j, @msp_files, $file_in_dir, $dir_file);
+   print "\n# (i) Trying to read in msp files in subdir\n";
    for ($i=0; $i<@dirs; $i++){
        my $dir=$dirs[$i];
        unless( -d $dir){
           next;
        }
-       if( -d $dir){
-          chdir($dir);
-       }
+       if( -d $dir){  chdir($dir);  }
 
-       my @msp_files=@{&read_file_names_only('.','msp','msp.gz')};
+       @msp_files=@{&read_file_names_only('.','.msp','.msp.gz')};
        for ($j=0; $j<@msp_files; $j++){
           if($msp_files[$j]=~/cluster\.msp/){ next } ## skipping already existing  20-1_cluster.msp like files
-          my $file_in_dir=$msp_files[$j];
-          my $dir_file="$dir"."/"."$file_in_dir";
+          $file_in_dir=$msp_files[$j];
+          $dir_file="$dir"."/"."$file_in_dir";
           push(@msp_files_dirs, $dir_file);
           next;
        }
@@ -1018,10 +1017,11 @@ sub get_all_msp_files {
        next;
    }
 
-   @msp_files=(@msp_files_main_final, @msp_files_dirs);
-   sort @msp_files;
+   @msp_files=sort (@msp_files_main_final, @msp_files_dirs);
    return (\@msp_files);
 }
+
+
 
 #______________________________________________________________
 # Title     : get_largest_file
@@ -4678,13 +4678,14 @@ sub convert_clu_to_sso_to_msp{
 #              clu_to_sso_to_msp
 # Options   :
 # Category  :
-# Version   : 2.3
+# Version   : 2.4
 #--------------------------------------------------------------------------------
 sub convert_clu_to_msp{
      my($i, $j, $k, $s, $u, $v, $p, $m, $n, $y, @possible_extensions, $single_file_name,
         @seq_names, @final_files, @U_L_case, $file, @file, @name_types,
         @poss_sub_dir_heads, @written_msp_files, $Lean_output, $subdir_char_size,
-        $search_file_base, $found_real_subdir_name, $found_search_prog_exention_used);
+        $search_file_base, $found_real_subdir_name, $found_search_prog_exention_used,
+        $no_of_ext_to_be_checked, $extension_type_found);
 
      $subdir_char_size=2; # default
      #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -4710,7 +4711,7 @@ sub convert_clu_to_msp{
      &show_hash(\%clus) if $verbose;
      @possible_extensions=('msp', 'msp.gz', 'msso', 'msso.gz','fsso', 'pbla', 'pbla.gz',
                                   'ssso', 'fso', 'out', 'prot.sso', 'prot.ts');
-     @U_L_case=('\U', '\L');
+     @U_L_case=('\U', '\L', ' ');  ## !! the ' ' is necessary
 
      #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
      # Making each SINGLE linkage clu to MSP file format to be ready for divclus
@@ -4737,6 +4738,9 @@ sub convert_clu_to_msp{
          $num_of_seq_member=@seq_names=split(/ +/, $clus{$clusters[$i]}); # @seq_names has (HIU001, HI002, HI333, MJ111, etc)
          print "# $0: convert_clu_to_msp: No. of seq member=$num_of_seq_member after split \n" if $verbose;
 
+         $no_of_ext_to_be_checked=@possible_extensions;
+         $extension_type_found=0;
+
          FOR0: for($j=0; $j < @seq_names; $j++){
                my($sub_dir_head, $file_name_low, $file_name_up, $file_name_prot_low,
                   $file_name_prot_up, $file_name_low_gz, $file_name_up_gz,
@@ -4756,16 +4760,20 @@ sub convert_clu_to_msp{
                #_______________________________________________________________________________
                for($s=1; $s <= $subdir_char_size ; $s++){  ## here, number 2 indicates, I check single or 2 char sub dir names
                    $sub_dir_head= substr($seq_names[$j], 0, $s);
-                   push(@poss_sub_dir_heads, "\L$sub_dir_head") if (-d "\L$sub_dir_head" );
-                   push(@poss_sub_dir_heads, "\U$sub_dir_head") if (-d "\U$sub_dir_head" );
+                   unshift(@poss_sub_dir_heads, "\L$sub_dir_head") if (-d "\L$sub_dir_head" );
+                   unshift(@poss_sub_dir_heads, "\U$sub_dir_head") if (-d "\U$sub_dir_head" );
                }
                #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                #  Checking all the possible subdirectories to crop all the sso files
                #_______________________________________________________________________________
+
                FOR1: for($p=0; $p <= @poss_sub_dir_heads; $p++){ ## Default has '.' will make things like '././fam_8_8.pbla.gz'
+
                     $subd=$poss_sub_dir_heads[$p];               ## Also, the '<=' not '<' cures the same problem.
-                    FOR2 : for($e=0; $e <  @possible_extensions; $e++){
+                    print "# (i) Checking sub dir $subd\n";
+                    FOR2 : for($e=$extension_type_found; $e < $no_of_ext_to_be_checked; $e++){
                          $ext=$possible_extensions[$e];
+                         print "      (i) \$ext at $subd is  $ext\n";
                          #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                          #  This makes all the possible lower upper case names
                          #______________________________________________________
@@ -4773,16 +4781,21 @@ sub convert_clu_to_msp{
                             for($v=0; $v <@name_types; $v++){
                                $each_seq_name=$name_types[$v];
                                if($U_L_case[$u]=~/U/){  $each_seq_name="\U$each_seq_name";
-                               }else{                   $each_seq_name="\L$each_seq_name"; }
+                               }elsif($U_L_case[$u]=~/L/){ $each_seq_name="\L$each_seq_name";
+                               }else{ $each_seq_name=$each_seq_name }
+
+                               print "          (i) $each_seq_name\n";
 
                                if(-s "$each_seq_name\.$ext"){
                                     push(@final_files, "$each_seq_name\.$ext" ) ;
+                                    $extension_type_found=$e; $no_of_ext_to_be_checked=$e+1;
                                     $found_search_prog_exention_used=$ext;
                                     $found_real_subdir_name=$subd; ## This is to report the name of the actual subd found
                                     $found_search_prog_exention_used=$ext;
                                     next FOR0
                                }elsif(-s "$each_seq_name\.$ext\.gz"){
                                     push(@final_files, "$each_seq_name\.$ext\.gz" ) ;
+                                    $extension_type_found=$e; $no_of_ext_to_be_checked=$e+1;
                                     $found_search_prog_exention_used=$ext;
                                     $found_real_subdir_name=$subd; ## This is to report the name of the actual subd found
                                     $found_search_prog_exention_used=$ext;
@@ -4791,11 +4804,14 @@ sub convert_clu_to_msp{
                                     $file_wanted="\.\/$subd\/$each_seq_name\.$ext";
                                     if(-s $file_wanted){
                                         push( @final_files, $file_wanted);
+                                        $extension_type_found=$e; $no_of_ext_to_be_checked=$e+1;
+                                        print "             (i) $file_wanted is found with $extension_type_found\n";
                                         $found_real_subdir_name=$subd; ## This is to report the name of the actual subd found
                                         $found_search_prog_exention_used=$ext;
-                                        next FOR0
+                                        last FOR1;
                                     }elsif(-s "$file_wanted\.gz"){
                                         push( @final_files, "$file_wanted\.gz");
+                                        $extension_type_found=$e; $no_of_ext_to_be_checked=$e+1;
                                         $found_search_prog_exention_used=$ext;
                                         $found_real_subdir_name=$subd; ## This is to report the name of the actual subd found
                                         next FOR0;
@@ -4805,13 +4821,13 @@ sub convert_clu_to_msp{
                          }
                     } # FOR2
                } # FOR1
-               print @final_files, "\n";
+               print "                   (i) \@final_files are: @final_files \n";
          } # FOR0
 
-         #print "\n# @final_files \n=============> $big_out_msp  \n\n";
+         print "\n# @final_files \n=============> $big_out_msp  \n\n";
 
          if(@final_files < 1){
-              print "\n# convert_clu_to_msp :LINE no.: ", __LINE__, " ERROR: \@final_files is empty. Serious error\n";
+              print "\n# (E) convert_clu_to_msp :LINE no.: ", __LINE__, " ERROR: \@final_files is empty. Serious error\n";
               print "\n If you have sub dir which have more than 2 chars as names, you may increase the default 2 to 3 in the above\n";
               next;
          }
@@ -4871,6 +4887,8 @@ sub convert_clu_to_msp{
      }## end of  for($i=0; $i< @clusters; $i++){
      return(\@written_msp_files);
 }# end of
+
+
 
 
 #________________________________________________________________________________
@@ -5995,6 +6013,8 @@ sub show_array{
 	print "\n"; #### This is necessary to distinguish different arrays.
   }
 }
+
+
 #________________________________________________________________________________
 # Title     : msp_single_link_hash
 # Usage     : %hash=%{&msp_single_link_hash(\@msp_files, E-value);
@@ -6007,15 +6027,15 @@ sub show_array{
 # Options   :
 # Author    : Sarah A. Teichmann with thanks to Alex Bateman,
 #               sat@mrc-lmb.cam.ac.uk, jong@salt2.med.harvard.edu
-# Version   : 1.4
+# Version   : 1.5
 #--------------------------------------------------------------------------------
-sub msp_single_link_hash{
+sub msp_single_link_hash {
     my (@msp_files, $i, $j, $k, $e_val, $gene_1, $gene_2,
         @mspcont, $gene_1, $gene_2, $E_cut, %hash, $array);
 
     $E_cut=0.001; ## Default Eval cut
 
-    if( @_ =>2 and ref($_[0]) eq 'ARRAY'){
+    if( @_==2 and ref($_[0]) eq 'ARRAY'){
         @msp_files=@{$_[0]};
         $E_cut=${$_[1]} || $_[1];
     }else{
@@ -6034,7 +6054,7 @@ sub msp_single_link_hash{
 
         $array++;
         for ($j=0; $j<@mspcont; $j++){
-            if ($mspcont[$j]=~/^\d+ +(\S+) +\S+ +\d+ +\d+ +(\S+) +\d+ +\d+ +(\S+)/){
+            if ($mspcont[$j]=~/^\S+ +(\S+) +\S+ +\d+ +\d+ +(\S+) +\d+ +\d+ +(\S+)/){
                 $e_val=$1;
                 unless($e_val<=$E_cut){next;}
                 $gene_1=$2;
@@ -6042,8 +6062,9 @@ sub msp_single_link_hash{
                 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
                 # Removing REGION information as Sarah's can not handle regions
                 #_______________________________________________________________
-                if($gene_1=~/(\S+)_\d+\-\d+/){ $gene_1=$1 }
-                if($gene_2=~/(\S+)_\d+\-\d+/){ $gene_2=$1 }
+                if($gene_1=~/^(\S+)_\d+\-\d+/){ $gene_1=$1 }
+                if($gene_2=~/^(\S+)_\d+\-\d+/){ $gene_2=$1 }
+
                 if ($gene_1 eq $gene_2){next;}
                 if ( ! $hash{"$gene_1"} and $gene_1){
                     $hash{"$gene_1"}="$array";
@@ -6073,9 +6094,11 @@ sub msp_single_link_hash{
                 next;
             }else{ next; }
         }
-    } ## enf of for loop
+        next;
+    }
     return (\%hash);
 } ## msp_single_link_hash
+
 
 
 #________________________________________________________________________

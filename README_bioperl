@@ -2,7 +2,7 @@
                            Bio Perl Subroutine library
 
 
- Bio.pl (and Bio.pm made by convert_pl_to_pm.pl) is a Perl5 module for Bioinformatics.
+ Bioinf.pl (and Bioinf.pm made by convert_pl_to_pm.pl) is a Perl5 module for Bioinformatics.
 
  Please look at the Headbox documentation down below for usage.
 
@@ -23,11 +23,12 @@ References
    ftp://ftp.mrc-lmb.cam.ac.uk/pub/genomes/jong/Software/Bio_lib
    ftp://cyrah.med.harvard.edu/pub/
 
-
 #______________________________________________________________________
-# Title     : Bio (for Bio Perlogical) or bio_lib.pl
-# Usage     : require "Bio.pl"; ##<-- This is very slow, so you'd better
-#             use Bio;   <-- When you have Bio.pm module installed
+# Title     : Bio::Bioinf (for Bio Perlogical) or bio_lib.pl
+# Usage     : require "Bioinf.pl"; ##<-- This is very slow, so you'd better
+#             use Bio::Bioinf;   <-- When you have Bioinf.pm module installed under Bio
+#              or
+#             use Bioinf;
 #
 #             or, copy the subroutines in your prog. or make a smaller lib files
 #               which are classified according to functions(like, Bio_Seq.pl
@@ -56,11 +57,11 @@ References
 #                 to see how they really work, pls contact me( A Biomatic )
 #                 For example, a file called  'handle_arguments.pl' exists to
 #                 test the subroutine 'handle_arguments'. Usually you can find them
-#                 in  http://cyrah.med.harvard.edu/Bio.pl.html
+#                 in  http://cyrah.med.harvard.edu/Bioinf.pl.html
 #
-# Example   : require "Bio.pl"; BUT, I recommand you take subroutines out and
+# Example   : require "Bioinf.pl"; BUT, I recommand you take subroutines out and
 #             use it directly or modify in your programs.
-#             use Bio;
+#             use Bioinf;
 #
 # Warning   : For the enhancement of Biology, Biomatics, and Science.
 #             This is a development companion.
@@ -69,12 +70,13 @@ References
 #             it can also be used for general purpose file handling stuff.
 #             File, Array, Hash,... are my classification items.
 # Keywords  : Biology, perl library, sequence handling lib
-# Options   : nothing (used as subroutine library or as Bio.pm module)
+# Options   : nothing (used as subroutine library or as Bioinf.pm module)
 #
 # Author    : J. Park, Jason Johnson, Sarah Teichmann, Alex Bateman,
 #               Astrid Reinhardt, and anybody contributed.
 #               jong@salt2.med.harvard.edu
-# Category  : Bio
+# Category  : Bioinf
 # Version   : 2.0    (Aug/1/1998)
 #------------------------------------------------------------------
+
 
