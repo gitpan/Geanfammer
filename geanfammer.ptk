@@ -1,10 +1,15 @@
 #!/usr/bin/perl
 # Last Update by /gn0/jong/Perl/update_subroutines.pl: Mon Jan 26 08:30:08 GMT 1998
 #________________________________________________________________________________
-# Title     : geanfammer.pl
-# Usage     : geanfammer.pl DATABASE(or GENOME) [e= ]
+# Title     : geanfammer.ptk
+# Usage     : geanfammer.ptk
 #
-# Function  : Creates a domain level clustering file from a given FASTA format
+#
+# Function  : This is GUI (Tk) fronthead of an old version of geanfammer
+#             Please do not use for research. This is just for anybody who
+#              wants to develop PerlTk version of geanfammer
+#
+#             Creates a domain level clustering file from a given FASTA format
 #              sequence DB. It has been used for complete genome sequence analysis.
 #
 #                   ------------ USAGE INFORMATION -------------------

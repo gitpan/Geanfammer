@@ -6,18 +6,23 @@
 
                       Cyrus Chothia group. MRC, Cambridge
 
-
+       Ref: http://cyrah.med.harvard.edu/~jong/divclus_paper_abstract.html
 
 
 Version.
 
-  "geanfammer_suite_1.4.tar.gz"   16th/Aprial/98
+  "Geanfammer_V1.5.tar.gz"   8th/Aug/98
+   1.5 runs PSI-blast
+   1.5 had a bug in convert_bla_to_msp and now it safely uses PSI-Blast output
+   1.5 uses 'formatdb' of Blast program to create DB automatically(when
+       formatdb is in executable path
+   1.5 was put in ftp dir of LMB,  1.5 is also found in major CPAN sites.
+
+  "geanfammer_suite_1.4.tar.gz"   6th/July/98
    1.4 was put in ftp dir of LMB
-     1.4 was a bug fix version. Helped mainly Lily Fu (lily@tigr.org)
-     1.4 is also found in major CPAN sites.
-
+   1.4 was a bug fix version. Helped mainly Lily Fu (lily@tigr.org)
+   1.4 is also found in major CPAN sites.
   "geanfammer_suite_1.3.tar.gz"
-
    1.3    was put in the ftp dir of LMB on 25th Jan. 1998
    1.0.1. was put into the ftp directory of LMB on 14th Oct. 1997.
    (ftp://ftp.mrc-lmb.cam.ac.uk/genomes/Software/Geanfammer)
@@ -96,7 +101,9 @@ Test Run
 
    http://www.mrc-lmb.cam.ac.uk/genomes/msp_file_format_example.gif
 
+
 Real Genome TEST!!
+
    We have included the smallest complete Mycoplasma genitalium genome (MG.fa)
    in the distribution to play with.
    According to your choice of E value threshold geanfammer should produce
@@ -120,7 +127,7 @@ Geanfammer Module
    your program. All the subroutines in geanfammer can also be found in CPAN site:
 
    ftp://unix.hensa.ac.uk/mirrors/perl-CPAN/modules/by-authors/Jong_Park/
-
+   http://www.perl.com/CPAN-local//modules/by-category/23_Miscellaneous_Modules/Bio/
 
 Installation.
 
@@ -135,7 +142,7 @@ Installation.
       the path to your own.
 
    2. Copy geanfammer.pl and all the accompanied .pl files to your execution
-      path for example  /usr/local/bin  or  /usr/people/John_Smith/bin  etc.
+      path for example  /usr/bin/ /usr/local/bin  or /usr/people/John_Smith/bin  etc.
 
    That is all.
 
@@ -174,6 +181,10 @@ Copyright problem.
    The codes in the package are under the same term of Perl itself. This essentially
    means, as long as you respect the developers time and work, it is freely
    available.
+   If you are in a company, please contact Sarah or Jong to use it for
+   commercial purpose. We encourage people use commercially to help people
+   help others in domain finding. We nominally charge to provide the rights
+   to use the package.
 
 
 Acknowledgement.
@@ -186,12 +197,42 @@ Acknowledgement.
 
 Appendix.
 
-   Following is the header of the program geanfammer.pl.
+    BIOINFORMATICS, Volume 14, Issue 2: March 1998.
 
+    DIVCLUS: an automatic method in the GEANFAMMER package that finds homologous domains in single- and
+    multi-domain proteins
+
+    Jong Park1,2 and Sarah A. Teichmann1
+
+    1MRC Laboratory of Molecular Biology and 2Centre for Protein Engineering, Hills Road, Cambridge CB2 2QH, UK
+
+    Abstract
+
+    Motivation: Large-scale determination of relationships between the proteins produced by genome sequences is now common. All protein sequences are matched and
+    those that have high match scores are clustered into families. In cases where the proteins are built of several domains or duplication modules, this can lead to misleading
+    results. Consider the very simple example of three proteins: 1, formed by duplication modules A and B; 2, formed by duplication modules B[prime] and C; and 3, formed
+    by duplication modules C[prime] and D. Duplication modules B and B[prime] are homologous, as are C and C[prime]. Matching the sequences of 1, 2 and 3 followed by
+    simple single-linkage clustering would put all three in the same family, even though proteins 1 and 3 are not related. This is because the different parts of 2 match 1 and 3.
+    This paper describes a procedure, DIVCLUS, that divides such complex clusters of partially related sequences into simple clusters that contain only related duplication
+    modules. In the example just given, it would produce two groups of sequences: the first with domains B of sequence 1 and B of sequence 2, and the second with domain
+    C of sequence 2 and C of sequence 3. DIVCLUS is part of a package called GEANFAMMER, for GEnome ANalysis and protein FAMily MakER. The package
+    automates the detection of families of duplication modules from a protein sequence database.
+    Results: DIVCLUS has been applied to the division of single-linkage clusters generated from the protein sequences of six completely sequenced bacterial genomes. Out
+    of 12 013 genes in these six genomes, 4563 single- and multi-domain sequences formed 1071 complex clusters. Application of the DIVCLUS program resolved these
+    clusters into 2113 clusters corresponding to single duplication modules.
+    Availability: The perl5 program and its documentation are available at the following address: http://www.mrc-lmb.cam.ac.uk/genomes/ and by anonymous ftp at
+    ftp.mrc-lmb.cam.ac.uk in the directory /pub/genomes/Software/.
+    Contact: sat@mrc-lmb.cam.ac.uk; jong@mrc-lmb.cam.ac.uk
+
+
+
+Following is the header of the program geanfammer.pl.
 
 #________________________________________________________________________
 # Title     : geanfammer.pl
+#
 # Usage     : geanfammer.pl DATABASE(or GENOME) [e= ] [f=]
+#                  * look at the Example section down below!
 #
 # Function  : Creates a domain level clustering file from a given
 #              FASTA format sequence DB. It has been used for complete
@@ -201,7 +242,7 @@ Appendix.
 #             The parameters you put are important for the meaningful
 #               protein family maker.
 #             The most important one is the E and e options (Mostly,
-#               they can have same value).
+#               they will have same value).
 #             Large E is for setting the threshold for the single
 #               linkage clustering.
 #             This means, any sequence hit BELOW the threshold
@@ -218,7 +259,7 @@ Appendix.
 #              WRONGLY by single linkage.
 #             At this stage, the e value is irrelevant to E value
 #              and you can set a higher or lower one. Or you can set
-#              the same as E.
+#              the same as E(just set the 2 the same!)
 #
 #             Rough guide from our experience for E and e values:
 #              We know that with 1000 sequence database, 0.01
@@ -227,7 +268,7 @@ Appendix.
 #              With 180,000, 0.081 gave us less than 1% error.
 #             Evalue of FASTA and SSEARCH is DEPENDENT on DB size,
 #              so you need to play a little bit to know the best
-#              E value for your database or genome.
+#              E value for your OWN database or genome.
 #             The best approach is :
 #               1) You run geanfammer.pl with any of your target DB
 #                  with certain E value you like
@@ -242,6 +283,10 @@ Appendix.
 #                  is accompanied in the package) with different
 #                  Evalues. Divclus will not run any search algorithm
 #                  etc, so it can be done fairly quickly.
+#
+#          * Most of the subroutines are found in Bio.pl or Bio.pm
+#            Bioperl library for perl.
+#
 #
 # Example   :geanfammer.pl E_gnme.fa             # simplest form
 #            geanfammer.pl E_gnme.fa a=ssearch   # use SSEARCH
@@ -273,9 +318,9 @@ Appendix.
 #             N
 #             s
 #             m
-#             v
+#             v  for debugging purpose. It says more to you while running
 #             z
-#             D
+#             D  for making subdir like ./MG or /FA in PWD. For clean PWD
 #             L  for Lean output(removes all the intermediate
 #                                     outputs to save space)
 #             u  for making separate summary file (redundant now)
@@ -285,42 +330,45 @@ Appendix.
 #             k= for k-tuple value. default is 1 (ori. FASTA prog.
 #                                                   default is 2)
 #             a= for choosing either fasta or ssearch algorithm
+#                    You can set absolute path like (/usr/bin/fasta)
 #             E= for Evalue cutoff for single linkage clustering
 #                    $E_cut_main
 #             e= for Evalue cutoff for divide_clusters subroutine.
 #             u=
 #             l=
 #             d=
+#             T= for minimal domain size (default is 30 aa residue)
 #
 #   !! Do not remove the following lines down to # Author line.
-#                This program parses them
+#                This program parses them!!
 #
-#  $Lean_output=L by L -L
-#  $dynamic_factor=y by y Y -y -Y
-#  $over_write=o by o -o
-#  $create_sso_file=c by c -c
-#  $k_tuple= by k=
-#  $upper_expect_limit= by u=
-#  $lower_expect_limit= by l=
-#  $algorithm= by a=
-#  $No_processing=N by N -N
-#  $single_msp=s by s -s
-#  $sequence_db_fasta= by DB=
-#  $query_file= by File=
-#  $machine_readable=M by M -M
-#  $make_subdir_out=D by D
-#  $make_subdir_gzipped=d by d -d
+#  $factor=                 by f=     ## overlapping factor
+#  $Lean_output=L           by L -L
+#  $dynamic_factor=y        by y  Y -y -Y
+#  $over_write=o            by o -o
+#  $create_sso_file=c       by c -c
+#  $k_tuple=                by k=
+#  $upper_expect_limit=     by u=
+#  $lower_expect_limit=     by l=
+#  $algorithm=              by a=
+#  $No_processing=N         by N -N
+#  $single_msp=s            by s -s
+#  $sequence_db_fasta=      by DB=
+#  $query_file=             by File=
+#  $machine_readable=M      by M -M
+#  $make_subdir_out=D       by D
+#  $make_subdir_gzipped=d   by d -d
 #  $direct_MSP_conversion=m by m -m
-#  $verbose=v by v -v
-#  $sub_dir_size= by d=
+#  $verbose=v               by v -v
+#  $sub_dir_size=           by d=
 #  $Evalue_cut_single_link= by E=
-#  $Evalue_cut_divclus= by e=
-#  $optimize=z by z -z
+#  $Evalue_cut_divclus=     by e=
+#  $optimize=z              by z -z
 #  $make_separate_summary=u by u -u
+#  $length_thresh=          by T=      # minimal sequence domain length threshold
 #
 # Author    : Sarah A Teichmann, Jong Park, sat@mrc-lmb.cam.ac.uk,
 #                                      jong@salt2.med.harvard.edu
-# Version   : 1.3
+# Version   : 1.7
 #------------------------------------------------------------------
-
 

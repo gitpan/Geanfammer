@@ -1,5 +1,7 @@
-# These are a lib for some used and unused subroutines in geanfammer.
-# B.pl is a very extensive lib file you can copy and paste subroutines
+# This is a lib made by Sarah Teichmann
+#  Bio.pl and Bio.pm file has most of the subs here, so you can
+#   try to use them as they are often more updated.
+#
 
 
 #_______________________________________________________________________________
@@ -15,7 +17,7 @@
 # Package   :
 #-------------------------------------------------------------------------------
 sub do_fasta_sequence_search{
-my ($qdb, $tdb, @qdbcont, $fastaver, $gene, $seq, @genes, %genes, $genes, $out, $tmp, $sw_score, $e_val, @tmpcontent, $i, $dir, @dir);
+    my ($qdb, $tdb, @qdbcont, $fastaver, $gene, $seq, @genes, %genes, $genes, $out, $tmp, $sw_score, $e_val, @tmpcontent, $i, $dir, @dir);
     $qdb=$_[0];
     open (QDB, "$qdb");
     @qdbcont=<QDB>;
@@ -362,6 +364,7 @@ sub sort_by_cluster_size{
 }
 
 
+
 #________________________________________________________________________
 # Title     : parse_arguments
 # Usage     : &parse_arguments; or  (file1, file2)=@{&parse_arguments};
@@ -372,88 +375,373 @@ sub sort_by_cluster_size{
 #             setttings. This program reads itself and parse the arguments
 #             according to the setting you made in this subroutine or
 #             option table in anywhere in the program.
+#             It also imports the ENV variables to your program.
+#
 # Example   : &parse_arguments(1);
 #             @files=@{&parse_arguments(1)};
 # Warning   : HASH and ARRAY mustn't be like = (1, 2,3) or (1,2 ,3)
-# Keywords  :
+# Keywords  : pass_arguments
 # Options   : '0'  to specify that there is no argument to sub, use
 #              &parse_arguments(0);
 #             parse_arguments itself does not have any specific option.
 #             '#' at prompt will make a var  $debug set to 1. This is to
 #              print out all the print lines to make debugging easier.
+#
 #             'e=xxxx' for filtering input files by extension xxxx
 #
 # Returns   : Filenames in a reference of array
 #             and input files in an array (file1, file2)=@{&parse_arguments};
 # Argument  : uses @ARGV
-# Version   : 1.7
+# Category  :
+# Version   : 2.1
 #--------------------------------------------------------------------
 sub parse_arguments{
-  my( $c, $d, $f, $arg_num, $option_table_seen, $n, $option_filtered,
-		$option_table_example, $input_line, @input_files,
-		$extension);
-  #"""""""""""""""""""""""""""""""""""""""""""""""""""""""
-  #   Checks if there were arguments
-  #""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-  if( @ARGV < 1 ){ #<-- If Argument is not given at prompt
-	  for(@_){
-		 if($_ eq '0'){
-			 last;
-		 }else{
-			 print "\n \"$0\" requires at least one Argument, suiciding.\n\n";
-			 print chr(7); #<-- This is beeping
-			 print "  To get help type \"$0  h\"\n\n\n ";
-			 exit;
-		 }
-	  }
-  }
-  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  #  Checking some input options like 'e=txt' for extension filtering
-  #_____________________________________________________________________
-  for($i=0; $i< @_; $i++){
-	  if($_[$i]=~/e=(\S+)/){
-		 $extension=$1;
-	  }
-  }
+    my( $c, $d, $f, $arg_num, $option_table_seen, $n, $option_filtered,
+        $option_table_example, $input_line, @input_files,
+        $extension);
 
-  #""""""""""""""""""""""""""""""""""""""""""""""""""
-  #   Some DEFAULT $debug variables for debugging purposes
-  #""""""""""""""""""""""""""""""""""""""""""""""""""
-  &set_debug_option;
-  #""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-  #  If there is only one prompt arg. and is [-]*[hH][elp]*, it calls
-  #   &default_help and exits
-  #""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-  if( ( @ARGV == 1 ) && ($ARGV[0] =~ /^[\-]*[hH\?][elp ]*$/) ){
-		&default_help;
-		exit;
-  }
-  for($f=0; $f < @ARGV; $f++){
-	 if( $ARGV[$f] =~ /\w+[\-\.\w]+$/ and -f $ARGV[$f] ){
-		 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		 # When extension is defined, filter files by it
-		 #____________________________________________
-		 if($extension){
-			 if($ARGV[$f]=~/\S\.$extension/){
-				 push(@input_files, $ARGV[$f] );
-			 }else{ next }
-		 }else{
-			 push(@input_files, $ARGV[$f] );
-			 next;
-		 }
-	 }
-  }
+    &import_ENV_vars; # this enables  $PDB40D automatically assigns the shell var value of $ENV{'PDB40D'}
 
-  #""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-  #     Reading the running program script
-  #"""""""""""""""""""""""""""""""""""""""""""""""""""""""
-  &assign_options_to_variables;
-  if($HELP == 1){ &default_help }
-  return(\@input_files);
+    #"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    #   Checks if there were arguments
+    #_______________________________________________________
+    if( @ARGV < 1 ){ #<-- If Argument is not given at prompt
+        for(@_){
+            if($_ eq '0'){ ## this means, parsearguments do not need any argus. So no need to parse anything
+                    last;
+            }else{
+                    print "\n \"$0\" requires at least one Argument, suiciding.\n\n";
+                    print chr(7); #<-- This is beeping
+                    print "  To get help type \"$0  h\"\n\n\n ";
+                    exit;
+            }
+        }
+    }
+    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    #   Some DEFAULT $debug variables for debugging purposes
+    #__________________________________________________________
+    &set_debug_option;
+
+    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    #  If there is only one prompt arg. and is [-]*[hH][elp]*, it calls
+    #   &default_help and exits
+    #___________________________________________________________________
+    if( ( @ARGV == 1 ) && ($ARGV[0] =~ /^[\-]*[hH\?][elp ]*$/) ){
+          &default_help;
+          exit;
+    }
+
+    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    #  Checking some input options like 'e=txt' for extension filtering
+    #_____________________________________________________________________
+    for($i=0; $i< @_; $i++){
+        if($_[$i]=~/e=(\S+)/){
+                    push(@extension, $1);
+            }elsif($_[$i]=~/^[\-]?r$/){ ## reversing file order in return stage
+            $reverse_out_file_name_order='r';
+        }
+    }
+
+
+    for($f=0; $f < @ARGV; $f++){
+         if( $ARGV[$f] =~ /\w+[\-\.\w]+$/ and -f $ARGV[$f] ){
+              #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+              # When extension is defined, filter files by it
+              #____________________________________________
+              if(@extension > 0){
+                  for($e=0; $e < @extension; $e++){
+                              $extension=$extension[$e];
+                              if($ARGV[$f]=~/\S\.$extension/){
+                                      push(@input_files, $ARGV[$f] );
+                              }else{ next }
+                      }
+              }else{
+                      push(@input_files, $ARGV[$f] );
+                      next;
+              }
+         }
+    }
+
+    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    #     Reading the running program script
+    #_______________________________________________________
+    &assign_options_to_variables;
+    if($HELP == 1){ &default_help }
+    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # reverse order if 'r' opt is set
+    #_____________________________________________
+    if($reverse_out_file_name_order){
+        @input_files=reverse(@input_files);
+    }
+    return(\@input_files);
+}
+
+
+#________________________________________________________________________
+# Title     : assign_options_to_variables
+# Usage     : &assign_options_to_variables(\$input_line);
+# Function  : Assigns the values set in head box to the variables used in
+#             the programs according to the values given at prompt.
+#             This produces global values.
+#             When numbers are given at prompt, they go to @num_opt
+#              global variable. %vars global option will be made
+#
+# Example   : When you want to set 'a' char to a variable called '$dummy' in
+#             the program, you put a head box commented line
+#             '#  $dummy    becomes  a  by  -a '
+#             Then, the parse_arguments and this sub routine will read the head
+#             box and assigns 'a' to $dummy IF you put an argument of '-a' in
+#             the prompt.
+# Warning   : This is a global vars generator!!!
+# Keywords  :
+# Options   : '#' at prompt will make a var  $debug set to 1. This is to
+#              print out all the print lines to make debugging easier.
+# Returns   : Some globaly used variables according to prompt options.
+#             @num_opt,
+#
+# Argument  : None.
+# Version   : 2.8
+#--------------------------------------------------------------------
+sub assign_options_to_variables{
+    my($i, %vars, $j, $op, $z, $n, $symb, $value, $var, %val, @val, $ARG_REG,
+           $option_table_example, @input_options, $first_border_and_title, $sym, @arg);
+
+    #""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    #      Defining small variables for option table reading
+    #________________________________________________________________________
+    my($g)='gets';                my($if)='if';
+    my($is)='is';                 my(@input_files);
+    my($o)='or';   my(@arguments) = sort @ARGV;
+
+    #"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    #  Assigning global arguments(@num_opt, %vars) variables
+    #_______________________________________________________________
+    for($i=0; $i< @arguments; $i++){
+         print "\n# \"$arguments[$i]\"";
+         if(($arguments[$i]=~/^(\-?\d+[\.\d+]?)$/)&&   ### it mustn't be a file
+             ( !(-f $arguments[$i]) ) ){                ### getting NUM opt
+             push(@num_opt, $1);
+         }elsif( $arguments[$i]=~/^(\S+)=(\S+)$/){
+             $vars{$1}=$2;
+             print "\n# (1) assign_options_to_variables: Your variable option for \"$1\" is \"$2\"\n";
+         }elsif( $arguments[$i]=~/^(\S+)=[\'\"]([ \S]+)[\'\"]$/){ # just in case Shell fails
+             $vars{$1}="$2";
+         }elsif( $arguments[$i]=~/^(\S+)=([ \S]+)$/){
+             $vars{$1}="$2";
+         }
+    }
+
+
+    #""""""""""""""""""""""""""""""""""""""""""""""""""
+    #   Some DEFAULT $debug variables for debugging purposes
+    #__________________________________________________________
+    &set_debug_option;
+
+    #"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    #   The main processing of self
+    #_______________________________________________________________
+    open(SELF, "$0");    ## opens the program you ran to get the options table.
+    while(<SELF>){
+
+       if( $first_border_and_title > 5 ){  ## This is to make it read only the first headbox.
+            last;                            #  $first_border_and_title is an incremental counter.
+       }elsif( /^ *#[_\*\-]{15,}$/ and /^ *# *[Tt][itle]*[ :]*/ ){
+            $first_border_and_title++;
+            print __LINE__, "# assign_options_to_variables : Title line found\n" if $debug eq 1;
+       }elsif(/^ {0,5}#[\t ]{1,50}([\$\%\@].+)$/){
+            $op = $1;  ## $op is for the whole input option line which has $xxxx, @xxx, %xxxx format
+            $op =~ s/^(\W\w+.+)(\s+\#.*)$/$1/;  ## This is removing any comments in the line.
+            #"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+            ## matching the following line input format.
+            ## $av_sc_segment     becomes    a  by  a  # To smooth the SC rates. Gets the averages of
+            ## $ARG_REG is for arguments regular expression variable.
+            ##  This reg. exp. matches = 'a or A or E or e' part
+            ##  which represents alternative prompt arguments possibilities. \=$b$g$is$e$set
+            #"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+            #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            # These are optional argument flag like (-a as well as a)
+            #__________________________________________________________
+            $ARG_REG ='(\S*) *[or=\,]* *(\S*) *[=or\,]* *(\S*) *[=or\,]* *(\S*) *[=or\,]* *(\S*)';
+
+            if(#$op=~/^([\$\@\%])([\w\-]+)[\t ]{0,25}[=|$g|$is]([\t ]+)[bB]y +$ARG_REG/
+               #or
+               $op=~/^([\$\@\%])([\w\-]+)[\t ]{0,25}[=|$g|$is][\t ]*[\$\@\%]?(\S*) *[bB]y +$ARG_REG/){
+                                            ## $sym     $var        becomes          a [$a...]       by       a -a -A
+                 my $sym = $1;  #### The symbols like ($, @, %), '$' in the above.
+                 my $var = $2;  #### Actual variable name 'var' from $var, 'av_sc_segment' in the above.
+                 my $val = $3;  #### The becoming value  first 'a' in the above.
+                 my @arg = ($4, $5, $6, $7, $8);  ## The alternative prompt arguments, second 'a' in the above..
+                 print "\n $sym $var $val \n" if $debug==1;
+                 print "\n \@arg are @arg \n" if $debug==1;
+
+                 #""""""""""""""""""""""""""""""""""""""""""""""""""""
+                 #  Going through the PROMPT args.
+                 #""""""""""""""""""""""""""""""""""""""""""""""""""""
+                 for($z=0; $z < @arguments; $z++){     ## $arguments[$z]  is from @ARGV
+                      print "\n# Prompt:  \"$arguments[$z]\"\n" if $debug;
+                      if($arguments[$z]=~/^\-\w+$/){
+                           $arguments[$z] =~ s/\-//;
+                      }
+                      for ($i=0; $i < @arg; $i ++ ){
+                           if( ("$arg[$i]" eq "$arguments[$z]" )&& ($arg[$i] !~ /\=/)
+                               && ($sym eq '$') ){
+                               ${"$var"}="$val";
+                               if($debug == 1){
+                                       print __LINE__," \$${var} is set to \"$1\"\n";
+                               }
+
+                           }#'''''''''''''''' $arg = by s=  syntax ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                           elsif( ( $arg[$i] =~ /^(\w+) *\=/ ) &&
+                               ( $arguments[$z] =~ /^${1}= *([ \S]+)$/) &&  ## NOTE  '[ \S]+' not \S+
+                               ( $sym eq '$') ){
+                                 ${"$var"}="$1";
+                                 print "\n# I am assigning $1 to $var\n";
+                                 if($debug eq 1){ print __LINE__,"\$${var} is set to \"$1\"\n";  }
+                           }
+                      }
+                 }
+             }
+          }
+     }
 }
 
 #___________________________________________________________________
-# Title     : sso_to_msp
+# Title     : convert_sso_to_msp
+# Usage     : &convert_sso_to_msp(@ARGV, $single_out_opt);
+# Function  : This takes sso file(s) and produces MSP file. It
+#             concatenate sso file contents when more than one
+#             sso file is given.
+# Example   : &convert_sso_to_msp(@ARGV, 'OUT.msp', $single_out_opt);
+# Warning   : This capitalize all the input file names when
+#              producing xxxxx.msp. xxxxx.sso -> XXXX.sso
+# Keywords  :
+# Options   : _  for debugging.
+#             #  for debugging.
+#             v  for showing the MSP result to screen
+#             s  for making single MSP file for each sso file
+#                    as well as big MSP file which has all sso
+#             u= for upper expectation value limit
+#             l= for lower expect val limit
+#             s= for single file name input eg. "s=xxxxx.msp"
+#             n  for new format (msp2 format)
+#             r  for adding range
+#             r2 for adding ranges in all sequence names
+#
+# Returns   : the file names created (xxxx.msp, yyyy.msp,,,,)
+# Argument  :
+# Category  :
+# Version   : 2.6
+#--------------------------------------------------------------
+sub convert_sso_to_msp{
+	#"""""""""""""""""< handle_arguments{ head Ver 4.1 >"""""""""""""""""""
+	my(@A)=&handle_arguments(@_);my($num_opt)=${$A[7]};my($char_opt)=${$A[8]};
+	my(@hash)=@{$A[0]};my(@file)=@{$A[4]};my(@dir)=@{$A[3]};my(@array)=@{$A[1]};
+	my(@string)=@{$A[2]};my(@num_opt)=@{$A[5]};my(@char_opt)=@{$A[6]};
+	my(@raw_string)=@{$A[9]};my(%vars)=%{$A[10]};my(@range)=@{$A[11]};
+	my($i,$j,$c,$d,$e,$f,$g,$h,$k,$l,$m,$n,$o,$p,$q,$r,$s,$t,$u,$v,$w,$x,$y,$z);
+	if($debug==1){print "\n\t\@hash=\"@hash\"
+	\@raw_string=\"@raw_string\"\n\t\@array=\"@array\"\n\t\@num_opt=\"@num_opt\"
+	\@char_opt=\"@char_opt\"\n\t\@file=\"@file\"\n\t\@string=\"@string\"\n" }
+	#""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+   my ($upper_expect_limit, $lower_expect_limit)=(50, 0);
+   my (%sso, @sso, @SSO, $big_out_msp1,  @final_out, $big_out_msp2,
+	   $create_sso, $single_out_opt, $add_range, $add_range2, $big_out_msp,
+	   $Evalue_thresh, $new_format, $Score_thresh, $margin, $single_file_name);
+	if($vars{'u'}=~/([\.\d]+)/){ $upper_expect_limit = $vars{'u'} };
+	if($vars{'l'}=~/([\.\d]+)/){ $lower_expect_limit = $vars{'l'} };
+	if($vars{'t'}=~/(\d+)/){ $Score_thresh  = $vars{'t'} };
+	if($vars{'m'}=~/(\d+)/){ $margin  = $vars{'m'} };
+	if($vars{'s'}=~/\S/){ $single_file_name  = $vars{'s'} };
+	if($char_opt=~/r2/){  $add_range='r'; $add_range2='r2' }
+	if($char_opt=~/r/){   $add_range = 'r' }
+	if($char_opt=~/c/){   $create_sso = 'c' }
+	if($char_opt=~/s/){   $single_out_opt='s' }
+	if($char_opt=~/n/){   $new_format='n' }
+   print "\n# File given to convert_sso_to_msp is \"@file\", Normally xxx.sso file names\n";
+
+   if($single_file_name=~/\S/){
+	   $big_out_msp=$single_file_name;
+   }else{
+	   for($i=0; $i < @file; $i++){
+		  if($file[$i]=~/\.msp$/){ ## when output file name is given
+			 $big_out_msp=$file[$i];
+			 splice(@file, $i, 1);
+			 $i--;
+		  }elsif($file[$i]=~/^(\d+\-\d+)([_\d]*)\.[mfs]?sso/){  ## creates xxxx.msp file name from xxxx.sso
+			 $big_out_msp1="\U$1"."$2"."\.msp";
+			 $big_out_msp2="\U$1".".msp";
+		  }elsif($file[$i]=~/^(\S+)\.[mfs]?sso$/){
+			 $big_out_msp1="\U$1"."\.msp";
+			 $big_out_msp2="\U$1"."_all".".msp";
+			 print "\n# convert_sso_to_msp: File matched  xxxx.sso  format \n";
+		  }elsif($file[$i]=~/^(\S+)\.out$/){
+			 $big_out_msp1="\U$1"."\.msp";
+			 $big_out_msp2="\U$1"."_all".".msp";
+			 print "\n# convert_sso_to_msp: File matched  xxxx.out  format \n";
+		  }elsif($file[$i]=~/^(\S+)\.p[rot\,]*\.ts\.gz/){
+			 $big_out_msp1="\U$1".".msp";
+			 $big_out_msp2="\U$1"."_all".".msp";
+		  }elsif($file[$i]=~/^(\S+)\.ts\.gz/){
+			 $big_out_msp1="\U$1".".msp";
+			 $big_out_msp2="\U$1"."_all".".msp";
+		  }elsif($file[$i]=~/^(\S+)\.out\.gz/ or $file[$i]=~/^(\S+)\.[mfs]?sso\.gz/){
+			 $big_out_msp1="\U$1".".msp";
+			 $big_out_msp2="\U$1"."_all".".msp";
+		  }
+	   }
+   }
+   if(defined($big_out_msp)){
+	   $big_out_msp1=$big_out_msp2=$big_out_msp;
+	   print "\n# \$big_out_msp is defined as \'$big_out_msp\'\n";
+   }else{
+	   print "\n# convert_sso_to_msp: You did not define the big MSP file out format, so $big_out_msp1 \n";
+   }
+
+   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   #  (1) When File was given to this sub routine
+   #__________________________________________
+   if(@file == 1){   ## ONE single file input??
+	  print "# one file @file is given, OUT will be: $big_out_msp1 \n";
+	  @sso=@{&open_sso_files(@file, $add_range, $add_range2,
+	          "u=$upper_expect_limit",
+			  "l=$lower_expect_limit",
+			  "m=$margin", $over_write,
+			  $new_format,
+			  "s=$big_out_msp")};
+	  push(@final_out, &write_msp_files(@sso, $big_out_msp1,
+	        $single_out_opt, $add_range) );
+
+   }elsif(@file > 1){ ## MOre than 1 file input??
+	  @sso=@{&open_sso_files(@file, $add_range, $add_range2,
+	        "l=$lower_expect_limit",
+	        "u=$upper_expect_limit",
+	        "m=$margin", $over_write,
+	        $new_format)};
+	  push(@final_out, @{&write_msp_files(@sso, $big_out_msp2,
+			$single_out_opt, $add_range)} ); ## concatenates all the hash ref to one
+   }
+
+   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   #  (2) When NO File but ARRAY is given
+   #      Here, you can have SSO files created
+   #__________________________________________
+   elsif(@array >=1){
+	  print "\n# In convert_sso_to_msp, \@array is given rather than \@file";
+	  @sso=@{&open_sso_files(@array, "u=$upper_expect_limit", $add_range2,
+			  "l=$lower_expect_limit", $add_range, $create_sso,
+			  "m=$margin", $new_format, $over_write)};
+	  push(@final_out, @{&write_msp_files(@sso, $big_out_msp,
+						  $single_out_opt, $add_range)} );
+   }
+   return(\@final_out);
+}
+
+
+
+
+
+#___________________________________________________________________
+# Title     : sso_to_msp (This is now obsolite, use convert_sso_to_msp
 # Usage     : &sso_to_msp(@ARGV, $single_out_opt);
 # Function  : This takes sso file(s) and produces MSP file. It
 #             concatenate sso file contents when more than one
@@ -583,8 +871,6 @@ sub sso_to_msp{
 }
 
 
-
-
 #______________________________________________________________
 # Title     : open_clu_files
 # Usage     : %clus=%{&open_clu_files(\$input)};
@@ -599,16 +885,19 @@ sub sso_to_msp{
 # Warning   : You MUST NOT delete '# options : ..' entry
 #              as it is read  by various subroutines.
 #              This automatically converts lower to upper letters
-# Keywords  :
+# Keywords  : open_cluster_files,
 # Options   : _  for debugging.
 #             #  for debugging.
 #             b  for to get just names ($simple_clu_reading)
 #             r  for adding ranges in the names
+#             U  for makeing sequence names upppercase
+#
 # Returns   : a ref of hash of $clus{"$clus_size\-$id"}.=$m."\n";
 #             Actual content:
 #             3-133 => 'HI00111 HI00222 MG1233 '
 # Argument  :
-# Version   : 1.8
+# Category  :
+# Version   : 1.9
 #--------------------------------------------------------------
 sub open_clu_files{
 	#"""""""""""""""""< handle_arguments{ head Ver 4.1 >"""""""""""""""""""
@@ -621,14 +910,15 @@ sub open_clu_files{
 	\@raw_string=\"@raw_string\"\n\t\@array=\"@array\"\n\t\@num_opt=\"@num_opt\"
 	\@char_opt=\"@char_opt\"\n\t\@file=\"@file\"\n\t\@string=\"@string\"\n" }
 	#""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-   my($simple_clu_reading, $possible_range, $add_ranges,
-	  $id, $name_range, %clus, $found);
-   my $file=$file[0];
-   if($char_opt=~/b/){ $simple_clu_reading= 'b' };
+	 my($simple_clu_reading, $possible_range, $add_ranges,
+	  $id, $name_range, %clus, $found, $upper_case_seq_name);
+	 my $file=$file[0];
+	 if($char_opt=~/b/){ $simple_clu_reading= 'b' };
+	 if($char_opt=~/U/){ $upper_case_seq_name='U'; };
 
-   my $clus_size=1;
-   open(CLU, "$file");
-   while(<CLU>){
+	 my $clus_size=1;
+	 open(CLU, "$file");
+	 while(<CLU>){
 	  if($simple_clu_reading=~/\S/){ ## to get just names
 		  if(/^ *\d+ +\d+ +\d+ +\d+ +\d+/){  ## To skip the very first summary columns
 			 next;
@@ -655,28 +945,35 @@ sub open_clu_files{
 			 $id  =$1;
 			 $found=1;
 			 $clus_size=$2; # if defined($2);
-		  }elsif(/^ *Cluster +([\w]+)/i){  # to match 'Cluster 14313'  or  'Cluster 234_1234_1'
+		  }elsif(/^ *Cluster +[number]* *([\w]+)/i){  # to match 'Cluster 14313'  or  'Cluster 234_1234_1'
 			 $id  = $1;
 			 $found=1;
 		  }elsif(($found==1)&&(/^ *\S* *\S* *(\S+)\.prot\,? *.*/)){ ## this is to correct MP genome names
 			 $m=$1;
-			 $clus{"$clus_size\-$id"}.="\U$m ";
+						 if($upper_case_seq_name){
+								 $clus{"$clus_size\-$id"}.="\U$m ";
+						 }else{
+								 $clus{"$clus_size\-$id"}.="\U$m ";
+						 }
 		  }elsif(($found==1)&&(/^ *(\d+) *\d* *(\S{2,32}) *(\S*)/)){          # general clu match
 			 $clus_size=$1 unless ($clus_size);
 			 $m=$2;
 			 $possible_range=$3;
 			 if($2=~/\d+\-\d+/ and $char_opt=~/r/){
 				$name_range="$m\_$possible_range";
-				$clus{"$clus_size\-$id"}.="\U$name_range ";
+								if($upper_case_seq_name){
+										$clus{"$clus_size\-$id"}.="\U$name_range ";
+								}else{  $clus{"$clus_size\-$id"}.="$name_range "; }
 			 }else{
-				$clus{"$clus_size\-$id"}.="\U$m ";
+								if($upper_case_seq_name){
+										$clus{"$clus_size\-$id"}.="\U$m ";
+								}else{  $clus{"$clus_size\-$id"}.="$m ";  }
 			 }
 		  }
 	  }
-   }
-   return(\%clus);
+	 }
+	 return(\%clus);
 }
-
 
 
 
@@ -1115,119 +1412,8 @@ sub merge_sequence_in_msp_file{
 	}
 	return(\@all_seqlets);
 }
-#________________________________________________________________________
-# Title     : assign_options_to_variables
-# Usage     : &assign_options_to_variables(\$input_line);
-# Function  : Assigns the values set in head box to the variables used in
-#             the programs according to the values given at prompt.
-#             This produces global values.
-#             When numbers are given at prompt, they go to @num_opt
-#              global variable. %vars global option will be made
-#
-# Example   : When you want to set 'a' char to a variable called '$dummy' in
-#             the program, you put a head box commented line
-#             '#  $dummy    becomes  a  by  -a '
-#             Then, the parse_arguments and this sub routine will read the head
-#             box and assigns 'a' to $dummy IF you put an argument of '-a' in
-#             the prompt.
-# Warning   : This is a global vars generator!!!
-# Keywords  :
-# Options   : '#' at prompt will make a var  $debug set to 1. This is to
-#              print out all the print lines to make debugging easier.
-# Returns   : Some globaly used variables according to prompt options.
-#             @num_opt,
-#
-# Argument  : None.
-# Version   : 2.6
-#--------------------------------------------------------------------
-sub assign_options_to_variables{
-  my($i, %vars, $j, $op, $z, $n, $symb, $value, $var, %val, @val, $ARG_REG,
-	 $option_table_example, @input_options, $first_border_and_title, $sym, @arg);
 
-  #""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-  #      Defining small variables for option table reading
-  #""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-  my($g)='gets';                my($if)='if';
-  my($is)='is';                 my(@input_files);
-  my($o)='or';   my(@arguments) = sort @ARGV;
 
-  #"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-  #  Assigning global arguments(@num_opt, %vars) variables
-  #_______________________________________________________________
-  for($i=0; $i< @arguments; $i++){
-	 if(($arguments[$i]=~/^(\-?\d+[\.\d+]?)$/)&&   ### it mustn't be a file
-		( !(-f $arguments[$i]) ) ){                ### getting NUM opt
-		push(@num_opt, $1);
-	 }elsif( $arguments[$i]=~/^(\S+)=(\S+)$/){
-		$vars{$1}=$2;
-	 }
-  }
-
-  #""""""""""""""""""""""""""""""""""""""""""""""""""
-  #   Some DEFAULT $debug variables for debugging purposes
-  #""""""""""""""""""""""""""""""""""""""""""""""""""
-  &set_debug_option;
-
-  #"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-  #   The main processing of self
-  #"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-  open(SELF, "$0");    ## opens the program you ran to get the options table.
-  while(<SELF>){
-
-	  if( $first_border_and_title > 6 ){  ## This is to make it read only the first headbox.
-		  last;                            #  $first_border_and_title is an incremental counter.
-	  }elsif( /^ *#[_\*\-]{15,}$/ and /^ *# *[Tt][itle]*[ :]*/ ){
-		  $first_border_and_title++;
-		  print __LINE__, "# assign_options_to_variables : Title line found\n" if $debug eq 1;
-	  }elsif(/^ {0,5}# {1,50}[\$\%\@].+$/){
-		  $op = $&;  ## $op is for the whole input option line which has $xxxx, @xxx, %xxxx format
-		  $op =~ s/^( *\# *)(\W\w+.+)$/$2/;  ## This is removing '#  ' in the line.
-		  $op =~ s/^(\W\w+.+)(\s+\#.*)$/$1/;  ## This is removing any comments in the line.
-			 #"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-			 ## matching the following line input format.
-			 ## $av_sc_segment     becomes    a  by  a  # To smooth the SC rates. Gets the averages of
-			 ## $ARG_REG is for arguments regular expression variable.
-			 ##  This reg. exp. matches = 'a or A or E or e' part
-			 ##  which represents alternative prompt arguments possibilities. \=$b$g$is$e$set
-			 #"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-			 $ARG_REG ='(\S*) *[or=\,]* *(\S*) *[=or\,]* *(\S*) *[=or\,]* *(\S*) *[=or\,]* *(\S*)';
-			 if($op=~/^([\$\@\%])([\w\-]+) {0,20}[=|$g|$is] *[\$\@\%]*([\- \w\.\d]+) *[bB]y +$ARG_REG/){
-							 ## $sym     $var        becomes          a [$a...]       by       a -a -A
-				  my $sym = $1;  #### The symbols like ($, @, %), '$' in the above.
-				  my $var = $2;  #### Actual variable name 'var' from $var, 'av_sc_segment' in the above.
-				  my $val = $3;  #### The becoming value  first 'a' in the above.
-				  my @arg = ($4, $5, $6, $7, $8);  ## The alternative prompt arguments, second 'a' in the above..
-			      print "\n $sym $var $val \n" if $debug==1;
-			      print "\n \@arg are @arg \n" if $debug==1;
-
-				  #""""""""""""""""""""""""""""""""""""""""""""""""""""
-				  #  Going through the PROMPT args.
-				  #""""""""""""""""""""""""""""""""""""""""""""""""""""
-				  for($z=0; $z < @arguments; $z++){     ## $arguments[$z]  is from @ARGV
-					  if($arguments[$z]=~/^\-\w+$/){
-						  $arguments[$z] =~ s/\-//;
-					  }
-					  for ($i=0; $i < @arg; $i ++ ){
-						 if( ("$arg[$i]" eq "$arguments[$z]" )&& ($arg[$i] !~ /\=/)
-							 && ($sym eq '$') ){
-							 ${"$var"}="$val";
-							 if($debug == 1){
-								 print __LINE__," \$${var} is set to \"$1\"\n";
-							 }
-
-						 }#'''''''''''''''' $arg = by s=  syntax ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-						 elsif( ( $arg[$i] =~ /^(\w+) *\=/ ) &&
-							( $arguments[$z] =~ /^${1}= *([\w\.*\-*]+)$/) &&
-							( $sym eq '$') ){
-							  ${"$var"}="$1";
-							  if($debug eq 1){ print __LINE__,"\$${var} is set to \"$1\"\n";  }
-						 }
-					  }
-				  }
-			  }
-		}
-	}
-}
 #______________________________________________________________
 # Title     : write_msp_files
 # Usage     : &write_msp_files(\%in1, \%in2, ['s'], [$filename],,)
@@ -1257,138 +1443,147 @@ sub assign_options_to_variables{
 #   40       0.0     84    132   HI0004     63    108   HI0001
 #   31       0.0     79    84    HI0004     98    103   HI0003
 #
-# Version   : 2.5
+# Category  :
+# Version   : 2.8
 #--------------------------------------------------------------
 sub write_msp_files{
-	#"""""""""""""""""< handle_arguments{ head Ver 4.1 >"""""""""""""""""""
-	my(@A)=&handle_arguments(@_);my($num_opt)=${$A[7]};my($char_opt)=${$A[8]};
-	my(@hash)=@{$A[0]};my(@file)=@{$A[4]};my(@dir)=@{$A[3]};my(@array)=@{$A[1]};
-	my(@string)=@{$A[2]};my(@num_opt)=@{$A[5]};my(@char_opt)=@{$A[6]};
-	my(@raw_string)=@{$A[9]};my(%vars)=%{$A[10]};my(@range)=@{$A[11]};
-	my($i,$j,$c,$d,$e,$f,$g,$h,$k,$l,$m,$n,$o,$p,$q,$r,$s,$t,$u,$v,$w,$x,$y,$z);
-	if($debug==1){print "\n\t\@hash=\"@hash\"
-	\@raw_string=\"@raw_string\"\n\t\@array=\"@array\"\n\t\@num_opt=\"@num_opt\"
-	\@char_opt=\"@char_opt\"\n\t\@file=\"@file\"\n\t\@string=\"@string\"\n" }
-	#""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    #"""""""""""""""""< handle_arguments{ head Ver 4.1 >"""""""""""""""""""
+    my(@A)=&handle_arguments(@_);my($num_opt)=${$A[7]};my($char_opt)=${$A[8]};
+    my(@hash)=@{$A[0]};my(@file)=@{$A[4]};my(@dir)=@{$A[3]};my(@array)=@{$A[1]};
+    my(@string)=@{$A[2]};my(@num_opt)=@{$A[5]};my(@char_opt)=@{$A[6]};
+    my(@raw_string)=@{$A[9]};my(%vars)=%{$A[10]};my(@range)=@{$A[11]};
+    my($i,$j,$c,$d,$e,$f,$g,$h,$k,$l,$m,$n,$o,$p,$q,$r,$s,$t,$u,$v,$w,$x,$y,$z);
+    if($debug==1){print "\n\t\@hash=\"@hash\"
+    \@raw_string=\"@raw_string\"\n\t\@array=\"@array\"\n\t\@num_opt=\"@num_opt\"
+    \@char_opt=\"@char_opt\"\n\t\@file=\"@file\"\n\t\@string=\"@string\"\n" }
+    #""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-	my ($out_msp_file, $add_range, @final_out, $msp_file_out,
-	     @keys, $N, $temp_1, %hash, $query_seq_name, $single_out_opt);
+    my ($out_msp_file, $add_range, @final_out, $msp_file_out,
+         @keys, $N, $temp_1, %hash, $query_seq_name, $single_out_opt);
 
-	if($char_opt=~/r/){ $add_range      ='r' };
-	if($char_opt=~/s/){ $single_out_opt ='s' };
-	if(@file == 1){ $out_msp_file=$file[0]; $single_out_opt='' } # s is for single file output
+    if($char_opt=~/r/){ $add_range      ='r' };
+    if($char_opt=~/s/){ $single_out_opt ='s' };
+    if(@file == 1){ $out_msp_file=$file[0]; $single_out_opt='' } # s is for single file output
 
-	if($single_out_opt eq 's'){ #~~~~~~~~~~~` single files output option WITHOUT a given outfilename
-		$msp_file_out='default_single_out.msp';
-		for($i=0; $i< @hash; $i++){
-			my %hash=%{$hash[$i]};
-			my @keys =sort keys %hash;
-			for($j=0; $j< @keys; $j++){
-				#------------------ Writing the first line ---------------------------
-				if($keys[$j]=~/(\S+)_\d+\-\d+/){ $N = $1 }else{ $N = $keys[$j] }
-				if($hash{$keys[$j]}=~/ +$N[\_\d+\-\d+]* +\d+ +\d+ +$N[\_\d+\-\d+]*/){
-				   open(MSP, ">$msp_file_out") ||
-					   die "# write_msp_files: I can not create $msp_file_out, check permission\n";
-				   chomp( $hash{$keys[$j]} );
-				   print MSP $hash{$keys[$j]}, "\n";
-				   splice(@keys, $j, 1);
-				   $j--; last;
-				}
-			}
-			for($j=0; $j< @keys; $j++){
-				chomp( $hash{$keys[$j]} );
-				print MSP $hash{$keys[$j]}, "\n";
-			}
-			print MSP "\n";
-		}
-		if(-s $msp_file_out){
-			print "\n# write_msp_files: $msp_file_out is written \n";
-		}else{
-			print "\n# Error, write_msp_files\n"; exit
-		}
-		push(@final_out, $msp_file_out);
-		close(MSP);
-		return(\@final_out);
-	}else{
-	   #~~~~~~~~~~~~~ DEfault ~~~~~~~~~~~~~~~~~~
-	   #  When output file name was given!
-	   #________________________________________
-	   if(@file==1){
-		   my($temp_1);
-		   open(MSP, ">$out_msp_file") ||
-			  die "# write_msp_files: I can not create $out_msp_file, check permission\n";
-	       for($i=0; $i< @hash; $i++){
-			  my %hash=%{$hash[$i]};
+    if($single_out_opt eq 's'){ #~~~~~~~~~~~` single files output option WITHOUT a given outfilename
+         $msp_file_out='default_single_out.msp';
+         for($i=0; $i< @hash; $i++){
+             my %hash=%{$hash[$i]};
+             my @keys =sort keys %hash;
 
-			  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-			  # Sorting %hash values by the second column(Evalue)
-			  #_______________________________________________________
-              @keys= map {$_->[0]} sort { $a->[1] <=> $b->[1] } map { $hash{$_}=~/^ *\S+[\t ]+(\S+)[\t ]+/ and [$_, $1] } keys %hash;
+             #------------------ Writing the first line ---------------------------
+             for($j=0; $j< @keys; $j++){
+                  if($keys[$j]=~/(\S+)_\d+\-\d+/){ $N = $1 }else{ $N = $keys[$j] }
+                  if($hash{$keys[$j]}=~/ +$N[\_\d+\-\d+]* +\d+ +\d+ +$N[\_\d+\-\d+]*/){
+                       open(MSP_FILE, ">$msp_file_out") ||
+                           die "# write_msp_files: I can not create $msp_file_out, check permission\n";
+                       chomp( $hash{$keys[$j]} ); ## precaution
+                       print MSP_FILE "# (H) $0 write_msp_files: $keys[$j]\n";
+                       print MSP_FILE $hash{$keys[$j]}, "\n";
+                       splice(@keys, $j, 1);
+                       $j--; last;
+                  }
+             }
+             #------------- Writing the rest of the lines ____________________
+             for($j=0; $j< @keys; $j++){
+                  chomp( $hash{$keys[$j]} );
+                  print MSP_FILE $hash{$keys[$j]}, "\n";
+             }
+             print MSP_FILE "\n";
+         }
+         if(-s $msp_file_out){
+              print "\n# write_msp_files: $msp_file_out is written \n";
+         }else{
+              print "\n# Error, write_msp_files\n"; exit
+         }
+         push(@final_out, $msp_file_out);
+         close(MSP_FILE);
+         return(\@final_out);
+    }else{
+         #~~~~~~~~~~~~~ DEfault ~~~~~~~~~~~~~~~~~~
+         #  When output file name was given!
+         #________________________________________
+         if(@file==1){
+             my($temp_1);
+             open(MSP_FILE, ">$out_msp_file") ||  die "# write_msp_files: I can not create $out_msp_file, check permission\n";
+             print MSP_FILE "# (H) $0 write_msp_files: @file\n";
+             for($i=0; $i< @hash; $i++){
+                 my %hash=%{$hash[$i]};
+                 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                 # Sorting %hash values by the second column(Evalue)
+                 #_______________________________________________________
+                 @keys= map {$_->[0]} sort { $a->[1] <=> $b->[1] } map { $hash{$_}=~/^ *\S+[\t ]+(\S+)[\t ]+/ and [$_, $1] } keys %hash;
 
-			  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-			  # for Final output
-			  #_____________________________
-			  push(@final_out, $out_msp_file);
-			  for($j=0; $j< @keys; $j++){
-				  #~~~~~~~ Writing the first line only ~~~~~~~~~~~~~~~~~~
-				  if($keys[$j]=~/(\S+)_\d+\-\d+$/){ $N = $1 }else{ $N = $keys[$j] }
+                 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                 # for Final output
+                 #_____________________________
+                 push(@final_out, $out_msp_file);
 
-				  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-				  # Following is to put the self match on top of the list
-				  #________________________________________________________
-				  if($hash{$keys[$j]}=~/ +$N[\_\d+\-\d+]* +\d+ +\d+ +$N[\_\d+\-\d+]*/){
-					  $temp_1=$keys[0]; $keys[0]=$keys[$j]; $keys[$j]=$temp_1;
-				  }
-			  }
-			  for($j=0; $j< @keys; $j++){
-				  chomp($hash{$keys[$j]});
-				  print MSP $hash{$keys[$j]}, "\n";
-			  }
-			  print MSP "\n";
-		   }
-		   print MSP "\n";
-		   close(MSP);
-		   if(-s $out_msp_file and $out_msp_file !~/^ *\.msp$/){
-			   print "\n# write_msp_files: $out_msp_file is written\n" if(-s $out_msp_file);
-		   }else{
-			   print "\n# write_msp_files: ERROR. Either $out_msp_file is empty or \".msp\" is written\n";
-		   }
-	   }else{
-	      for($i=0; $i< @hash; $i++){
-			  my %hash=%{$hash[$i]};
-			  my @keys =sort keys %hash;
-			  ($query_seq_name)=$hash{$keys[0]}=~/\S+ +\d+ +\d+ +(\S+) +\d+ +\d+ +\S+/;
-			  $msp_file_out="$query_seq_name\.msp";
-			  open(MSP, ">$msp_file_out") or die "\n# write_msp_files: Failed to open $msp_file_out\n";
+                 #--------- Writing the first line only --------------
+                 for($j=0; $j< @keys; $j++){
+                      if($keys[$j]=~/(\S+)_\d+\-\d+$/){ $N = $1 }else{ $N = $keys[$j] }
 
-			  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-			  # for Final output
-			  #_____________________________
-			  push(@final_out, $msp_file_out);
-			  for($j=0; $j< @keys; $j++){
-				 #~~~~~~~ Writing the first line only ~~~~~~~~~~~~~~~~~~
-				 if($keys[$j]=~/(\S+)_\d+\-\d+$/){ $N = $1 }else{ $N = $keys[$j] }
-				 if($hash{$keys[$j]}=~/ +$N[\_\d+\-\d+]* +\d+ +\d+ +$N[\_\d+\-\d+]*/){
-					$keys[0]=$temp_1; $keys[0]=$keys[$j]; $keys[$j]=$temp_1;
-				 }
-			  }
-			  for($j=0; $j< @keys; $j++){
-			     chomp($hash{$keys[$j]});
-				 print MSP $hash{$keys[$j]}, "\n";
-			  }
-			  print MSP "\n";
-		   }
-		   print MSP "\n";
-		   if(-s $out_msp_file and $out_msp_file !~/^ *\.msp$/){
-			   print "\n# write_msp_files: $out_msp_file is written\n" if(-s $out_msp_file);
-		   }else{
-			   print "\n# write_msp_files: ERROR. Either $out_msp_file is empty or only \".msp\" is written\n";
-		   }
-		   close MSP;
-	   }
-   }
-   return(\@final_out);
+                      #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                      # Following is to put the self match on top of the list
+                      #________________________________________________________
+                      if($hash{$keys[$j]}=~/ +$N[\_\d+\-\d+]* +\d+ +\d+ +$N[\_\d+\-\d+]*/){
+                          $temp_1=$keys[0]; $keys[0]=$keys[$j]; $keys[$j]=$temp_1;
+                      }
+                 }
+                 for($j=0; $j< @keys; $j++){
+                      chomp($hash{$keys[$j]});
+                      print MSP_FILE $hash{$keys[$j]}, "\n";
+                 }
+                 print MSP_FILE "\n";
+             }
+             print MSP_FILE "\n";
+             close(MSP_FILE);
+             if(-s $out_msp_file and $out_msp_file !~/^ *\.msp$/){
+                 print "\n# write_msp_files: $out_msp_file is written\n" if(-s $out_msp_file);
+             }else{
+                 print "\n# write_msp_files: ERROR. Either $out_msp_file is empty or \".msp\" is written\n";
+             }
+         }else{
+             for($i=0; $i< @hash; $i++){
+                 my %hash=%{$hash[$i]};
+                 my @keys =sort keys %hash;
+                 ($query_seq_name)=$hash{$keys[0]}=~/\S+ +\d+ +\d+ +(\S+) +\d+ +\d+ +\S+/;
+                 $msp_file_out="$query_seq_name\.msp";
+                 open(MSP_FILE, ">$msp_file_out") or die "\n# write_msp_files: Failed to open $msp_file_out\n";
+                 print MSP_FILE "# (H) $0 write_msp_files: $query_seq_name\n";
+
+                 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                 # for Final output
+                 #_____________________________
+                 push(@final_out, $msp_file_out);
+                 #~~~~~~~ Writing the first line only ~~~~~~~~~~~~~~~~~~
+                 for($j=0; $j< @keys; $j++){
+                     if($keys[$j]=~/(\S+)_\d+\-\d+$/){ $N = $1 }else{ $N = $keys[$j] }
+                     if($hash{$keys[$j]}=~/ +$N[\_\d+\-\d+]* +\d+ +\d+ +$N[\_\d+\-\d+]*/){
+                      $keys[0]=$temp_1; $keys[0]=$keys[$j]; $keys[$j]=$temp_1;
+                     }
+                 }
+                 for($j=0; $j< @keys; $j++){
+                     chomp($hash{$keys[$j]});
+                     print MSP_FILE $hash{$keys[$j]}, "\n";
+                 }
+                 print MSP_FILE "\n";
+             }
+             print MSP_FILE "\n";
+             if(-s $out_msp_file and $out_msp_file !~/^ *\.msp$/){
+                  print "\n# write_msp_files: $out_msp_file is written\n" if(-s $out_msp_file);
+             }else{
+                  print "\n# write_msp_files: ERROR. Either $out_msp_file is empty or only \".msp\" is written\n";
+             }
+             close MSP_FILE;
+         }
+     }
+     if(@final_out ==1){ return( \$final_out[0] ); }else{
+         return(\@final_out);
+     }
 }
+
+
 #________________________________________________________________________
 # Title     : get_base_names
 # Usage     : $base =${&get_base_names(\$file_name)};

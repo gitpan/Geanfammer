@@ -1,0 +1,27 @@
+
+# Geanfammer test directory README file
+
+
+  To test geanfammer.pl   type:
+
+  geanfammer.pl geanfammer_test_FASTA_DB.fa
+
+The default is to run 'fasta' program which should be in your exe PATH in Linux.
+
+
+
+  geanfammer.pl geanfammer_test_FASTA_DB.fa a=b
+
+will run Blastpgp(PSI blast) if it is in the PATH.
+
+
+  geanfammer.pl geanfammer_test_FASTA_DB.fa a=b e=0.0001
+
+Will run Blastpgp (PSI blast) with step evalue threshold of 0.0001
+
+
+
+jong@salt2.med.harvard.edu
+
+
+
