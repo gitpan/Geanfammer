@@ -1,0 +1,58 @@
+Cluster size    No. of clusters
+     2               1
+     3               1
+     4               1
+     5               1
+     6               1
+     7               2
+
+# This file is created by /Bio/Perl/geanfammer.pl with make_clustering_summary sub, Details below
+
+Cluster size 2
+Cluster number 20102        # E:      Factor:7  P:  , Ori size:2    Sub:2    From:2           
+   2    2     fam_2_1           1-119      1   leng: 118
+   2    2     fam_2_2           1-119      1   leng: 118
+Cluster size 3
+Cluster number 40103        # E:      Factor:7  P:  , Ori size:3    Sub:3    From:4           
+   3    4     fam_3_1           1-60       1   leng: 59
+   3    4     fam_3_2           1-60       1   leng: 59
+   3    4     fam_3_3           1-60       1   leng: 59
+Cluster size 4
+Cluster number 70104        # E:      Factor:7  P:  , Ori size:4    Sub:4    From:7           
+   4    7     fam_4_1           1-120      1   leng: 119
+   4    7     fam_4_2           1-120      1   leng: 119
+   4    7     fam_4_3           1-120      1   leng: 119
+   4    7     fam_4_4           1-120      1   leng: 119
+Cluster size 5
+Cluster number 110105       # E:      Factor:7  P:  , Ori size:5    Sub:5    From:11          
+   5    11    fam_5_1           1-103      1   leng: 102
+   5    11    fam_5_2           1-103      1   leng: 102
+   5    11    fam_5_3           1-103      1   leng: 102
+   5    11    fam_5_4           1-103      1   leng: 102
+   5    11    fam_5_5           1-103      1   leng: 102
+Cluster size 6
+Cluster number 160106       # E:      Factor:7  P:  , Ori size:6    Sub:6    From:16          
+   6    16    fam_6_1           1-108      1   leng: 107
+   6    16    fam_6_2           1-108      1   leng: 107
+   6    16    fam_6_3           1-108      1   leng: 107
+   6    16    fam_6_4           1-108      1   leng: 107
+   6    16    fam_6_5           1-108      1   leng: 107
+   6    16    fam_6_6           1-108      1   leng: 107
+Cluster size 7
+Cluster number 300107       # E:      Factor:7  P:  , Ori size:7    Sub:7    From:30          
+   7    30    fam_8_2           2-137      1   leng: 135
+   7    30    fam_8_3           2-138      1   leng: 136
+   7    30    fam_8_4           2-139      1   leng: 137
+   7    30    fam_8_5           2-134      1   leng: 132
+   7    30    fam_8_6           2-139      1   leng: 137
+   7    30    fam_8_7           1-125      1   leng: 124
+   7    30    fam_8_8           2-127      1   leng: 125
+Cluster size 7
+Cluster number 220107       # E:      Factor:7  P:  , Ori size:7    Sub:7    From:22          
+   7    22    fam_7_1           1-98       1   leng: 97
+   7    22    fam_7_2           1-98       1   leng: 97
+   7    22    fam_7_3           1-98       1   leng: 97
+   7    22    fam_7_4           1-98       1   leng: 97
+   7    22    fam_7_5           1-98       1   leng: 97
+   7    22    fam_7_6           1-98       1   leng: 97
+   7    22    fam_7_7           1-97       1   leng: 96

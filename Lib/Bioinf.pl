@@ -50,7 +50,7 @@
 #
 # Author    : J. Park, Andreas Heger, Jason Johnson, Sarah Teichmann, Alex Bateman,
 #               Astrid Reinhardt, and anybody contributed AND YOU!!
-#               jong@bio.cc
+#               jong@biosophy.org
 # Category  : Bioinf Bioperl
 # Version   : 3    (Dec/31/1999)
 #------------------------------------------------------------------
@@ -312,7 +312,7 @@ EOS
 # Example   :
 # Keywords  : align_multiple_alignments
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.3
 #------------------------------------------------------------------------------
@@ -546,6 +546,7 @@ sub sort_by_E_values{
 # Example   : 10-20, 38-40, 1-9, 20-34
 #             => 1-9, 10-20, 20-34, 38-40
 # Keywords  : sort_ranges sort_seq_ranges sort_by_sequence_ranges
+#             sort_ranges_by_start_point
 # Options   :
 # Returns   :
 # Argument  :
@@ -845,7 +846,7 @@ sub sort_by_column_bigger_first{
 # Keywords  : make_protein_seq_comparison_matrix, make_matrix,
 #             make_sequence_comparison_matrix
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -1330,7 +1331,7 @@ sub make_scop_domain_interaction_pair_table{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.5
@@ -1547,7 +1548,7 @@ sub make_structure_interact_domain_super_family_links{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.1
@@ -1617,7 +1618,7 @@ sub make_structure_interaction_domain_family{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.3
@@ -1848,7 +1849,7 @@ sub make_complementary_sequences{
 # Example   :
 # Keywords  : cleanup_fasta_db cleanup_fasta_files
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.0
@@ -2013,7 +2014,7 @@ sub merge_superfam_fasta_files_for_ISL{
 # Example   : <a href="jo.jpg"><img SRC="jo.jpg" BORDER=0 height=111 width=76></a>
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1
@@ -2049,7 +2050,7 @@ sub make_thumbnails_of_pictures{
 #            OUT: <A HREF="/Proj">/Proj</A><A HREF="/Proj/Bio">/Bio</A><A HREF="/Proj/Bio/SAT">/SAT</A>
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.1
@@ -2078,7 +2079,7 @@ sub make_clickable_URL_dir_path{
 # Example   :
 # Keywords  : secondary_structure, sec_str, structural_fragment, HSSP
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.0
@@ -2257,7 +2258,7 @@ sub make_seq_segments_fasta_files_from_MSP_files{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -2305,7 +2306,7 @@ sub make_6_frame_dna_sequences{
 #   $number_of_seq_to_be_generated= by n=
 #   $length_of_target_rand_seq= by l=
 #   $use_this_char_set= by c=
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -2621,7 +2622,7 @@ sub amino_acid_homology_matrix{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -2691,7 +2692,7 @@ sub write_protein_structural_domain_interact_pair_file{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.5
@@ -2928,7 +2929,7 @@ sub write_AT_GC_ratio_and_contents_ratio_files{
 # Example   :
 # Keywords  : write_sddif_file
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.2
@@ -3033,7 +3034,7 @@ sub write_SDDIF_file{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.1
@@ -3091,7 +3092,7 @@ sub write_D3FA_file{
 # Keywords  : show_seqlet_alignment, write_mrc_search_file, write_MRC
 # Options   :
 #   $NO_screen_print=Q         by Q
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.3
@@ -3233,7 +3234,7 @@ sub write_MRC_search_result_file{
 #   $NO_write_each_AAPM_file=n by n
 #   $NO_sub_dir_creation=d by d   # this writes the AAPM files in the PWD (messy!)
 #
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.1
@@ -3419,7 +3420,7 @@ sub write_amino_acid_propensity_matrix_files{
 # Example   :
 # Keywords  : write_each_aapm_file
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.1
@@ -3527,7 +3528,7 @@ sub write_aapm_file{
 # Keywords  :
 # Options   :
 #   $sort_numerically_RV=r by r  # for sorting the standard Ranked Expression file(SREX)
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  : ercf : Expression Rank Comparison File
 #              RXU : Relative eXpression Unit
 # Version   : 1.0
@@ -3603,7 +3604,7 @@ sub write_ercf_files{
 # Example   : &write_to_selected_www_socket_filehandle($relativeURL, $length, $content);
 # Keywords  : write_to_socket
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Version   : 1.0
 #------------------------------------------------------------------------------
 sub write_to_selected_www_socket_filehandle{
@@ -3621,7 +3622,7 @@ sub write_to_selected_www_socket_filehandle{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.1
 #------------------------------------------------------------------------------
@@ -3650,7 +3651,7 @@ sub write_to_www_socket_filehandle{
 # Example   :
 # Keywords  : write_rev_seq_files, write_reverse_msf_files
 # Options   :
-# Author    : jong@bio.cc
+# Author    : jong@biosophy.org
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -3775,7 +3776,7 @@ sub make_hmm_from_alignment{
 # Options   :
 # Returns   :
 # Argument  :
-# Authors   : jong@bio.cc
+# Authors   : jong@biosophy.org
 # Version   : 1.0
 #--------------------------------------------------------------------
 sub get_non_overlapping_elements_in_array{
@@ -3890,7 +3891,7 @@ sub get_array_average{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.1
@@ -3988,7 +3989,7 @@ sub get_psdip_subset{
 # Keywords  : get_sequence_length_from_DDD_domain_segments,
 #             get_seq_length_from_range calculate_length_from_segments
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.1
@@ -4019,7 +4020,7 @@ sub get_DDD_domain_length_from_segment_ranges{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.0
@@ -4053,7 +4054,7 @@ sub get_PWD_from_HTTP_REFERER_variable{
 # Example   :
 # Keywords  : get_common_seq_names, get_identical_seq_names
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.1
 #------------------------------------------------------------------------------
@@ -4137,7 +4138,7 @@ sub get_2_most_similar_strings_in_array{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.0
@@ -4246,7 +4247,7 @@ sub get_false_positive_seq_matches{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -4286,7 +4287,7 @@ sub convert_aminio_acid_to_binary_pattern{
 # Example   :
 # Keywords  : convert_genbank_to_fasta_hash
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.0
@@ -4317,7 +4318,7 @@ sub convert_genbank_to_fasta{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.2
@@ -4370,7 +4371,7 @@ sub convert_genbank_to_fasta_file{
 # Options   :
 #    $get_Forward_search_scores=F by F
 #    $get_Backward_search_scores=B by B
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.2
@@ -4435,7 +4436,7 @@ sub convert_MRCS_to_MSP_format{
 # Keywords  : dilute_sequence_alignments, concentrate_sequence_alignment
 #             concentrate_seq_alignments, HSSP
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.0
@@ -4493,7 +4494,7 @@ sub concentrate_seq_alignments{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -4771,7 +4772,7 @@ sub write_iss_file{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -4808,7 +4809,7 @@ sub get_perl_keywords{
 #
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -4836,6 +4837,31 @@ sub get_homology_info_of_seq_pairs{
 	 }
 	 return(\%seq_pairs_homology_table);
 }
+
+#______________________________________________________________________________
+# Title     : get_sequence_region_distance
+# Usage     : $range_distance=${&get_sequence_region_distance(\@range)};
+# Function  :
+# Example   :
+# Keywords  :
+# Options   :
+# Author    : jong@biosophy.org
+# Category  :
+# Returns   :
+# Version   : 1.0
+#------------------------------------------------------------------------------
+sub get_sequence_region_distance{
+    my(@ranges, $range_1_stop, $range_2_start, $distance);
+    @ranges=@{$_[0]};
+    @ranges= map {$_->[0]} sort { $a->[1] <=> $b->[1] } map {/(\d+)\-\d+/ && [$_, $1] } @ranges;
+    $ranges[0]=~/\d+\-(\d+)/;
+    $range_1_stop=$1;
+    $ranges[1]=~/(\d+)\-\d+/;
+    $range_2_start=$1;
+    $distance=$range_2_start-$range_1_stop;
+    return(\$distance);
+}
+
 
 
 #________________________________________________________________________________
@@ -4950,7 +4976,7 @@ sub get_overlapping_seq_match_size{
 # Example   :
 # Keywords  : get_login_name
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.1
 #------------------------------------------------------------------------------
@@ -4966,7 +4992,7 @@ sub get_username{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc, On commercial use issue, Email me.
+# Author    : jong@biosophy.org, On commercial use issue, Email me.
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -5557,7 +5583,7 @@ sub delete_files{
 #
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.2
@@ -5576,6 +5602,215 @@ sub open_DOMSEL_file{
     close(DOMSEL);
     return(\%DOMSEL_hash);
 }
+
+#____________________________________________________________________
+# Title     :  open_psipred_files
+# Usage     :
+# Function  : gets sec. str. prediction of psipred(sec. str pred program)
+#             and puts in hash If 's' option is given, it also gives
+#             sequence hash ref as the second output ref.
+#             This can handle the 2 types of output format of
+#             psipred. So, the output can will be different according
+#             to inputs.
+# Example   :
+#
+#   Conf: Confidence (0=low, 9=high)
+#   Pred: Predicted secondary structure (H=helix, E=strand, C=coil)
+#     AA: Target sequence
+#
+#   Conf: 988776544676303321158888868999999999999999987615763468723587
+#   Pred: CCCCCCCCCCCCCHHHHHCCCCCCCHHHHHHHHHHHHHHHHHHHHHHCCCCCCCCEECCC
+#     AA: MSNPGDVRPVPHRSKVCRCLFGPVDSEQLRRDCDALMAGCLQEARERWNFDFVTETPLEG
+#                 10        20        30        40        50        60
+#
+# Warning   :
+# Keywords  : open_PSIPRED_files, open_PSI-PRED_files, psipred, open_psi_pred_files{
+#             open_pred_files, secondary structure prediction file
+# Options   : 's' for sequence output as well (\%sec_str, \%seq)
+# Options   : 's' for sequence output as well (\%sec_str, \%seq)
+#             'p' for percentage of the sec. str.
+#             'a' for accumulated percentage. This will
+#                  set 'p' automatically
+#             'n' for NO name when outputing Percentage of chars with
+#                 HASH input to get_occurances_of_char sub.
+#    $reverse_residue_order=r by r
+#    $use_universal_seq_hash_format=u by u -u
+#    $consider_top_X_percent_only= by T=
+# Returns   :
+# Argument  :
+# Category  :
+# Version   : 1.1
+#-----------------------------------------------------------
+sub open_psipred_files{
+    #"""""""""""""""""< handle_arguments{ head Ver 4.1 >"""""""""""""""""""
+    my(@A)=&handle_arguments(@_);my($num_opt)=${$A[7]};my($char_opt)=${$A[8]};
+    my(@hash)=@{$A[0]};my(@file)=@{$A[4]};my(@dir)=@{$A[3]};my(@array)=@{$A[1]};
+    my(@string)=@{$A[2]};my(@num_opt)=@{$A[5]};my(@char_opt)=@{$A[6]};
+    my(@raw_string)=@{$A[9]};my(%vars)=%{$A[10]};my(@range)=@{$A[11]};
+    my($i,$j,$c,$d,$e,$f,$g,$h,$k,$l,$m,$n,$o,$p,$q,$r,$s,$t,$u,$v,$w,$x,$y,$z);
+    if($debug==1){print "\n\t\@hash=\"@hash\"
+    \@raw_string=\"@raw_string\"\n\t\@array=\"@array\"\n\t\@num_opt=\"@num_opt\"
+    \@char_opt=\"@char_opt\"\n\t\@file=\"@file\"\n\t\@string=\"@string\"\n" }
+    #""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    my( @out_ref, $seq_out, %sec_str, %seq, $percent_out, $NO_name_out,
+        $short_form_out_detected, $long_form_out_detected, $accumulate, $sequence,
+        $reverse_residue_order, %rev_sec_str, $use_universal_seq_hash_format,
+        @seq, @sec_str, $sec_str, $secondary_structure, @reliability_sorted,
+        $num_of_diff_pred_for_both_methods, %mismatch_stats, $num_of_residues,
+        $name_found, $consider_top_X_percent_only, @posi_under_threshold_arr,
+        @residues_array, $top_X_perc_sec_str);
+    $consider_top_X_percent_only=100; # the default
+    if($vars{'T'}=~/(\d+)/i){ $consider_top_X_percent_only=$1; }
+    if($char_opt=~/s/i){ $seq_out=1 }
+    if($char_opt=~/a/i){ $accumulate=1  }
+    if($char_opt=~/p/i){ $percent_out=1 }
+    if($char_opt=~/n/i){ $NO_name_out='n' }
+    if($char_opt=~/r/){  $reverse_residue_order='r' }
+    if($char_opt=~/u/){  $use_universal_seq_hash_format='u'; print "\n# (i) \$use_universal_seq_hash_format is set";}
+
+    for($i=0; $i< @file; $i++){
+       my (%sec_str, $sec_str, %seq) if($accumulate !=1);
+       my ($secondary_structure, $cut_off_position, @reliability, $top_X_perc_sec_str,
+           @posi_under_threshold_arr, $cut_off_relia_value, $sequence, @sec_str,
+           $line_counter, $residue_num_count, $reliability);
+
+       open(PSIPRED_FILE, "$file[$i]");
+       $name=${&get_base_names($file[$i])};
+       print "\n# (INFO) open_psipred_files: opening $file[$i]";
+       while(<PSIPRED_FILE>){
+             $line_counter++;
+             if($line_counter < 4){ next }
+             #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
+             # Simple sec str input form
+             #________________________________________________
+             if(/^Conf:\s+(\d+)$/){
+                $reliability .=$1;
+             }elsif(/Pred:\s+([CHE]+)$/){
+                $sec_str.=$1;
+             }elsif(/AA:\s+(\S+)$/){
+                $sequence.=$1;
+             }
+       }
+       close (PSIPRED_FILE);
+       push(@residues_array,  split(//, $sequence));
+       $residue_num_count=@residues_array;
+       push(@reliability, split(//, $reliability));
+       @sec_str=split(//, $sec_str);
+       #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+       # Making a simple HASH style output(OLD form)
+       #_______________________________________________________
+       for($i=0; $i<@residues_array; $i++){
+           $position=$i+1;
+           $sec_str{$position}=[$residues_array[$i], $sec_str[$i],
+                                $reliability[$i], $name, $position];
+           if( $use_universal_seq_hash_format ){  $residues ={$position, $residue_1_letter};  }
+       }
+       $num_of_residues=@residues_array;
+
+      #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      # Considering only certain high ranking predictions (this is to make the same sample size as commonly predicted region
+      #______________________________________________________________________________________________________________________
+      if($consider_top_X_percent_only < 100){  # as default $consider_top_X_percent_only has 100
+         my ($exclusion_count, @top_X_perc_sec_str, @reliability_sorted, $cut_off_position, $cut_off_relia_value);
+         @reliability_sorted  = sort {$a<=>$b} @reliability;
+         $cut_off_position    = int( $num_of_residues *(1-$consider_top_X_percent_only/100) );
+         $cut_off_relia_value = $reliability_sorted[$cut_off_position];
+         print  "\n\$cut_off_relia_value $cut_off_relia_value \$cut_off_position $cut_off_position \/$residue_num_count\n";
+         for($j=0; $j< @sec_str; $j++){
+            if($reliability[$j] <= $cut_off_relia_value or $reliability[$j] == 0){
+                $exclusion_count++;
+                if($exclusion_count >= $cut_off_position){
+                    $top_X_perc_sec_str[$j]=$sec_str[$j];
+                }else{
+                    $top_X_perc_sec_str[$j]='-'; ## strike out
+                    push(@posi_under_threshold_arr, $j);
+                }
+            }elsif($reliability[$j] > $cut_off_relia_value){
+                $top_X_perc_sec_str[$j]=$sec_str[$j];
+            }else{    print "\n# Error ,,, "; exit;      }
+         }
+         $top_X_perc_sec_str=join('', @top_X_perc_sec_str);
+     }
+     if($reverse_residue_order){
+         $secondary_structure   =[reverse @sec_str];
+         $prediction_reliability=[reverse @reliability];
+         $sequence=reverse($sequence);
+         $sec_str =reverse($sec_str);
+     }else{
+         $secondary_structure=[@sec_str];
+         $prediction_reliability=[@reliability];
+     }
+     $matched_prediction_count=$residue_num_count-$num_of_diff_pred_for_both_methods;
+
+     #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     # This is the general Seq object format
+     #_______________________________________________
+     if( $use_universal_seq_hash_format ){
+        @seq=split(//, $sequence);
+        for($s=0; $s< @sec_str; $s++){
+            $position=$s+1;
+            $residues ={$position, $seq[$s]};
+        }
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
+        # Definition of Seq information detail, Ver 1.5
+        #______________________________________________________________________________
+        %sec_str=('name'                    =>$name,
+                  'ID'                      =>$name,
+                  'PDB_chain_number'        =>$chain,
+                  'chain_number'            =>$chain,
+                  'protein_name'            =>$name,
+                  'seq_name'                =>$name,
+                  'top_X_perc_sec_str'      =>$top_X_perc_sec_str,
+                  'residue_hash'            =>$residues,
+                  'residue_array'           =>[@residues_array],
+                  'residue_string'          =>$sequence,
+                  'sec_str_array'           =>$secondary_structure,
+                  'sec_str_string'          =>$sec_str,
+                  'sec_str'                 =>$sec_str,
+                  'mol_type'                =>'protein',
+                  'type'                    =>'protein',
+                  'prediction_reliability'  =>$prediction_reliability,
+                  'cut_off_reliability_val' =>$cut_off_relia_value,
+                  'prediction'              =>'prediction',
+                  'sequence'                =>"$sequence",
+                  'seq_string'              =>$sequence,
+                  'structure_assignment'    =>0,
+                  'matched_prediction_count'   =>$matched_prediction_count,
+                  'mismatched_prediction_count'=>$num_of_diff_pred_for_both_methods,
+                  'num_of_diff_pred_for_both_methods'=>$num_of_diff_pred_for_both_methods,
+                  'num_of_residues'         =>$num_of_residues,
+                  'size_of_sequence'        =>$num_of_residues,
+                  'mismatch_stats'          =>{%mismatch_stats},
+                  'reverse_residue_order'   =>$reverse_residue_order,
+                  'posi_under_threshold_arr'=>[@posi_under_threshold_arr]
+                  ); # this is not a struc. assignment as in DSSP
+        #__________________________________________________________________________________
+     }
+	 if($seq_out==1){ push(@out_ref, \%sec_str, \%seq);
+	 }elsif($percent_out==1 ){
+	      push(@out_ref, [%{&get_occurances_of_char(\%sec_str, $NO_name_out, 'p')}] );
+	 }elsif($percent_out !=1){ push(@out_ref, \%sec_str) }
+
+         #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
+         # If -r option is set
+         #____________________________________________________________
+         if($reverse_residue_order){
+              @keys=keys %sec_str;
+              for($r=0; $r<@keys; $r++){
+                  $rev_sec_str{$keys[$r]}=reverse($sec_str{$keys[$r]});
+              }
+              %sec_str=%rev_sec_str;
+         }
+    }
+    if(@out_ref==1){
+       return($out_ref[0]);
+    }elsif(@out_ref>1){
+       return(@out_ref);
+    }
+}
+
+
+
 
 #______________________________________________________________________________
 # Title     : open_protein_structural_domain_interact_pair_file
@@ -5868,7 +6103,7 @@ sub open_PDB_atom_files_for_domains{
 # Example   :
 # Keywords  : open_list_file_HASH
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.0
@@ -5894,7 +6129,7 @@ sub open_list_file{
 # Example   :
 # Keywords  : open_list_file_array
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.0
@@ -5921,7 +6156,7 @@ sub open_list_file_ARRAY{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.0
@@ -5954,7 +6189,7 @@ sub open_trivial_taxonomy_file{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.3
@@ -6120,7 +6355,7 @@ sub open_db_file_DALI {
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.0
@@ -6181,7 +6416,7 @@ sub open_DDDF_file{
 # Keywords  : open_hssp_file, open_hssp_files
 # Options   :
 #      $get_ranges_info=r by r
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.2
@@ -6277,7 +6512,7 @@ sub open_HSSP_file_for_secture{
 # Keywords  : open_hssp_file, open_hssp_files
 # Options   :
 #      $get_ranges_info=r by r
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.1
@@ -6380,7 +6615,7 @@ sub open_HSSP_file{
 # Keywords  : open_fssp_file, open_fssp_files open_FSSP_files
 # Options   :
 #      $get_ranges_info=r by r
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.4
@@ -6461,7 +6696,7 @@ sub open_FSSP_file{
 #          $Dali_subdomains{$structure_ID}{'SEQUENCE'}
 # Keywords  :
 # Options   :
-# Author    : holm@ebi.ac.uk jong@bio.cc,
+# Author    : holm@ebi.ac.uk jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 2.0
@@ -6576,7 +6811,7 @@ sub open_FDAT_file{
 # Example   :
 # Keywords  : open_STRL_file, open_strl_file STRL: stragment library file
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.0
@@ -6610,7 +6845,7 @@ sub open_stragment_library_file{
 # Example   :
 # Keywords  : open_SOCKET
 # Options   :
-# Author    : jong@bio.cc, ali@genet.sickkids.on.ca
+# Author    : jong@biosophy.org, ali@genet.sickkids.on.ca
 # Category  :
 # Version   : 1.1
 #------------------------------------------------------------------------------
@@ -6823,7 +7058,7 @@ sub open_parf_files{
 #
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.1
 #------------------------------------------------------------------------------
@@ -6946,7 +7181,7 @@ sub open_sequence_index_files{
 #   $raw_matrix_name=        by X=
 #   $NO_screen_print=Q       by Q
 #   $overwrite_opt=o         by o
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.6
@@ -7134,7 +7369,7 @@ sub do_MRC_search{
 #             M= for machine readable format -m 10 option
 #             N  for 'NO' do not do any processing but, do the searches only.
 #       FILE_AGE for defining the age of file in days to be overwritten.
-# Author    : Jong Park, jong@bio.cc, for commercial use, ask me.
+# Author    : Jong Park, jong@biosophy.org, for commercial use, ask me.
 # Category  :
 # Version   : 1.2
 #------------------------------------------------------------------------------
@@ -7873,7 +8108,6 @@ sub do_hmm_sequence_search{
 		}
 }
 
-
 #_______________________________________________________________________
 # Title     : divide_clusters
 # Usage     : &divide_clusters(\@file);
@@ -7902,104 +8136,111 @@ sub do_hmm_sequence_search{
 #   A  $average_region=A by A -A  # taking average region overlap in removing similar reg
 #   o  for $over_write
 #
-# Version   : 3.1
+# Version   : 3.3
 #------------------------------------------------------------------------
 sub divide_clusters{
-		#"""""""""""""""""< handle_arguments{ head Ver 4.1 >"""""""""""""""""""
-		my(@A)=&handle_arguments(@_);my($num_opt)=${$A[7]};my($char_opt)=${$A[8]};
-		my(@hash)=@{$A[0]};my(@file)=@{$A[4]};my(@dir)=@{$A[3]};my(@array)=@{$A[1]};
-		my(@string)=@{$A[2]};my(@num_opt)=@{$A[5]};my(@char_opt)=@{$A[6]};
-		my(@raw_string)=@{$A[9]};my(%vars)=%{$A[10]};my(@range)=@{$A[11]};
-		my($i,$j,$c,$d,$e,$f,$g,$h,$k,$l,$m,$n,$o,$p,$q,$r,$s,$t,$u,$v,$w,$x,$y,$z);
-		if($debug==1){print "\n\t\@hash=\"@hash\"
-		\@raw_string=\"@raw_string\"\n\t\@array=\"@array\"\n\t\@num_opt=\"@num_opt\"
-		\@char_opt=\"@char_opt\"\n\t\@file=\"@file\"\n\t\@string=\"@string\"\n" }
-		#""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-		my($merge, $verbose, $sat_file, $length_thresh, $factor, $indup, $indup_percent,
-			 $score, @temp_show_sub, $optimize, $file, $Evalue_thresh, $over_write, $din_dom,
-			 $sum_seq_num, $base_1, $output_clu_file, $short_region, $large_region,
-			 $average_region, $dynamic_factor, @sub_clustering_clu_files,
-			 @splited1, $link_or_not,  %duplicate);
+    #"""""""""""""""""< handle_arguments{ head Ver 4.1 >"""""""""""""""""""
+    my(@A)=&handle_arguments(@_);my($num_opt)=${$A[7]};my($char_opt)=${$A[8]};
+    my(@hash)=@{$A[0]};my(@file)=@{$A[4]};my(@dir)=@{$A[3]};my(@array)=@{$A[1]};
+    my(@string)=@{$A[2]};my(@num_opt)=@{$A[5]};my(@char_opt)=@{$A[6]};
+    my(@raw_string)=@{$A[9]};my(%vars)=%{$A[10]};my(@range)=@{$A[11]};
+    my($i,$j,$c,$d,$e,$f,$g,$h,$k,$l,$m,$n,$o,$p,$q,$r,$s,$t,$u,$v,$w,$x,$y,$z);
+    if($debug==1){print "\n\t\@hash=\"@hash\"
+    \@raw_string=\"@raw_string\"\n\t\@array=\"@array\"\n\t\@num_opt=\"@num_opt\"
+    \@char_opt=\"@char_opt\"\n\t\@file=\"@file\"\n\t\@string=\"@string\"\n" }
+    #""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    my($merge, $verbose, $sat_file, $length_thresh, $factor, $indup, $indup_percent,
+         $score, @temp_show_sub, $optimize, $file, $Evalue_thresh, $over_write, $din_dom,
+         $sum_seq_num, $base_1, $output_clu_file, $short_region, $large_region,
+         $average_region, $dynamic_factor, @sub_clustering_clu_files,
+         @splited1, $link_or_not,  %duplicate);
 
-		$factor=7; # default factor is 7 for 70%
-		$length_thresh=30;
+    $Evalue_thresh=0.001; # the default
+    $factor=7; # default factor is 7 for 70%
+    $length_thresh=30;
 
-		#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		# Dealing with options
-		#_________________________________________
-		if($char_opt=~/m/){        $merge='m';
-		}if($char_opt=~/v/){       $verbose='v'; # for showing debugging information
-		}if($char_opt=~/i/){       $indup='i';
-		}if($char_opt=~/z/){       $optimize='z';
-		}if($char_opt=~/o/){       $over_write='o';
-		}if($char_opt=~/d/){       $din_dom='d';
-		}if($char_opt=~/s/){       $sat_file='s';
-		}if($char_opt=~/y/){       $dynamic_factor='y';
-		}if($char_opt=~/S/){       $short_region  ='S';
-		}if($char_opt=~/L/){       $large_region  ='L';
-		}if($char_opt=~/A/){       $average_region='A';
-		}if($vars{'T'}=~/\d+/){    $length_thresh= $vars{'T'};
-		}if($vars{'l'}=~/\d+/){    $length_thresh= $vars{'l'}; ## synonym of 't'
-		}if($vars{'f'}=~/\S+/){    $factor= $vars{'f'};
-		}if($vars{'s'}=~/\d+/){    $score = $vars{'s'};
-		}if($vars{'E'}=~/\d+/){    $Evalue_thresh= $vars{'E'}; # synonym of e
+    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # Dealing with options
+    #_________________________________________
+    if($char_opt=~/m/){        $merge='m';
+    }if($char_opt=~/v/){       $verbose='v'; # for showing debugging information
+    }if($char_opt=~/i/){       $indup='i';
+    }if($char_opt=~/z/){       $optimize='z';
+    }if($char_opt=~/o/){       $over_write='o';
+    }if($char_opt=~/d/){       $din_dom='d';
+    }if($char_opt=~/s/){       $sat_file='s';
+    }if($char_opt=~/y/){       $dynamic_factor='y';
+    }if($char_opt=~/S/){       $short_region  ='S';
+    }if($char_opt=~/L/){       $large_region  ='L';
+    }if($char_opt=~/A/){       $average_region='A';
+    }if($vars{'T'}=~/\d+/){    $length_thresh= $vars{'T'};
+    }if($vars{'l'}=~/\d+/){    $length_thresh= $vars{'l'}; ## synonym of 't'
+    }if($vars{'f'}=~/\S+/){    $factor= $vars{'f'};
+    }if($vars{'s'}=~/\d+/){    $score = $vars{'s'};
+    }if($vars{'e'}=~/\d+/){    $Evalue_thresh= $vars{'e'}; # synonym of e
+    }if($vars{'E'}=~/\d+/){    $Evalue_thresh= $vars{'E'}; # synonym of e
+    }
+    $percent_fac=$factor*10; # <-- this is just to show the factor in %
+    print "\n(i) Input to divide_clusters sub are: \"@file\"";
+    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # (0) When one file input was given (yes, divclus can handle multiple files, Sarah!)
+    #________________________________________________________________________________
+    if(@file == 1){  #<=== @file has xxxx.mspa, yyyy.mspa  zzzz.mspa ....,
+		$file=$file[0];
+		$base_1=${&get_base_names($file)};
+		#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		# (2) Define the output cluster file name:  eg, 3-232_cluster_F7.clu , F7 means factor used is 7
+		#______________________________________________________________________________________________
+		$output_clu_file="$base_1\_F${factor}\.clu";
+
+		if( !$over_write and -s $output_clu_file){
+			print "\n# $output_clu_file Already EXISTS, skipping. Use \'o\' opt to overwrite\n"; exit;
 		}
-	 $percent_fac=$factor*10; # <-- this is just to show the factor in %
 
-	 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	 # (0) When one file input was given (yes, divclus can handle multiple files, Sarah!)
-	 #________________________________________________________________________________
-	 if(@file == 1){  #<=== @file has xxxx.mspa, yyyy.mspa  zzzz.mspa ....,
-				$file=$file[0];
-				$base_1=${&get_base_names($file)};
+		#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		# (3) merge_sequence_in_mspa_file does not do much. Just filtering and producing
+		#     sequences in ISPA_PBS_21-215 VPR_PBS_160-354 format from mspa format
+		#________________________________________________________________________________
+        print "\n(i) Running merge_sequence_in_mspa_file";
+        @grouped_seq_names=@{&merge_sequence_in_mspa_file(\@file, "s=$score", $optimize, $din_dom, $sat_file,
+							$optimize, "T=$length_thresh", "E=$Evalue_thresh", "f=$factor", "$range", "$merge", $verbose,
+							$short_region, $large_region, $average_region, $over_write, $dynamic_factor)};
 
-				#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-				# (2) Define the output cluster file name:  eg, 3-232_cluster_F7.clu , F7 means factor used is 7
-				#______________________________________________________________________________________________
-				$output_clu_file="$base_1\_F${factor}\.clu";
-
-				if( !$over_write and -s $output_clu_file){
-						print "\n# $output_clu_file Already EXISTS, skipping. Use \'o\' opt to overwrite\n"; die;
+		#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		# (4) This is critical seqlet merging step. Up to now, things are fine usually.!!!
+		#________________________________________________________________________________
+		unless(@grouped_seq_names == 1){  ##  if @grouped_seq_names has one string like 'FAM_8_7 FAM_8_4 FAM_8_3' skip
+			F1: for($i=0; $i< @grouped_seq_names; $i++){
+                @splited1=split(/\s+/, $grouped_seq_names[$i]);
+				for($j=0; $j< @grouped_seq_names; $j++){
+    				 if($grouped_seq_names[$i] eq $grouped_seq_names[$j]){ next  }
+					 @splited2=split(/\s+/, $grouped_seq_names[$j]);
+                     $link_or_not=${&check_linkage_of_2_similar_seqlet_sets(\@splited1,
+                                                                           \@splited2,
+                                                                           "f=$factor")};
+					if($link_or_not){
+                        $optimize=1; ## This should be nearly always 1 !!!!!!!
+                        if($optimize){ ##---- This will also remove similar seqlets, not only identical ones
+                            $grouped_seq_names[$i]=join(' ', sort @{&remove_similar_seqlets( [@splited1, @splited2],
+																		$short_region, $large_region, $average_region)} );
+     				    }else{
+							$grouped_seq_names[$i]=join(' ', grep { ! $duplicate{$_}++ } (@splited1, @splited2) );
+					    }
+                        splice(@grouped_seq_names, $j,1);
+						$j--; $i--; next F1;
+					}
 				}
-				#print "# (2) divide_clusters: processing ONE single file \"@file\" with merge_sequence_in_mspa_file\n" if $verbose;
 
-				#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-				# (3) merge_sequence_in_mspa_file does not do much. Just filtering and producing
-				#     sequences in ISPA_PBS_21-215 VPR_PBS_160-354 format from mspa format
-				#________________________________________________________________________________
-				@grouped_seq_names=@{&merge_sequence_in_mspa_file(\@file, "s=$score", $optimize, $din_dom, $sat_file,
-								$optimize, "T=$length_thresh", "E=$Evalue_thresh", "f=$factor", "$range", "$merge", $verbose,
-								$short_region, $large_region, $average_region, $over_write, $dynamic_factor)};
-
-				#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-				# (4) This is critical seqlet merging step
-				#________________________________________________________________________________
-				unless(@grouped_seq_names == 1){  ##  if @grouped_seq_names has one string like 'FAM_8_7 FAM_8_4 FAM_8_3' skip
-						F1: for($i=0; $i< @grouped_seq_names; $i++){
-								@splited1=split(/\s+/, $grouped_seq_names[$i]);
-								for($j=0; $j< @grouped_seq_names; $j++){
-									 if($grouped_seq_names[$i] eq $grouped_seq_names[$j]){ next  }
-									 @splited2=split(/\s+/, $grouped_seq_names[$j]);
-									 $link_or_not=${&check_linkage_of_2_similar_seqlet_sets(\@splited1, \@splited2, "f=$factor")};
-									 if($link_or_not){
-											 if($optimize){ ##---- This will also remove similar seqlets, not only identical ones
-													$grouped_seq_names[$i]=join(' ', sort @{&remove_similar_seqlets( [@splited1, @splited2],
-																											$short_region, $large_region, $average_region)} );
-											 }else{
-													$grouped_seq_names[$i]=join(' ', grep { ! $duplicate{$_}++ } (@splited1, @splited2) );
-											 }
-											 splice(@grouped_seq_names, $j,1);
-											 $j--; $i--; next F1;   }  }
-						}
-				}
- 				#~~~~~~~~~~~~~~ I used to use a sub, but to save time above is inserted ~~~~~~~~~~~~~
-				#@grouped_seq_names=@{&cluster_merged_seqlet_sets(\@grouped_seq_names, $dynamic_factor,
-				#			 "f=$factor", $short_region, $large_region, $average_region, $optimize)};
+             }
+		}
+		#~~~~~~~~~~~~~~ I used to use a sub, but to save time above is inserted ~~~~~~~~~~~~~
+        #@grouped_seq_names=@{&cluster_merged_seqlet_sets(\@grouped_seq_names, $dynamic_factor,
+	    #				 "f=$factor", $short_region, $large_region, $average_region, $optimize)};
 
 				#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 				# (5) This is showing the result in clu file format
 				#________________________________________________________________________________
-				@temp_show_sub=&show_subclusterings(\@grouped_seq_names, $file, $sat_file, $dindom, $indup,
+                @temp_show_sub=&show_subclusterings(\@grouped_seq_names, $file, $sat_file, $dindom, $indup,
 						   "E=$Evalue_thresh", "p=$percent_fac", "f=$factor" );
 				$good_bad       = $temp_show_sub[0];
 				$indup_c        = $temp_show_sub[1];
@@ -8012,7 +8253,7 @@ sub divide_clusters{
 				#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 				# (6) Final write up stage (unecessary)
 				#_______________________________________________________________
-	      &write_good_bad_list_in_divide_clusters(\@good, \@bad);
+          &write_good_bad_list_in_divide_clusters(\@good, \@bad);
 
 	 }
 	 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -8026,7 +8267,7 @@ sub divide_clusters{
 						my (@grouped_seq_names, @temp_show_sub, $indup_c, $big_mspa_file);
 						$indup_c=0;
 						$big_mspa_file=$file[$i];
-						unless(-s $big_mspa_file){ print "\n# (E) \$big_mspa_file does not exist\n"; die }
+						unless(-s $big_mspa_file){ print "\n# (E) \$big_mspa_file does not exist\n"; exit }
 
 						$base_1=${&get_base_names($big_mspa_file)};
 						#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -8035,34 +8276,33 @@ sub divide_clusters{
 						$output_clu_file="$base_1\_F${factor}\.clu";
 
 						if( !$over_write and -s $output_clu_file){
-								print "\n# $output_clu_file Already EXISTS, skipping. Use \'w\' opt to overwrite\n";
-								next;  }
+							print "\n# $output_clu_file Already EXISTS, skipping. Use \'w\' opt to overwrite\n";
+							next;  }
 
 						#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 						#  (2) If clu file(eg 2-1618_ss.clu ) is in pwd, tries to skip
 						#____________________________________________________________
 						if((-s $output_clu_file) > 10 and $over_write !~/o/){
-								print "# $output_clu_file exists, skipping, use \"o\" option to overwrite\n";  next;
+							print "# $output_clu_file exists, skipping, use \"o\" option to overwrite\n";  next;
 						}
 
 						#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 						# (3) merge_sequence_in_mspa_file does not do much. Just filtering and producing
 						#     sequences in ISPA_PBS_21-215 VPR_PBS_160-354 format of STRING from mspa format
-						#     $big_mspa_file is an MSP file
+						#     $big_mspa_file is an MSPA file
 						#________________________________________________________________________________
-						@grouped_seq_names=@{&merge_sequence_in_mspa_file(\$big_mspa_file, "s=$score", $din_dom, $sat_file, $optimize,
+                        @grouped_seq_names=@{&merge_sequence_in_mspa_file(\$big_mspa_file, "s=$score", $din_dom, $sat_file, $optimize,
 																"T=$length_thresh", "E=$Evalue_thresh", "f=$factor", "$range", "$merge", $verbose, $over_write,
 																 $short_region, $large_region, $average_region, $dynamic_factor )};
-
 						#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 						#  (4) Clustering the sets of merged seqlets => CORE algorithm
 						#_____________________________________________________________________
 						unless(@grouped_seq_names == 1){  ##  if @grouped_seq_names has one string like 'FAM_8_7 FAM_8_4 FAM_8_3' skip
 								F2: for($g=0; $g< @grouped_seq_names; $g++){
-										@splited1=split(/\s+/, $grouped_seq_names[$g]);
+										@splited1=split(/ +/, $grouped_seq_names[$g]);
 										for($h=0; $h< @grouped_seq_names; $h++){
 												if($grouped_seq_names[$g] eq $grouped_seq_names[$h]){ next  }
-												@splited2=split(/\s+/, $grouped_seq_names[$h]);
+												@splited2=split(/ +/, $grouped_seq_names[$h]);
 												$link_or_not=${&check_linkage_of_2_similar_seqlet_sets(\@splited1, \@splited2, "f=$factor")};
 												if($link_or_not){
 														if($optimize){ ##---- This will also remove similar seqlets, not only identical ones
@@ -8094,7 +8334,7 @@ sub divide_clusters{
 					&write_good_bad_list_in_divide_clusters(\@good, \@bad);
 					sub write_good_bad_list_in_divide_clusters{
 							 my  (@good, $i, @bad); @good=@{$_[0]}; @bad=@{$_[1]};
-							 open(GOODBAD, ">good_bad.list");
+                             open(GOODBAD, ">good_bad.list") || warn "\n Can not open good_bad.list \n\n";
 							 print GOODBAD "GOOD: all link    : 000\n";
 							 for($i=0; $i< @good; $i++){  print GOODBAD "$good[$i]\n";  }
 							 print GOODBAD "BAD : Not all link: 000\n";
@@ -8120,7 +8360,7 @@ sub divide_clusters{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -8145,7 +8385,7 @@ sub remove_file_extension{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.0
@@ -8204,7 +8444,7 @@ sub remove_lines_in_text_files{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.0
@@ -8275,7 +8515,7 @@ sub remove_small_files{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.1
 #------------------------------------------------------------------------------
@@ -8337,7 +8577,7 @@ sub remove_mail_header_in_files{
 # Argument  :
 #     $Percent_similarity= by Percent_similarity=
 #
-# Authors   : jong@bio.cc
+# Authors   : jong@biosophy.org
 # Version   : 1.0
 #--------------------------------------------------------------------
 sub subtract_similar_seq_elements{
@@ -8524,7 +8764,7 @@ sub remove_similar_seqlets{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.0
@@ -8551,7 +8791,7 @@ sub show_FDAT_hash{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.0
@@ -8577,7 +8817,7 @@ sub show_codon_lookup_table_hash{
 # Example   :
 # Keywords  : show_seqlet_alignment
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.3
@@ -8661,7 +8901,7 @@ sub show_alignment_for_herta{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.0
@@ -8685,7 +8925,7 @@ sub show_ENV_hash{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.0
@@ -8709,7 +8949,7 @@ sub show_DDDF_hash{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.1
@@ -8740,7 +8980,7 @@ sub show_FSSP_hash{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.0
@@ -8768,7 +9008,7 @@ sub show_DALI_domain_table_hash{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  : Tk
 # Returns   :
 # Version   : 1.0
@@ -8850,7 +9090,7 @@ sub show_information_on_perd{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -9083,7 +9323,7 @@ sub exchange_query_with_match_in_mspa{
 # Example   :
 # Keywords  : swap_array_elem_positions, swap_positions_in_array
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  : Array-handling, Action=Swap
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -9392,7 +9632,7 @@ sub cluster_merged_seqlet_sets{
 # Example   :
 # Keywords  : check_rasmol_setting mailcap
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.1
@@ -9426,7 +9666,7 @@ sub check_mailcap_file_in_user_home_dir{
 #
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -9495,12 +9735,12 @@ sub check_homology_of_seq_pair{
 #
 # Returns   :
 # Argument  :
-# Version   : 1.9
+# Version   : 2.0
 #--------------------------------------------------------------
 sub check_linkage_of_2_similar_seqlet_sets{
 	 my ($seq1, $name1, $start1, $end1, $seq2, $leng1, $leng2,
 	    $name2, $start2, $end2, $diff_start,  $diff_end, @splited1,
-	    @splited2, $link_or_not, $factor, $s, $t);
+	    @splited2, $link_or_not, $factor, $s, $t, $final_factor);
 	 @splited1=@{$_[0]};
 	 @splited2=@{$_[1]};
 
@@ -9516,11 +9756,7 @@ sub check_linkage_of_2_similar_seqlet_sets{
 			#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 			# Checks if the input has :  XXXXX_10-400 format or simple name like XXXXXX
 			#______________________________________________________________________________
-			if($splited1[$s]=~/^\s*((\S+)_(\d+)\-(\d+))/){
-					$seq1=$1;
-					$name1=$2;
-					$start1=$3;
-					$end1=$4;
+			if($splited1[$s]=~/^ *((\S+)_(\d+)\-(\d+))/){ $seq1=$1;	$name1=$2; $start1=$3; $end1=$4;
 			}else{   $seq1=$splited1[$s]; $name1=$start1=$end1='';    }
 			#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 			# Breaks the splited2
@@ -9529,28 +9765,29 @@ sub check_linkage_of_2_similar_seqlet_sets{
 				 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 				 # If splited1 has XXXX_10-100 format(def($name1)), then compare regions
 				 #_________________________________________________________________________
-				 if($name1 and $splited2[$t]=~/^\s*((\S+)_(\d+)\-(\d+))/){
-						 $seq2=$1;
-						 $name2=$2;
-						 $start2=$3;
-						 $end2=$4;
-						 if($seq1 eq $seq2){ $link_or_not=1; return(\$link_or_not) }
-						 if($name1 ne $name2){
-								 next F2;
-						 }elsif($name1 eq $name2){ ## ~~~~~~~~~~~~~ THIS is the MOST IMP CORE PART ~~~~~~~~~~~~~
-								 $leng1=$end1-$start1;
-								 $leng2=$end2-$start2;
-								 if($leng1 >= $leng2){ $smaller_leng=$leng2; }else{ $smaller_leng=$leng1; }
-								 $diff_start=abs($start1-$start2);
-								 $diff_end  =abs($end1  -$end2  );
-								 if((($diff_start+$diff_end)/2) <= ($smaller_leng/$factor) ){
-										$link_or_not=1;
-										return(\$link_or_not);
-								 }
-						 }## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                 if($name1 and $splited2[$t]=~/^ *((\S+)_(\d+)\-(\d+))/){ $seq2=$1; $name2=$2; $start2=$3; $end2=$4;
+					 if($seq1 eq $seq2){ $link_or_not=1; return(\$link_or_not) }
+					 if($name1 ne $name2){
+						 next F2;
+					 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
+                     # The most impoartant part is here. $final_factor=$smaller_leng - $smaller_leng*($factor/10);
+					 #____________________________________________
+                     }elsif($name1 eq $name2){
+						 $leng1=$end1-$start1; $leng2=$end2-$start2;
+						 if($leng1 >= $leng2){ $smaller_leng=$leng2; }else{ $smaller_leng=$leng1; }
+						 $diff_start=abs($start1-$start2);
+						 $diff_end  =abs($end1  -$end2  );
+                         $final_factor=$smaller_leng - $smaller_leng*($factor/10);
+                         $final_diff=($diff_start+$diff_end)/2;
+                         if($final_diff <= $final_factor ){
+                            $|=1;
+                            print "\n$seq1 $seq2: $final_diff ($diff_start, $diff_end): $smaller_leng, $final_factor, ";
+							$link_or_not=1; return(\$link_or_not);
+    					 }else{  print "\n$seq1 $seq2: $final_diff ($diff_start, $diff_end): $smaller_leng, $final_factor 0\n"; }
+					 }## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 				 }else{
 				     $seq2=$splited2[$t];
-						 if($seq1 eq $seq2){ $link_or_not=1; }
+					 if($seq1 eq $seq2){ $link_or_not=1; }
 				 }
 			}
 	 }
@@ -9559,7 +9796,6 @@ sub check_linkage_of_2_similar_seqlet_sets{
 	 #________________________________________________________________________
 	 return(\$link_or_not);
 }
-
 
 
 
@@ -10051,7 +10287,7 @@ sub merge_similar_ranges{
 #   L  $large_region=  L by L -L  # taking larger  region overlap in removing similar reg
 #   A  $average_region=A by A -A  # taking average region overlap in removing similar reg
 #
-# Version   : 2.1
+# Version   : 2.2
 #-------------------------------------------------------------------------------
 sub merge_similar_seqlets{
 	 my (@all_seqlets, @result_all_seqlets, $i, $j, $k, $seq1, $start1, $end1, $seq2,
@@ -10067,7 +10303,7 @@ sub merge_similar_seqlets{
 	 #_________________________________________________________
 	 for($i=0; $i< @_; $i++){
 	     if(ref($_[$i]) eq 'ARRAY'){
-					 @all_seqlets=@{$_[$i]};
+             @all_seqlets=@{$_[$i]}; #<------------ @all_seqlets is a very very big array with all the mspa chunks altogether
 			 }elsif($_[$i]=~/f=(\S+)/){  $factor=$1;
 			 }elsif($_[$i]=~/z/i){       $optimize=1;
 			 }elsif($_[$i]=~/l=(\d+)/i){ $leng_thresh=$1;
@@ -10076,164 +10312,120 @@ sub merge_similar_seqlets{
 			 }elsif($_[$i]=~/^A/){       $average_region='A'; $short_region=$large_region  =''; }
 	 }
 	 if(@all_seqlets==1){
-
-			 #print "\n# (1) merge_similar_seqlets: \@all_seqlets == 1, returning\n" if $verbose;
-			 #print "\n#  \@all_seqlets = @all_seqlets\n" if $verbose;
-			 return(\@all_seqlets);
-	 }else{
-			 #print "\n# (1) merge_similar_seqlets: \@all_seqlets > 1, Processing\n" if $verbose;
-			 #if( $verbose){
-			 #	 for($i=0; $i< @all_seqlets; $i++){
-			 #				 print "\n# $all_seqlets[$i]" ;
-			 #	 }
-			 #}
+         return(\@all_seqlets);
 	 }
 
 	 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	 # This is to remove which are identical in @all_seqlets;
 	 #_________________________________________________________
 	 F1: for($i=0; $i< @all_seqlets; $i++){
-			my $merged_two_seqlet_lines;
+		my $merged_two_seqlet_lines;
 
-			if($all_seqlets[$i] eq $all_seqlets[$i+1]){
-	        #print "\n# (2) merge_similar_seqlets: \$all_seqlets\[$i\] equals \$all_seqlets\[$i+1\]\n" if $verbose;
-					splice(@all_seqlets, $i+1, 1);
-					$i-- if $i >0;
-		      next F1;
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
+        # The following is correct. Don't touch again
+        #__________________________________________________
+        if($all_seqlets[$i] eq $all_seqlets[$i+1]){
+			splice(@all_seqlets, $i+1, 1);
+			$i-- if $i >0;    next F1;
 	    }else{
-					#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-					# @split1 and 2 are arrays from different string entry in @all_seqlets
-					#______________________________________________________________________
-					@split1=sort split(/\s+/, $all_seqlets[$i]);
-					@split2=sort split(/\s+/, $all_seqlets[$i+1]);
-			}
+            #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            # @split1 and 2 are arrays from different string entry in @all_seqlets
+            #______________________________________________________________________
+            @split1=sort split(/\s+/, $all_seqlets[$i]);
+            @split2=sort split(/\s+/, $all_seqlets[$i+1]);
+		}
 
-	    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~``
-	    #   (3) If the first elements of @split1 and 2 are identical, lets merge the two arrays
-	    #________________________________________________________________________________
-			if($split1[0] eq $split2[0] or $split1[0] eq $split2[1] or $split1[0] eq $split2[2]){
-	        #print "\n# (3) \$split1[0] and \$split2[0] are identical, good!\n" if $verbose;
-		      @split=(@split1, @split2);
-		      if(1){ #~~~~~ optimize option removes similar seqlets
-						 $all_seqlets[$i]= join(' ', sort @{&remove_similar_seqlets(\@split,
-			                              $short_region, $large_region, $average_region)} );
+	    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	    #   (3) If the first elements of @split1 and 2 are identical, lets merge the two arrays. For example,
+	    #    aa_EC1427_1-390 aa_EC388_1-374 ap_EC143_23-399 dr_6457710_11-405 ec_1787201_9-360 mj_MJ1649_5-387 mj_MJ1653_4-383 pa_5459109_1-394 ph_PH1915_1-394 tm_4982274_20-385
+        #    aa_EC1427_1-390 aa_EC388_1-372 ap_EC143_40-399 dr_6457710_11-407 dr_6459463_3-373 ec_1787201_4-367 mj_MJ1649_5-385 mj_MJ1653_39-382 pa_5459109_21-392 ph_PH1915_21-392 tm_4982274_12-382
+	    #__________________________________________________________________________________________________
+		if($split1[0] eq $split2[0] or $split1[0] eq $split2[1] or $split1[1] eq $split2[0]){
+              @split=(@split1, @split2);
+              #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+              # This step is proven to be fine. optimize option removes similar seqlets
+              #___________________________________________________
+              if(1){
+                 $all_seqlets[$i]= join(' ', sort @{&remove_similar_seqlets(\@split,
+		                              $short_region, $large_region, $average_region)} );
 		      }else{
-						 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-						 # Only removes exactly identical ones
-						 #__________________________________________________________
-						 $all_seqlets[$i]=  join(' ', @{&remove_dup_in_array(\@split, 's')} );
+				 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+				 # Only removes exactly identical ones
+				 #__________________________________________________________
+				 $all_seqlets[$i]=  join(' ', @{&remove_dup_in_array(\@split, 's')} );
 		      }
-					#print "\n# (3) New \$all_seqlets\[\$i\] is \n$all_seqlets[$i]\n" if $verbose;
-		      splice(@all_seqlets, $i+1, 1);
-		      $i-- if $i >0;
-		      next F1;
+		      splice(@all_seqlets, $i+1, 1);     $i-- if $i >0;     next F1;
 	    }
 
 	    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-			# (4) If the first elements of @split1 and 2 are NOT identical, lets check the sequence ranges
+		# (4) If the first elements of @split1 and 2 are NOT identical, lets check the sequence ranges
 	    #_____________________________________________________________________________________________
-			#if($verbose){
-			#		print "\n# (4) merge_similar_seqlets: the first elements of \@split1 and \@split2 are NOT identical\n";
-			#		print "# (4) >>>>>>>>> Checking the regions of them, \$factor= $factor\n";
-			#}
+		F2: for($j=0; $j < @split1; $j++){
+			if($split1[$j] =~/^\s*(\S+)_(\d+)\-(\d+)/){
+				 my ($seq1, $start1, $end1)=($1, $2, $3);
 
-			F2: for($j=0; $j < @split1; $j++){
-					if($split1[$j] =~/^\s*(\S+)_(\d+)\-(\d+)/){
-							 my ($seq1, $start1, $end1)=($1, $2, $3);
+				 F3: for($k=0; $k<@split2; $k++){
+					 if($split2[$k] =~/(\S+)_(\d+)\-(\d+)/){
+						 my($seq2, $start2, $end2)=($1, $2, $3);
 
-							 F3: for($k=0; $k<@split2; $k++){
-									 if($split2[$k] =~/(\S+)_(\d+)\-(\d+)/){
-											 my($seq2, $start2, $end2)=($1, $2, $3);
+						 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~````
+						 # Check if the seqs are identicl (from the two arrays), no point to merge which are not identical from the first
+						 #__________________________________________________________________________________________
+						 if($seq1 eq $seq2){
+                             $diff_start=abs($start1-$start2); $diff_end  =abs($end1  -$end2  );
+                             $leng1=$end1-$start1; $leng2=$end2-$start2;
+                             if($leng1 >= $leng2){  $smaller_leng=$leng2; $larger_leng =$leng1
+                             }else{  $smaller_leng=$leng1;  $larger_leng =$leng2       }
 
-											 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~````
-											 # Check if the seqs are identicl (from the two arrays), no point to merge which are not identical from the first
-											 #__________________________________________________________________________________________
-											 if($seq1 eq $seq2){
-														$diff_start=abs($start1-$start2);
-														$diff_end  =abs($end1  -$end2  );
-														$leng1=$end1-$start1;
-														$leng2=$end2-$start2;
-														if($leng1 >= $leng2){
-																$smaller_leng=$leng2;
-																$larger_leng =$leng1
-														}else{
-																$smaller_leng=$leng1;
-																$larger_leng =$leng2
-														}
+                             #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                             # Checking the minimal seq region leng here
+                             #______________________________________________________
+                             if($smaller_leng < $leng_thresh){ next }
 
-														#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-														# Checking the minimal seq region leng here
-														#______________________________________________________
-														if($smaller_leng < $leng_thresh){ next }
+                             $overlapping_seq_match_size=${&get_overlapping_seq_match_size($start1, $end1, $start2, $end2)};
+                             $averge_seq_leng_of_2_seqs=($leng1+$leng2)/2;
 
-														$overlapping_seq_match_size=${&get_overlapping_seq_match_size($start1, $end1, $start2, $end2)};
-														$averge_seq_leng_of_2_seqs=($leng1+$leng2)/2;
+                             #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                             # This is the critically important part
+                             #_______________________________________________________________
+                             if($average_region){      $finally_adjusted_seq_leng=$averge_seq_leng_of_2_seqs*($factor/10);
+                             }elsif($short_region){    $finally_adjusted_seq_leng=$smaller_leng*($factor/10);
+                             }elsif($large_region){    $finally_adjusted_seq_leng=$larger_leng*($factor/10);     }
 
-														#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-														# This is the critically important part
-														#_______________________________________________________________
-														if($average_region){
-																$finally_adjusted_seq_leng=$averge_seq_leng_of_2_seqs*($factor/10);
-														}elsif($short_region){
-																$finally_adjusted_seq_leng=$smaller_leng*($factor/10);
-														}elsif($large_region){
-																$finally_adjusted_seq_leng=$larger_leng*($factor/10);
-														}
-
-														#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
-														# Now let's check if we regard them homologous or not\
-														#_______________________________________________________
-														if( $overlapping_seq_match_size >=  $finally_adjusted_seq_leng){
-
-																@split= (@split1, @split2);
-																#if ($verbose){
-																#		print "# (5) merge_similar_seqlets: \$averge_seq_leng_of_2_seqs=$averge_seq_leng_of_2_seqs";
-																#		print " $$$$ Merging occurs with \n@split  \n";
-																#}
-																if($optimize){ #~~~~~ $optimize option removes similar seqlets
-																		$all_seqlets[$i]= join(' ', sort @{&remove_similar_seqlets(\@split,
-			                                  $short_region, $large_region, $average_region)} );
-																}else{
-																		$all_seqlets[$i]= join(' ', @{&remove_dup_in_array(\@split, 's')} );
-																}
-																$merged_two_seqlet_lines=1;
-																splice(@all_seqlets, $i+1, 1);
-																$i-- if $i >0;
-																next F1;
-
-														}
-														#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
-														# We believe they are not homologous
-														#____________________________________________
-														else{
-																#if ($verbose){
-																#		print "\n# (5) merge_similar_seqlets !! MERGING DID NOT occur->
-																#		$split1[$j] $split2[$k] \n";
-																#		print "\n#   \$averge_seq_leng_of_2_seqs= $averge_seq_leng_of_2_seqs, \$overlapping_seq_match_size= $overlapping_seq_match_size \$finally_adjusted_seq_leng= $finally_adjusted_seq_leng\n";
-																#		print "\n# (5) merge_similar_seqlets, \$all_seqlets[$i]\$all_seqlets[$i+1]\n$all_seqlets[$i]\n$all_seqlets[$i+1]\n";
-																#}
-																next F3;
-														}
-											 }
-									 }
-									 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-									 # If there is no range (region) in seq naem, let's skip, as there is no way to check
-									 #__________________________________________________________________________________
-									 else{ # when split2 does not match xxx_10-20 format
-											 next;
-									 }
-							 }
-					}else{ # when split1 does not match xxx_10-20 format
-							 next;
-					}
-			}
-			unless($merged_two_seqlet_lines){
-
-			}
+                             #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
+                             # Now let's check if we regard them homologous or not\
+                             #_______________________________________________________
+                             if( $overlapping_seq_match_size >=  $finally_adjusted_seq_leng){
+                                 @split= (@split1, @split2);
+                                 if($optimize){ #~~~~~ $optimize option removes similar seqlets
+                                     $all_seqlets[$i]= join(' ', sort @{&remove_similar_seqlets(\@split,
+                                                         $short_region, $large_region, $average_region)} );
+                                 }else{
+                                       $all_seqlets[$i]= join(' ', @{&remove_dup_in_array(\@split, 's')} );
+                                 }
+                                 $merged_two_seqlet_lines=1;
+                                 splice(@all_seqlets, $i+1, 1);
+                                 $i-- if $i >0;  next F1;
+                             #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
+                             # We believe they are not homologous
+                             #____________________________________________
+                             }else{  next F3;  }
+                          }
+                       }
+                       #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                       # If there is no range (region) in seq naem, let's skip, as there is no way to check
+                       #__________________________________________________________________________________
+                       else{ # when split2 does not match xxx_10-20 format
+                               next;
+                       }
+                  }
+            }else{  next; } # when split1 does not match xxx_10-20 format
+        }
+        unless($merged_two_seqlet_lines){   }
 	 }
-	 #print "\n# \@all_seqlets is  @all_seqlets =======\n" if $verbose;
 	 return(\@all_seqlets);
 }
+
 
 
 
@@ -10455,7 +10647,7 @@ sub convert_mmp_to_mrg{
 # Example   :
 # Keywords  : add_revcomp_string, add_revcomp_string_array, insert_revcomp_string_array
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -10532,7 +10724,7 @@ sub add_ranges_in_mspa_line{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.6
@@ -10734,7 +10926,7 @@ sub convert_mspa_line_to_mmp_line{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.2
 #------------------------------------------------------------------------------
@@ -10925,7 +11117,7 @@ sub merge_sequence_alignments{
 # Title     : merge_sequence_in_mspa_file
 # Usage     :
 # Function  :
-# Example   : INPUT: (MSP file) ===>
+# Example   : INPUT: (MSPA file) ===>
 #  59     2.6        47    64     d2pia_3        10    30     d1erd___10-30
 #  161    1.1e-07    24    91     d2pia_3        16    85     d1frd___16-85
 #
@@ -10950,7 +11142,7 @@ sub merge_sequence_alignments{
 #  $average_region =  A by A -A # taking average region overlapped in removing similar regions
 #
 # Thanks    : Alexey Eroshkin <alexey@axyspharm.com>
-# Version   : 3.3
+# Version   : 3.5
 #----------------------------------------------------------------------------------------
 sub merge_sequence_in_mspa_file{
 		#"""""""""""""""""< handle_arguments{ head Ver 4.1 >"""""""""""""""""""
@@ -10967,13 +11159,14 @@ sub merge_sequence_in_mspa_file{
 		    $ragne, $base, $optimize, $mrg_out, @arr, $sat_out, %final_hash_out, @final_pre_hash,
 				$length_thresh, $merge, $factor, $Evalue_thresh, $score, $dynamic_factor, $score_match,
 				$eval_match, $query_seq, $query_start, $query_stop, $match_seq, $match_start,
-				$short_region, $large_region, $average_region, $original_clu_size, $match_stop);
+				$short_region, $large_region, $average_region, $original_clu_size, $match_stop,
+				$total_mspa_line_count);
 		$factor=$default_factor=7; #~~~~ default connection factor U, 7 means 70% now!
 		$length_thresh=30;
-		$Evalue_thresh=10;
+		$Evalue_thresh=1;
 		$score =75;
 		$range='r';
-		if(@file < 1){ print "\n# (E) merge_sequence_in_mspa_file needs at least 1 MSP file\n"; die }
+		if(@file < 1){ print "\n# (E) merge_sequence_in_mspa_file needs at least 1 MSPA file\n"; die }
 
 		#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		# Following changes the defaults with given parameters
@@ -10989,73 +11182,65 @@ sub merge_sequence_in_mspa_file{
 		}if($vars{'T'}=~/\d+/){    $length_thresh=$vars{'T'};
 		}if($vars{'f'}=~/\S+/){    $factor=$vars{'f'};  ## Here I give a generous $factor !
 		}if($vars{'s'}=~/\d+/){    $score = $vars{'s'};
-		}if($vars{'E'}=~/\S+/){    $Evalue_thresh= $vars{'E'}; }
+        }if($vars{'e'}=~/\S+/){    $Evalue_thresh= $vars{'e'};
+        }if($vars{'E'}=~/\S+/){    $Evalue_thresh= $vars{'E'}; }
 
 		#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		#  Just to inform what parameters have been chosen
 		#_____________________________________________________________
         print "\n# (1) merge_sequence_in_mspa_file : default \$score      : $score";
-        print "\n#                                : default \$Evalue_thresh     : $Evalue_thresh";
-        print "\n#                                : used \$length_thresh : $length_thresh";
-        print "\n#                                : default \$factor     : $default_factor";
-        print "\n#                                : used    \$factor     : $factor";
-        print "\n#                                : \$dynamic_factor     : $dynamic_factor\n";
+        print "\n#                                 : default \$Evalue_thresh     : $Evalue_thresh";
+        print "\n#                                 : used \$length_thresh : $length_thresh";
+        print "\n#                                 : default \$factor     : $default_factor";
+        print "\n#                                 : used    \$factor     : $factor";
+        print "\n#                                 : \$dynamic_factor     : $dynamic_factor\n";
 
 		for($c=0; $c< @file; $c++){
-			 open(MSP, "$file[$c]");
+             open(MSPA, "$file[$c]") || die "Can not open $file[$c] \n";
 			 $base=${&get_base_names($file[$c])};
 			 $clu_out="$base\_F${factor}.clu"; # <-- This is the most important output. Sarah's program will process this
 			 $sat_out="$base\_F${factor}.sat";
-			 #print "# (2) merge_sequence_in_mspa_file : processing $file[$c] for $clu_out\n" if $verbose;
-			 my @mspa1=<MSP>;
+             my $total_mspa_lines=@mspa1=<MSPA>;
+             print "\n $file[$c] is opened successfully \$total_mspa_lines : $total_mspa_lines\n";
 
 			 for($i=0; $i< @mspa1; $i++){
 					#~~~~~~~~~~ Include range or NOT in the seq name ~~~~~~~~~~~~~~~~~~~~~~~~~~`
-					# %temp_hash is just to get the chunk of MSP block. As mspa file uses empty line as a delimiter
+					# %temp_hash is just to get the chunk of MSPA block. As mspa file uses empty line as a delimiter
 					#____________________________________________________________________________
 					if($char_opt=~/r/){
 						 if($mspa1[$i]=~/^\s*(\S+)\s+(\S+)\s*\S*\s+(\d+)\s+(\d+)\s+(\S+)\s+(\d+)\s+(\d+)\s+(\S+)/){
-									$score_match=$1;
-									$eval_match=$2;
-									$query_seq=$5;
-									$query_start=$3;
-									$query_stop=$4;
-									$match_seq=$8;
-									$match_start=$6;
-									$match_stop=$7;
+                              $total_mspa_line_count++;
+									$score_match=$1;	$eval_match=$2;
+                                    $query_seq=$5;      $query_start=$3;
+									$query_stop=$4;		$match_seq=$8;
+									$match_start=$6;	$match_stop=$7;
+                                    if($score_match < $score or $eval_match > $Evalue_thresh){next};
 									if($query_seq=~/\S+_\d+\-\d+$/){ $new_seq1=$query_seq }else{ $new_seq1="$query_seq\_$query_start\-$query_stop"; }
 									if($match_seq=~/\S+_\d+\-\d+$/){ $new_seq2=$match_seq }else{ $new_seq2="$match_seq\_$match_start\-$match_stop"; }
 
-									if($new_seq1 eq $new_seq2){
-										 #print "# (3.0) merge_sequence_in_mspa_file: Skipped = $mspa1[$i]"  if $verbose;
-										 next
-									};
+									if($new_seq1 eq $new_seq2){ next};
 
-									if($score_match < $score or $eval_match > $Evalue_thresh){
-											#print "# (3.1) merge_sequence_in_mspa_file: Skipped = $mspa1[$i]"  if $verbose;
-											next
-									};
 									#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 									# Modifying $mspa1[$i] line !!!
 									#______________________________
 									$mspa1[$i]=sprintf("%s %-3s %s %s %s %s %s %s",
-																$score_match, $eval_match, $query_start, $query_stop, $new_seq1, $match_start,
-																$match_stop, $new_seq2);
+													$score_match, $eval_match, $query_start,
+													$query_stop, $new_seq1, $match_start,
+													$match_stop, $new_seq2);
 									$temp_hash{$query_seq}.="$mspa1[$i]\n";
 						 }
 					}else{
 						 if($mspa1[$i]=~/^\s*(\S+)\s+(\S+)\s*\S*\s+\d+\s+\d+\s+(\S+)[_\d+\-\d+]?\s+\d+\s+\d+\s+\S+/){
-									if($1 < $score or $2 > $Evalue_thresh){
-									#print "# (3.0) merge_sequence_in_mspa_file: Skipped = $mspa1[$i]"  if $verbose;
-									next };
+									if($1 < $score or $2 > $Evalue_thresh){	next };
 									$temp_hash{$3}.="$mspa1[$i]\n";
 						 }
 					}#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 			}
-			close(MSP);
+            close(MSPA);
 		}
-		$original_clu_size=@mspa_chunks= values(%temp_hash); ## Using temp hash is more than 2 times faster than push
+        $original_clu_size=@mspa_chunks= values(%temp_hash); ## Using temp hash is more than 2 times faster than push
 
+        print "\n The total seq to divclus is : $original_clu_size \$total_mspa_line_count: $total_mspa_line_count\n";
 		#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		# Determining the dynamic factor here (when 'd' opt is set)
 		#____________________________________________________________
@@ -11067,16 +11252,10 @@ sub merge_sequence_in_mspa_file{
 				print "\n# ### \$factor: $factor\n";
 		}
 
-		if($verbose){
-           print "# (4) merge_sequence_in_mspa_file: The mspa chunks used are:\n";
-		   for($i=0; $i< @mspa_chunks; $i++){
-				print "$mspa_chunks[$i]\n";
-		   }
-		}
-
 		for($i=0; $i< @mspa_chunks; $i++){
-			@arr=@{&merge_sequence_in_mspa_chunk($mspa_chunks[$i], $verbose, $optimize,
-								"$merge", "E=$Evalue_thresh", "s=$score", "f=$factor", "T=$length_thresh",
+            @arr=@{&merge_sequence_in_mspa_chunk($mspa_chunks[$i], $verbose, $optimize,
+								"$merge", "E=$Evalue_thresh", "s=$score",
+								"f=$factor", "T=$length_thresh",
 								$short_region, $large_region, $average_region)};
 			push(@all_seqlets,  @arr);
 		}
@@ -11088,12 +11267,6 @@ sub merge_sequence_in_mspa_file{
 		#~~~~~~~ Sort by the _digit-  in seqlet names ~~~~~~~~~
 		@all_seqlets= map{$_->[0]} sort{$a->[1] cmp $b->[1] or $a->[2] <=> $b->[2]  }
 									map {/^\s*((\S+)_(\d+)\-(\d+).*)/ && [$1, $2, $3, $4]} @all_seqlets;
-		if(  $verbose){
-			print "\n# (6) merge_sequence_in_mspa_chunk: Showing the very final result before merging\n";
-			for($i=0; $i< @all_seqlets; $i++){
-				print "\n$all_seqlets[$i]";
-			}
-		}
 
 		#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		# merge sequences in a simple way until there is no change in the array
@@ -11103,10 +11276,12 @@ sub merge_sequence_in_mspa_file{
              ITERATION_RETURN_POINT:
              $size_of_all_seqlets=@all_seqlets;
              @all_seqlets = @{&merge_similar_seqlets(\@all_seqlets, $optimize,
-                                                                $short_region, $large_region, $average_region, "f=$factor")};
+                                                      $short_region, $large_region,
+                                                      $average_region, "f=$factor")};
              if($size_of_all_seqlets > @all_seqlets){
                  @all_seqlets = @{&merge_similar_seqlets(\@all_seqlets, $optimize,
                                                 $short_region, $large_region, $average_region, "f=$factor")};
+                 print "\n $size_of_all_seqlets Iterating merge_similar_seqlets \n";
                  goto ITERATION_RETURN_POINT;
              }else{
                  last;
@@ -11116,7 +11291,7 @@ sub merge_sequence_in_mspa_file{
 		if($optimize){
              @all_seqlets=@{&remove_similar_seqlets(\@all_seqlets,
                                              $short_region, $large_region, $average_region)};
-             @all_seqlets=@{&remove_dup_in_array(\@all_seqlets)};
+             #@all_seqlets=@{&remove_dup_in_array(\@all_seqlets)};
 
 		}else{
              @all_seqlets=@{&remove_dup_in_array(\@all_seqlets)};
@@ -11126,12 +11301,14 @@ sub merge_sequence_in_mspa_file{
 
 
 
+
 #__________________________________________________________________________
 # Title     : merge_sequence_in_mspa_chunk
 # Usage     :
 # Function  : merges sequences which are linked by common regions
 #             This filters the sequences by evalue and ssearch score
 #             This is the main algorithm of merging similar sequences.
+#             MSPA lines become pairs of seq_regions
 # Example   :
 # Warning   : You MUST NOT delete '# options : ..' entry
 #              as it is read  by various subroutines.
@@ -11155,7 +11332,7 @@ sub merge_sequence_in_mspa_file{
 # Returns   :
 # Argument  :
 # Thanks    : Alexey Eroshkin <alexey@axyspharm.com>
-# Version   : 2.7
+# Version   : 2.9
 #--------------------------------------------------------------
 sub merge_sequence_in_mspa_chunk{
 	 #"""""""""""""""""< handle_arguments{ head Ver 4.1 >"""""""""""""""""""
@@ -11171,10 +11348,10 @@ sub merge_sequence_in_mspa_chunk{
 	 my ($ssearch_score2, $evalue_found2, $evalue_found1, $ssearch_score1, $optimize );
 	 my ($L, %out_hash, @out, $LL, @Final_out, $verbose, $final_factor, $R_diff, @seqlets,
 			 $short_region, $large_region, $average_region, $factor, $score, $evalue, $length_thresh);
-	 $factor =4; # default factor for around 30% sequence mis-overlap is the threshold for common block
+	 $factor =7; # default factor for around 30% sequence mis-overlap is the threshold for common block
 	 #~~~~~~~~~~~~~~ The lower the factor the larger clustering will occur ~~~~~~~~~~~~
 	 $score  =75; # default ssearch score. seq below this will be chucked out
-	 $evalue =40; # default maximum e value used. Seq higher than this will be thrown out
+	 $evalue =10; # default maximum e value used. Seq higher than this will be thrown out
 	 $length_thresh =30; # sequence length threshold. overlap less than this will be ignored
 
 	 if($char_opt=~/v/){     $verbose = 'v'
@@ -11183,67 +11360,65 @@ sub merge_sequence_in_mspa_chunk{
 	 }if($char_opt=~/L/){	   $large_region='L';
 	 }if($char_opt=~/A/){	   $average_region='A'; }
 
-	 if($vars{'T'}=~/\d+/){
-			$length_thresh=$vars{'T'};# print "\n# merge_sequence_in_mspa_chunk: Thresh is $length_thresh\n" if (defined $verbose);
-	 }if($vars{'f'}=~/\S+/){
-	    $factor=$vars{'f'}; # print "\n# merge_sequence_in_mspa_chunk: Factor is $factor\n" if (defined $verbose);
-	 }if($vars{'s'}=~/\d+/){
-		  $score = $vars{'s'}; # print "\n# merge_sequence_in_mspa_chunk: Score is $score\n" if (defined $verbose);
-	 }if($vars{'e'}=~/\d+/){
-	    $evalue= $vars{'e'}; # print "\n# merge_sequence_in_mspa_chunk: Evalue is $evalue\n" if (defined $verbose);
+	 if($vars{'T'}=~/\d+/){   $length_thresh=$vars{'T'};
+	 }if($vars{'f'}=~/\S+/){  $factor=$vars{'f'};
+	 }if($vars{'s'}=~/\d+/){  $score = $vars{'s'};
+     }if($vars{'e'}=~/\d+/){  $evalue= $vars{'e'};
+     }if($vars{'E'}=~/\d+/){  $evalue= $vars{'E'};
 	 }
 
-	 @seqlets=split(/\n+/, (${$_[0]} || $_[0]) );
+     @seqlets=split(/\n+/, (${$_[0]} || $_[0]) );
 
 	 F1: for($i=0; $i < @seqlets; $i ++){
-			if($seqlets[$i]=~/^\s*((\S+)\s+(\d+\.?[e\-\d]*)\s+(\d+)\s+(\d+)\s+(\S+)\s+(\d+)\s+(\d+))\s+(\S+)\s*(.*)/){
+			if($seqlets[$i]=~/^\s*((\S+)\s+(\S+)\s+(\d+)\s+(\d+)\s+(\S+)\s+(\d+)\s+(\d+))\s+(\S+)\s*(.*)/){
 		     if($6 eq $9){ splice(@seqlets, $i, 1); $i--; next };
 				 ($long_match1, $enq_seq1, $mat_seq1, $R_start1, $R_end1 )=($1, $6, $9, $4, $5);
-				 $R_leng1=$R_end1-$R_start1;  $ssearch_score1= $2;  $evalue_found1 = $3;
-	    }
-	    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	    # Following lines are disabled as I believe seqlets have been checked in previous sub
-			#________________________________________________________________________________________________
-	    if( ($R_leng1 < $length_thresh) || ($ssearch_score1 < $score) ){ splice(@seqlets, $i, 1); $i--; next; }
-	    if( $evalue_found1 > $evalue){ splice(@seqlets, $i, 1); $i--; next; }
-
-			F2: for($j=0; $j < @seqlets; $j ++){
-		     if($seqlets[$i] eq $seqlets[$j]){ next };
-		     if($seqlets[$j]=~/^\s*((\S+)\s+(\d+\.?[e\-\d]*)\s+(\d+)\s+(\d+)\s+(\S+)\s+(\d+)\s+(\d+))\s+(\S+)\s*(.*)/){
-			      ($long_match2, $enq_seq2, $mat_seq2, $R_start2, $R_end2)=($1, $6, $9, $4, $5);
-			      $R_leng2=$R_end2-$R_start2;			$ssearch_score2=$2;			$evalue_found2= $3;
+                 $Region_leng1=$R_end1-$R_start1;  $ssearch_score1= $2;  $evalue_found1 = $3;
 	       }
+	       #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	       # Following lines are disabled as I believe seqlets have been checked in previous sub
+		   #________________________________________________________________________________________________
+	       if( ($Region_leng1 < $length_thresh) || ($ssearch_score1 < $score) ){ splice(@seqlets, $i, 1); $i--; next; }
+	       if( $evalue_found1 > $evalue){ splice(@seqlets, $i, 1); $i--; next; }
 
-				 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-				 # Following lines are disabled as I believe seqlets have been checked in previous sub
-				 #________________________________________________________________________________________________
-		     #if( ($R_leng2 < $length_thresh)||($ssearch_score2 < $score) ){ splice(@seqlets, $j, 1); $j--; next; }
+		   F2: for($j=0; $j < @seqlets; $j ++){
+		     if($seqlets[$i] eq $seqlets[$j]){ next };
+		     if($seqlets[$j]=~/^\s*((\S+)\s+(\S+)\s+(\d+)\s+(\d+)\s+(\S+)\s+(\d+)\s+(\d+))\s+(\S+)\s*(.*)/){
+			      ($long_match2, $enq_seq2, $mat_seq2, $R_start2, $R_end2)=($1, $6, $9, $4, $5);
+			      $Region_leng2=$R_end2-$R_start2;	$ssearch_score2=$2;	$evalue_found2= $3;
+	         }
+
+			 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+			 # Following lines are disabled as I believe seqlets have been checked in previous sub
+			 #________________________________________________________________________________________________
+		     #if( ($Region_leng2 < $length_thresh)||($ssearch_score2 < $score) ){ splice(@seqlets, $j, 1); $j--; next; }
 		     #if( $evalue_found2 > $evalue){ splice(@seqlets, $j, 1); $j--; next; }
 
-		     $R_diff=abs($R_leng1-$R_leng2)/2;   ## <<<---- Note it is div by 2
+             $R_diff=abs($Region_leng1-$Region_leng2);   ## <<<---- Note it is div by 2
 
-		     if($R_leng2 < $R_leng1){ $smaller_leng=$R_leng2; }else{ $smaller_leng=$R_leng1; }
+		     if($Region_leng2 < $Region_leng1){ $smaller_leng=$Region_leng2; }else{ $smaller_leng=$Region_leng1; }
 
-		     $Start_diff=abs($R_start1-$R_start2)/2; ## <<<---- Note it is div by 2
-		     $final_factor=$smaller_leng/$factor;
+             $Start_diff=abs($R_start1-$R_start2); ## <<<---- Note it is div by 2
+             $final_factor=$smaller_leng - $smaller_leng*($factor/10);
 
-
-				 #~~~~~~~~~~ If average R_diff and average Start_diff are less then 1/7 of the smaller seqlet
-				 #~~~~~~~~~~ we regard they are same selqets
-				 if(( $R_diff < $final_factor ) &&       ### $Start_diff is essential!
-					  ($Start_diff < $final_factor ) ){  ### if diff is less than around 30% of the smaller length
-					  if($R_leng2 >= $R_leng1){
+			 #~~~~~~~~~~ If average R_diff and average Start_diff are less then 1/7 of the smaller seqlet
+			 #~~~~~~~~~~ we regard they are same selqets
+             if( $R_diff <= $final_factor ){  ### if diff is less than around 30% of the smaller length
+					  if($Region_leng2 >= $Region_leng1){
 							 #~~~~~ $mat_seq1 or $mat_seq2 can increase to 'slr1453,sll0238', so you need ',' in the middle only
-							 $extended_name="$mat_seq2,$mat_seq1";
+                             $extended_name="$mat_seq2|-|$mat_seq1";
 							 $L=length($extended_name);
 							 $LL=length($long_match2)+2;
+							 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+							 # This makes "368   2.3e-06  0.352  4    189   af_AF2051  20   208   hi_HI1334,hi_34343"
+							 #_________________________________________________________________________________________
 							 $seqlets[$i]= sprintf("%-${LL}s %-${L}s", $long_match2, $extended_name);
 							 splice(@seqlets, $j, 1);
 							 $i-- unless($i==0);
 							 $j--;
 							 next F1;
-					  }elsif( $R_leng1 >= $R_leng2){  ## chooses the bigger range seq
-							 $extended_name="$mat_seq1,$mat_seq2"; # must be ',' not ' '
+					  }elsif( $Region_leng1 >= $Region_leng2){  ## chooses the bigger range seq
+							 $extended_name="$mat_seq1|-|$mat_seq2"; # must be ',' not ' '
 							 $L=length($extended_name);
 							 $LL=length($long_match1)+2;
 							 $seqlets[$i]=sprintf("%-${LL}s %-${L}s", $long_match1, $extended_name);
@@ -11254,22 +11429,24 @@ sub merge_sequence_in_mspa_chunk{
 					  }
 	       }else{
 			      next F2;
-		     }
+		   }
 	    }
 	 }
-	 if($char_opt=~/m/){
-			for($i=0; $i< @seqlets; $i++){
-				 if($seqlets[$i]=~/^\s*\S+\s+\d+\.?[e\-\d]*\s+\d+\s+\d+\s+(\S+)\s+\d+\s+\d+\s+(\S+)\s*$/){
+	 #print "\n @seqlets \n";
+	 if($char_opt=~/m/){ # #             m  for merge file output format (.mrg)
+            for($i=0; $i< @seqlets; $i++){
+				 if($seqlets[$i]=~/^\s*\S+\s+\S+\s+\d+\s+\d+\s+(\S+)\s+\d+\s+\d+\s+(\S+)/){
 						if($1 eq $2){ next }
-						$leading_seq=$1; $long=$2; $long=~s/\,/ /g;
+						$leading_seq=$1; $long=$2; $long=~s/\|\-\|/ /g;
 						push(@Final_out, "$leading_seq $long" );
 				 }
 			}
 	 }
 	 @Final_out=sort @Final_out;
-	 #print "\n\n\n# \@Final_out\n@Final_out \n=================\n " if $verbose;
+     #print "\n========># \@Final_out: @Final_out ";
 	 return(\@Final_out);
 }
+
 
 
 
@@ -11351,7 +11528,7 @@ sub find_small_files{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.2
@@ -11438,7 +11615,7 @@ sub find_missing_files_of_certain_extension{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.1
@@ -11565,7 +11742,7 @@ EOT
 # Example   :
 # Keywords  : convert_array_to_ranges, translate_array_to_ranges
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.1
@@ -11597,7 +11774,7 @@ sub find_boundaries_in_arrays{
 # Keywords  : get_common_seq_names, get_identical_seq_names,
 #             get_2_most_similar_strings_in_array
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.2
 #------------------------------------------------------------------------------
@@ -11839,7 +12016,7 @@ sub find_central_sequence{
 #                                              );
 # Keywords  : transfer_files_with_ftp
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.2
@@ -11887,7 +12064,7 @@ sub ftp_put_files_given_from_a_list{
 #                                              );
 # Keywords  : transfer_files_with_ftp
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.3
@@ -13744,7 +13921,7 @@ sub convert_bla_to_msf{
 #   $Accumulate_matches=A   by A -A
 #   $Lean_output=L          by L -L  # to remove search output to unclutter
 #
-# Author    : Sarah Teichmann and Jong Park, jong@bio.cc
+# Author    : Sarah Teichmann and Jong Park, jong@biosophy.org
 # Version   : 4.2
 #--------------------------------------------------------------------------------
 sub convert_html_bla_to_mspa{
@@ -15038,7 +15215,7 @@ sub put_commas_in_number{
 # Example   : @num=@{&put_numbers_in_bins(\@num, 20, 1000)};
 # Keywords  : make_bar_charts_with_numbers, bin_numbers
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -15072,7 +15249,7 @@ sub put_numbers_in_bins{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.0
@@ -15536,7 +15713,7 @@ sub get_sequence_complexity{
 #             %hash2=qw(H 5 E 2 C 3);
 # Keywords  : calculate_composition_identiry, get_composition_identity_of_secture
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.2
@@ -15887,7 +16064,7 @@ sub calculate_distance_for_2_points_in_3D{
 # Example   :
 # Keywords  : scan_DNA_to_calculate_ATGC_ratio
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.4  Aug. 1999
@@ -15945,7 +16122,7 @@ sub calculate_ATGC_bases_ratio_window_scan{
 # Example   :
 # Keywords  : calculate_composition_identity
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.2
@@ -16000,7 +16177,7 @@ sub calculate_composition_prosix{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.1
@@ -16233,7 +16410,7 @@ sub calculate_single_linkage_match_with_parf_files{
 # Example   :
 # Keywords  : calculate_factorial, get_factorial
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -16305,7 +16482,7 @@ sub make_swiss_index{
 # Keywords  : get_string_from_string, get_sequence_from_sequence
 #             fetch_substring_from_sequence, fetch_substring
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.2
@@ -18195,7 +18372,7 @@ sub delbut{
 # Example   :
 # Keywords  : subtract_hash_by_keys, get_diff_between_2_hashes, subtract_hashes
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.0
@@ -18227,7 +18404,7 @@ sub subtract_hash{
 # Options   :
 # Returns   :
 # Argument  :
-# Authors   : jong@bio.cc
+# Authors   : jong@biosophy.org
 # Version   : 1.4
 #--------------------------------------------------------------------
 sub subtract_array{
@@ -18325,7 +18502,7 @@ sub get_mspa_matched_sequence{
 # Example   :
 # Keywords  : get_line_number_from_cursor, line_number, get_line_position
 # Options   :
-# Author    : jong@bio.cc, from Andrew E. Page, aep@world.std.com
+# Author    : jong@biosophy.org, from Andrew E. Page, aep@world.std.com
 # Category  : Tk
 # Returns   :
 # Version   : 1.0
@@ -18478,7 +18655,7 @@ sub get_linked_sequence{
 #   $give_weight_with_good_match=w by w # this is to give preference to well
 #   $weight_factor= by w=
 #                                        matching sec. str. I add '0.1'
-# Author    : jong@bio.cc sat@mrc-lmb.cam.ac.uk
+# Author    : jong@biosophy.org sat@mrc-lmb.cam.ac.uk
 # Version   : 2.1
 #------------------------------------------------------------------------------
 sub get_averaged_prediction{
@@ -19024,7 +19201,7 @@ sub get_seq_fragments{
 # Class     : Utility
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc
+# Author    : jong@biosophy.org
 # Category  :
 # Version   : 1.1
 #--------------------------------------------------------------------
@@ -19947,13 +20124,106 @@ sub push_if_not_already{
 }
 
 #______________________________________________________________________________
+# Title     : compare_sec_str_predictions
+# Usage     : &compare_sec_str_predictions(\@files, \$use_universal_seq_hash_format);
+# Function  :
+# Example   :
+# Keywords  :
+# Options   :
+# Author    : jong@biosophy.org,
+# Category  :
+# Returns   :
+# Version   : 1.1
+#------------------------------------------------------------------------------
+sub compare_sec_str_predictions{
+    my(@files, $use_universal_seq_hash_format,
+       $i, $seq_name1, $seq_name2, %seq1, %seq2, %predator_sec1 ,
+       %predator_sec2, @final_hashes, %DSSP, %STRIDE, $in, %PHD_sec,%Aln);
+    @files=@{$_[0]};
+    $use_universal_seq_hash_format=${$_[1]};
+
+    foreach $in (@files){
+        if(!%predator_sec1 and $in=~/\S\.pr[edl]+$/){
+            print "\n# (i) I found the first predator file \"$in\"";
+            if($in=~/\S\_rv\./){
+               print "\n# (i) _rv. string is detected. I am reversing the seq!! \"$in\"";
+               $put_reverse_seq_option='r';
+            }
+            %predator_sec1  = %{&open_predator_files(\$in, $put_reverse_seq_option,
+                                                     $use_universal_seq_hash_format)};
+            push(@final_hashes, \%predator_sec1);
+        }elsif(%predator_sec1 and $in=~/\S\.pr[edl]+$/){
+            print "\n# (i) I found the second predator file \"$in\"";
+            if($in=~/\S\_rv\./){
+               $put_reverse_seq_option='r' ;
+               print "\n# (i) _rv. string is detected. I am reversing the seq!! \"$in\"";
+            }
+            %predator_sec2  = %{&open_predator_files(\$in, $put_reverse_seq_option,
+                                                      $use_universal_seq_hash_format)};
+            push(@final_hashes, \%predator_sec2);
+        }elsif($in=~/\.phd/){
+            print "\n# (i) I found a PHD sec str pred. file \"$in\"";
+            %PHD_sec  = %{&open_phd_files(\$in, $use_universal_seq_hash_format)};
+            push(@final_hashes, {%PHD_sec});
+        }elsif($in=~/\.dssp/){
+            print "\n# (i) I found a DSSP file \"$in\"";
+            %DSSP = %{&open_dssp_files(\$in, $use_universal_seq_hash_format)};
+            push(@final_hashes, \%DSSP);
+        }elsif($in=~/\.stride/){
+            print "\n# (i) I found a Stride file \"$in\"";
+            %STRIDE = %{&open_stride_files(\$in, $use_universal_seq_hash_format)};
+            push(@final_hashes, \%STRIDE);
+        }elsif($in=~/\S\.msf/){
+            print "\n# (i) I found a MSF file \n";
+            %Aln = %{&open_msf_files($in, $use_universal_seq_hash_format)};
+        }else{
+            print "\n# (E) Is $in  a sec. struc. prediction file??\n";
+        }
+     }
+     #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     # The final data set is  @final_hashes, %Aln, %DSSP
+     #_____________________________________________________
+     for($i=0; $i<@final_hashes; $i+=2){
+        %seq1=%{$final_hashes[$i]};
+        %seq2=%{$final_hashes[$i+1]};
+        #&show_hash(\%seq1);
+        #&show_hash(\%seq2);
+        $seq_name1=$seq1{name};
+        $seq_name2=$seq2{name};
+        $sequence1=$seq1{sequence};
+        $sequence2=$seq2{sequence};
+        $sec_str1=$seq1{sec_str_string};
+        $sec_str2=$seq2{sec_str_string};
+        $sec_str1=~tr/[a-z]IiGgBbTt/[A-Z]CcCcCcCc/;
+        $sec_str2=~tr/[a-z]IiGgBbTt/[A-Z]CcCcCcCc/;
+        if(length($sec_str1) != length($sec_str2)){  print "\n# (E) The lengths are different!!! error??\n"; }
+        print "\n# 1 $seq_name1  $seq_name2 \n";
+        print "\n$sequence1\n$sequence2\n";
+        print "\n$sec_str1\n$sec_str2\n";
+        @sec1=split(//, $sec_str1);
+        @sec2=split(//, $sec_str2);
+        for($j=0; $j< @sec1; $j++){
+           if($sec1[$j] eq $sec2[$j]){
+              print '*';
+              $hits++;
+           }else{
+              print ' ';
+              $errors++;
+           }
+        }
+        print "\n\n Rate of identity : ", $hits/length($sec_str2), "\n\n";
+     }
+}
+
+
+#______________________________________________________________________________
 # Title     : compare_PDBD_structural_domain_hashes
 # Usage     :
 # Function  :
 # Example   :
 # Keywords  : compare_PDBD_scop_domain_hashes
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.0
@@ -20146,7 +20416,7 @@ sub compare_MIPS_interaction_with_SISF{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.1
@@ -20331,7 +20601,7 @@ sub compare_parf_files{
 # Keywords  :
 # Options   :
 #     $Percent_similarity= by Percent_similarity=
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.2
 #------------------------------------------------------------------------------
@@ -20390,7 +20660,7 @@ sub compare_MSP_hash_data{
 # Argument  :
 #     $Percent_similarity= by Percent_similarity=
 #
-# Authors   : jong@bio.cc
+# Authors   : jong@biosophy.org
 # Version   : 1.1
 #--------------------------------------------------------------------
 sub subtract_similar_seq_elements{
@@ -20725,7 +20995,7 @@ sub split_fasta_files{
 # Keywords  :
 # Options   :
 #  $division_factor= by d=
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -21069,7 +21339,7 @@ sub write_html_headbox{
 # Keywords  : open_DDTF_file, open_ddtf_file, open_DOMTABLE1_file
 # Options   :
 #    $make_Liisa_Holm_style_HASH_output=L by L    for Liisa Holm style output
-# Author    : holm@ebi.ac.uk jong@bio.cc,
+# Author    : holm@ebi.ac.uk jong@biosophy.org,
 # Category  :
 # Returns   : ref. of hashes
 # Version   : 1.5
@@ -21442,7 +21712,7 @@ sub open_stride_files{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc
+# Author    : jong@biosophy.org
 # Category  :
 # Version   : 1.2
 #------------------------------------------------------------------------------
@@ -21750,7 +22020,7 @@ sub make_template_from_sec_str{
 #           S        A bend without a hydrogen bond (a kind of coil)
 # Keywords  : PROSIX (protein symmetry index)
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 2.4
@@ -22252,7 +22522,7 @@ sub replace_text_recursively{
 # Example   :
 # Keywords  : write_psub_files, write_perl_subroutines
 # Options   :
-# Author    : jong@bio.cc
+# Author    : jong@biosophy.org
 # Category  :
 # Version   : 1.1
 #------------------------------------------------------------------------------
@@ -22320,6 +22590,37 @@ sub read_FSSP_TREE_TABLE {
 	while(<IN>) { ($x,$cd)=/^\s+(\d+)\S+\s+[_]*(\w+)/; $class{$cd}=$x; }close(IN);
     return(\%class);
 }
+
+#______________________________________________________________________________
+# Title     : read_phi_psi_angles_in_dssp_file
+# Usage     :
+# Function  :
+# Example   :
+#  #  RESIDUE AA STRUCTURE BP1 BP2  ACC   N-H-->O  O-->H-N  N-H-->O  O-->H-N    TCO  KAPPA ALPHA  PHI   PSI    X-CA   Y-CA   Z-CA
+#    1   -2 E S              0   0   60    0, 0.0 152,-1.6   0, 0.0   2,-0.3   0.000 360.0 360.0 360.0 122.1   29.8    8.7   25.1
+#    6    3 E T  E     -A  168   0A  78   -2,-0.4   2,-0.3 162,-0.2 162,-0.3  -0.657  24.2-154.5 -71.9 133.5   28.1    9.6    7.8
+# Keywords  :
+# Options   :
+# Author    : jong@biosophy.org
+# Category  :
+# Returns   :
+# Version   : 1.0
+#------------------------------------------------------------------------------
+sub read_phi_psi_angles_in_dssp_file{
+    my(@phi_psi_angles, $dssp_file, $read_point_found, $phi_psi_angles);
+    $dssp_file=$_[0];
+    open(DSSP, "<$dssp_file") || die "\n read_phi_psi_angles_in_dssp_file: \$dssp_file not found \n";
+    while(<DSSP>){
+        if(/^\s+#\s+RESIDUE\s+AA\s+STRUCTURE/){
+           $read_point_found=1;
+        }elsif($read_point_found and /(.{6})(.{6})\s+\S+\s+\S+\s+\S+$/){
+           $phi_psi_angles="$1 $2";
+           push(@phi_psi_angles, $phi_psi_angles);
+        }
+    }
+    return(\@phi_psi_angles);
+}
+
 
 
 #______________________________________________________________________________
@@ -22727,7 +23028,7 @@ sub read_fssp_alignment_only {
 #
 # Keywords  : open_TABLE2_file
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.8
@@ -23128,7 +23429,7 @@ sub fetch_subroutines{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.0
@@ -23146,7 +23447,7 @@ sub update_line_number_variable{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.0
@@ -23414,7 +23715,7 @@ sub update_subroutines{
 # Example   :
 # Keywords  : get_tan get_tangent atan2
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.0
@@ -23433,7 +23734,7 @@ sub tan{
 #      $points{3}=[@p3];     @p3=(3, 4, 6);
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.0
@@ -23900,7 +24201,7 @@ sub tell_seq_length{
 # Options   :
 # Returns   :
 # Argument  :
-# Author    : jong@bio.cc
+# Author    : jong@biosophy.org
 # Version   : 1.5
 #--------------------------------------------------------------------
 sub do_window_scan{
@@ -23947,7 +24248,7 @@ sub do_window_scan{
 # Returns   :
 # Argument  :
 # Category  :
-# Author    : jong@bio.cc
+# Author    : jong@biosophy.org
 # Version   : 1.0
 #--------------------------------------------------------------------
 sub scan_window_and_calc_something{
@@ -24299,7 +24600,7 @@ sub put_gaps_every_x_position_in_string{
 # Example   :
 # Keywords  : put_new_lines_in_string, break_string_by_new_line
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -24709,7 +25010,7 @@ sub tidy_secondary_structure_segments{
 # Keywords  : make_pddf_file make_PDDF_file write_PDDF_file write_pddf_file
 #             make_dalie_domain_definition_file
 # Options   :
-# Author    : holm@ebi.ac.uk jong@bio.cc,
+# Author    : holm@ebi.ac.uk jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.6
@@ -24990,7 +25291,7 @@ sub make_protein_domain_definition_file{
 # Keywords  :
 # Options   :
 #    $get_ranges_info=r by r
-# Author    : holm@ebi.ac.uk jong@bio.cc,
+# Author    : holm@ebi.ac.uk jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.5
@@ -25759,7 +26060,7 @@ sub insert_gaps_in_seq_hash{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -30254,7 +30555,7 @@ sub print_in_block{
 #    t=  for specifying the length of seq names shown.
 #    t   for truncating the seq names in printing out.
 #    s   for sorting the final output lines (default anyway for print_seq_in_block)
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -31769,7 +32070,7 @@ sub open_cel_files{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc
+# Author    : jong@biosophy.org
 # Category  :
 # Version   : 1
 #------------------------------------------------------------------------------
@@ -32585,7 +32886,7 @@ sub open_fasta_files{
 # Keywords  :
 # Options   :
 #   $sort_seq_names=s by s
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.0
@@ -34263,7 +34564,7 @@ sub write_mprf_files{
 #   $log_of_evalue_or_score=e by e -e
 #   $get_log_base_10=t by t -t
 #
-# Author    : jong@bio.cc
+# Author    : jong@biosophy.org
 # Category  :
 # Version   : 1.5
 #--------------------------------------------------------------------------------
@@ -35370,7 +35671,7 @@ sub write_nhco_files{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc
+# Author    : jong@biosophy.org
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -35479,7 +35780,7 @@ sub write_c3al_files{
 # Example   : &write_c3ss_files(\%prdl, \$base);
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc
+# Author    : jong@biosophy.org
 # Category  :
 # Version   : 1.4
 #------------------------------------------------------------------------------
@@ -35848,7 +36149,7 @@ sub show_in_fasta{ my($k, $name, $string);
 #    $FSSP_PAIR_TABLE_hash{$REP_STR}{$PDB_str1}="$mutual_percent_sequence_identity";
 # Keywords  : display_FSSP_PAIR_TABLE_hash, show_TABLE2_file
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.0
@@ -36923,7 +37224,7 @@ sub remov_com_column2{
 # Tips      :
 # Argument  : 2 or more ref for hash of identical keys and value length.
 #             One optional arg for replacing space char to the given one.
-# Author    : jong@bio.cc
+# Author    : jong@biosophy.org
 # Category  :
 # Version   : 1.6
 #--------------------------------------------------------------------
@@ -46030,7 +46331,7 @@ sub insert_lines_anywhere{
 # Example   :
 # Keywords  : pair_combination, combination, permutation, get_combinatorial_pairs
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   : HASH
 # Version   : 1.0
@@ -46847,7 +47148,7 @@ sub parse_cgi_input{
 # Keywords  : parse_httpd_server_input, decode_HTTPD_input, parse_cgi_input
 #             decode_URI, decode_encoded_URI, decode_passed_URI,
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.2
 #------------------------------------------------------------------------------
@@ -49874,7 +50175,7 @@ sub run_rasmol_for_DALI{
 # Example   :
 # Keywords  : dodali
 # Options   :
-# Author    : holm@ebi.ac.uk, jong@bio.cc
+# Author    : holm@ebi.ac.uk, jong@biosophy.org
 # Category  :
 # Returns   :
 # Version   : 1.2
@@ -50208,7 +50509,7 @@ sub run_fasta_sequence_search{
 #   $Query_sequences=          by Q=
 #   $DB_sequences=             by D=
 #   $raw_matrix_name=          by X=
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.3
@@ -53991,7 +54292,7 @@ sub PDB_ISL_server{
 #  $E_val=        by e=
 #  $DB_type=      by y=
 #
-# Author    : Sarah Teichmann and Jong Park, jong@bio.cc
+# Author    : Sarah Teichmann and Jong Park, jong@biosophy.org
 # Version   : 1.8
 #--------------------------------------------------------------------------------
 sub ISS_server{
@@ -54738,7 +55039,7 @@ sub read_seq_matrix_files{
 # Keywords  :
 # Options   :
 #   $attach_extension=e by e  # for attaching file extension in the output
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.1
@@ -54770,6 +55071,177 @@ sub attach_suffix_in_file_name{
     return(\$base_suffix);
 }
 
+#________________________________________________________________________________
+# Title     : attach_scop_classification_to_pdbd_seq
+# Usage     : &attach_classification_to_pdb_seq(\%hash_classification,
+#                              \%correcting_pairs, \@files, $over_write);
+# Function  :
+# Example   :
+# Keywords  : attach_scop_classificaion_to_pdb_seq, add_scop_classification_to_pdb_seq
+#             attach_classification_to_pdbd_seq
+# Options   :
+# Category  :
+# Version   : 1.2
+#--------------------------------------------------------------------------------
+sub attach_scop_classification_to_pdbd_seq_for_strass_file{
+    my (%out_with_class, %hash_classification, %correcting_pairs, @files, $i,
+            $query_range, $match_range, $msp);
+    %hash_classification=%{$_[0]};
+    %correcting_pairs   =%{$_[1]};
+    if(ref($_[2]) eq 'ARRAY'){
+       @files=@{$_[2]};
+    }else{ die "\n attach_classification_to_pdb_seq needs a ref. of an array \n";  }
+    my $over_write=$_[3];
+    print "\n Parsing @files \n";
+
+	for($i=0; $i< @files; $i++){
+			my (%out_with_class, $query_range, $match_range, $class_attached, $msp);
+			$msp=$files[$i];
+            print "\n Processing $msp\n";
+            open(MSP, "<$msp") || die;
+			while(<MSP>){
+					 $match_range='';
+					 $class_attached='';
+					 $query_range='';
+					 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+					 # This is handling newer MSP files
+					 #  d2hts___1-85_1.4.3.8.2         270    8.7e-14  Nomolog S25478_36-113                64     1.7      d1gp1a__129-153_3.27.1.3.1
+					 #  d1irk___20-224_5.1.1.2.1       281    5.6e-10  Nomolog CRPK1_475-670                62     2.9      d1lfb___40-69_1.4.1.1.3
+					 #  d2act___22-200_4.3.1.1.1       216    0.0014   Nomolog A57480_238-452               68     3.1      d1flp___25-115_1.1.1.1.2
+					 #______________________________________________________________
+					 if(/^ *(\S+)(_\d+\-\d+)\s+(\d+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)(_\d+\-\d+)/){
+							 if($hash_super{$1} eq $hash_super{$8}){
+									 printf("%-30s %-6s %-8s Homolog %-28s %-6s %-8s %-30s\n",
+													 "$1"."$2"."\_$hash_classification{$1}",
+													 $3, $4, $5, $6, $7,
+													 "$8"."$9"."\_$hash_classification{$8}");
+							 }else{
+									 printf("%-30s %-6s %-8s Nomolog %-28s %-6s %-8s %-30s\n",
+													 "$1"."$2"."\_$hash_classification{$1}",
+													 $3, $4, $5, $6, $7,
+													 "$8"."$9"."\_$hash_classification{$8}");
+							 }
+                     #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                     # for STRASS file (psi_pdbisl_merge_assign.strass in ~/Proj/Bio/Bit/MIPS_vs_SISF
+                     #    It was originally produced by Sarah in UCL
+                     #  YAL019W-1131 588-734 d1a1va1-136 6-136 6e-18
+                     #  YAL019W-1131 560-855 d2bct__-516 142-445 7.5e-32
+                     #  YAL020C-333 4-300 d1a12a_-401 68-357 3e-45
+                     #  YAL021C-837 342-527 d1dfji_-456 1-186 0
+                     #______________________________________________________________________________________
+                     }elsif(/^\s*(\S+\-\d+\s+\d+\-\d+\s+)(\S+)(\-\d+\s+\d+\-\d+.*)/){
+                           $PDBD_name=$1;
+                           print "$1\t$2$3\t$hash_classification{$2}\n";
+					 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
+					 # This is handling true MSP files
+					 # 380    1e-105  1     1     356   d1pmd_4                1     356   d1pmd_4                                9
+					 # 176    1e-43   0.11  45    352   d1pmd_4                6     256   d4blma_                                9
+					 # 174    4e-43   0.12  37    342   d1pmd_4                3     254   d1btl__                                9
+					 #__________________________________________________________________________
+					 }elsif(/^ *((\d+) +(\S+) +(\S+) +(\d+) +(\d+)) +(\S+) +((\d+) +(\d+)) +(\S+) *(\S*)/){
+							 print "\n# handling TRUE MSP files ======= << $0\n";
+							 $front_part=$1;
+							 $rear_part=$8;
+							 $query_seq=$7;
+							 $match_seq=$11;
+							 $iteration_num=$12;
+							 if($query_seq=~/(\S+)\_\d+\.\d+\.\d+/){
+									 $query_seq=$1;
+									 $class_attached=1;
+							 }
+							 if($match_seq=~/(\S+)\_\d+\.\d+\.\d+/){
+									 $match_seq=$1;
+									 $class_attached=1;
+							 }
+							 if($query_seq=~/(\S+)\_(\d+\-\d+)$/){
+									 $query_seq=$1;
+									 $query_range=$2;
+							 }
+							 if($match_seq=~/(\S+)\_(\d+\-\d+)$/){
+									 $match_seq=$1;
+									 $match_range=$2;
+									 print "\n# \$match_seq $match_seq has range of  $match_range << $0";
+							 }
+							 print "\n# \$query_seq $query_seq \$match_seq $match_seq";
+
+							 if(!$over_write and $class_attached){
+									 $out_with_class{$msp}.=$_;
+									 print "\n# Seq names ALREADY have classification << $0\n";
+									 next;
+							 }
+							 if( ($over_write or !$class_attached)
+									 and ($hash_classification{$query_seq} or $hash_classification{$match_seq} )){
+									 print "\n# \$over_write is set or \$class_attached is true << $0\n";
+									 if($query_range){
+											 $classi_query="\_$hash_classification{$query_seq}";
+									 }else{ $classi_query='';
+									 }
+									 if($match_range){
+											 $classi_match="\_$hash_classification{$match_seq}";
+									 }else{ $classi_match='';
+									 }
+
+									 if($verbose){
+											 printf("%-34s %-25s %-27s %-28s %-3s\n",
+													 $front_part, "$query_seq"."$classi_query"."$query_range",
+													 $rear_part, "$match_seq"."$match_range"."$classi_match", $iteration_num);
+									 }
+									 $out_with_class{$msp}.=sprintf("%-34s %-25s %-27s %-28s %-3s\n",
+													 $front_part, "$query_seq"."$classi_query"."$query_range",
+													 $rear_part, "$match_seq"."$match_range"."$classi_match", $iteration_num);
+							 }else{
+									 $out_with_class{$msp}.=$_;
+									 print "\n ERROR, the input pdbxx.fasta file does not have class infor for $6 $8\n";
+							 }
+						#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+						# This is for paired ranking file
+						#
+						#  d1nsca_ d3nn9__ Homolog 0
+						#  d1ovaa_ e2ach.1a1 Homolog 0
+						#  d1dppa_ d2olba_ Homolog 0
+						#  d1brla_ d1brlb_ Homolog 0
+						#_________________________________________
+						}elsif(/^ *(\S+) +(\S+) +\S+molog\s+(\S+)/){
+								$sorted_pair=join(' ',  sort($1, $2));
+
+								if($hash_super{$1} eq $hash_super{$2}){
+										printf("%-12s %-12s Homolog %-22s %-12s %-12s\n",
+													 $1, $2, $3,
+													 "$hash_classification{$1}",
+													 "$hash_classification{$2}");
+								}elsif( $correcting_pairs{$sorted_pair}){
+										printf("%-12s %-12s Homolog %-22s %-12s %-12s\n",
+													 $1, $2, $3,
+													 "$hash_classification{$1}",
+													 "$hash_classification{$1}");  ## I am putting the same classi as in SCOP they were different !!
+								}else{
+										printf("%-12s %-12s Nomolog %-22s %-12s %-12s\n",
+													 $1, $2, $3,
+													 "$hash_classification{$1}",
+													 "$hash_classification{$2}");
+								}
+						#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+						# This is for paired ranking file
+						#
+						#  d1nsca_ d3nn9__ Homolog 0
+						#  d1ovaa_ e2ach.1a1 Homolog 0
+						#  d1dppa_ d2olba_ Homolog 0
+						#  d1brla_ d1brlb_ Homolog 0
+						#_________________________________________
+						}elsif(/^ *\> *(\S+) */){
+								if($hash_super{$1}){
+                                        printf("\>%-12s %-15s\n", $1, "$hash_classification{$1}" );
+								}
+						}else{
+								print
+						}
+
+				}## end of each file While loop
+				close(MSP);
+		}
+}
+
+
 
 #______________________________________________________________________________
 # Title     : attach_scop_classification_in_fasta_db_file
@@ -54778,7 +55250,7 @@ sub attach_suffix_in_file_name{
 # Example   : $0 pdb100d_1_41.mpfa pdb90d_1_41.mpfa  > pdb90d_1_41.mpfa2
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.0
@@ -54814,6 +55286,7 @@ sub attach_scop_classification_in_fasta_db_file{
 # Function  :
 # Example   :
 # Keywords  : attach_scop_classificaion_to_pdb_seq, add_scop_classification_to_pdb_seq
+#             attach_classification_to_pdbd_seq
 # Options   :
 # Category  :
 # Version   : 1.1
@@ -55318,7 +55791,7 @@ sub detect_file_format_type{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc
+# Author    : jong@biosophy.org
 # Category  :
 # Version   : 1.1
 #------------------------------------------------------------------------------
@@ -55358,7 +55831,7 @@ sub get_first_seq_in_alignment{
 # Example   :
 # Keywords  : which, whence
 # Options   :
-# Author    : Jong, jong@bio.cc
+# Author    : Jong, jong@biosophy.org
 # Category  :
 # Version   : 1.3
 #------------------------------------------------------------------------------
@@ -55665,7 +56138,7 @@ sub do_psi_blast_search_ISS{
 #									'SEQ_NAME', 'TEST1');
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc
+# Author    : jong@biosophy.org
 # Version   : 1.0
 #--------------------------------------------------------------------------------
 sub do_net_psi_blast_search{
@@ -56055,7 +56528,7 @@ sub do_psi_blast_search{
 # Example   :
 # Keywords  : compile_superfam_fasta_files_for_ISL
 # Options   :
-# Author    : jong@bio.cc
+# Author    : jong@biosophy.org
 # Category  :
 # Version   : 1.1
 #------------------------------------------------------------------------------
@@ -56105,7 +56578,7 @@ sub merge_superfam_fasta_files_for_ISL{
 # Keywords  : get_memory_size_in_linux, get_mem_size, check_memory_size
 #             get_system_memory_size
 # Options   :
-# Author    : jong@bio.cc
+# Author    : jong@biosophy.org
 # Category  :
 # Version   : 1.1
 #------------------------------------------------------------------------------
@@ -56128,7 +56601,7 @@ sub get_total_memory_size_in_linux{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc
+# Author    : jong@biosophy.org
 # Category  : File
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -56152,7 +56625,7 @@ sub check_file_exists_in_path{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc
+# Author    : jong@biosophy.org
 # Category  :
 # Version   : 1.3
 #------------------------------------------------------------------------------
@@ -56186,7 +56659,7 @@ sub compress_files_by_gzip{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -56211,7 +56684,7 @@ sub check_if_palindrome{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -56260,7 +56733,7 @@ sub check_if_it_is_for_Tk{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc
+# Author    : jong@biosophy.org
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -56280,7 +56753,7 @@ sub check_if_sec_str_form_hash{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc
+# Author    : jong@biosophy.org
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -56305,7 +56778,7 @@ sub check_if_defined{
 # Example   :
 # Keywords  : check_if_exists, check_if_file_exist
 # Options   :
-# Author    : jong@bio.cc
+# Author    : jong@biosophy.org
 # Category  :
 # Version   : 1.1
 #------------------------------------------------------------------------------
@@ -56332,7 +56805,7 @@ sub check_if_files_exist{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc
+# Author    : jong@biosophy.org
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -56365,7 +56838,7 @@ sub check_if_multiple_sequence_file{
 # Example   :
 # Keywords  : die_unless_present, die_unless_file_present
 # Options   :
-# Author    : jong@bio.cc
+# Author    : jong@biosophy.org
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -56390,7 +56863,7 @@ sub die_if_file_not_present{
 # Example   :
 # Keywords  : write_ENV_vars, write_env_vars
 # Options   :
-# Author    : jong@bio.cc, On commercial use issue, Email me.
+# Author    : jong@biosophy.org, On commercial use issue, Email me.
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -56478,7 +56951,7 @@ sub ask_for_ENV_vars{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc, On commercial use issue, Email me.
+# Author    : jong@biosophy.org, On commercial use issue, Email me.
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -56558,7 +57031,7 @@ sub get_all_mspa_files {
 # Example   :
 # Keywords  : get_low_complexity_region, calc_low_complexity_region
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.1
 #------------------------------------------------------------------------------
@@ -56669,7 +57142,7 @@ sub find_low_complexity_region{
 #   $Use_known_PDB_structure=u by u
 #   $produce_seq_oder_info=O by O  # used by open_msf_files
 #   $opt_write_c3ss_file=C by C
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.3
 #------------------------------------------------------------------------------
@@ -57435,7 +57908,7 @@ sub assess_sec_str_prediction{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc
+# Author    : jong@biosophy.org
 # Version   : 1.1
 #--------------------------------------------------------------------------------
 sub NetBioServer{
@@ -57898,7 +58371,7 @@ sub analyse_fb_sec_str_prediction{
 # Example   :
 # Keywords  : make_revcomp_string, make_revcomp_string_array
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -57928,7 +58401,7 @@ sub make_revcomp_sequences{
 #
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.2
@@ -58012,7 +58485,7 @@ sub match_number_of_seq_ranges{
 # Keywords  : get_pdb_chain_ID, extract_pdb_chain_ID, get_chain_number,
 #             get_chain_ID
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.0
@@ -58043,7 +58516,7 @@ sub retrieve_pdb_chain_IDs_from_file_names{
 # Example   :  print &__RED__, "This should be RED\n";
 # Keywords  : __yellow__, __YELL__, yellow_text,
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -58058,7 +58531,7 @@ sub __YELLOW__{
 # Example   :
 # Keywords  : __red__, red_text,
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -58074,7 +58547,7 @@ sub __RED__{
 # Example   :
 # Keywords  : __red__, red_text,
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -58089,7 +58562,7 @@ sub __BLUE__{
 # Example   :
 # Keywords  : __red__, red_text,
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -58104,7 +58577,7 @@ sub __GREEN__{
 # Example   :
 # Keywords  : __red__, red_text,
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -58119,7 +58592,7 @@ sub __BLACK__{
 # Example   :
 # Keywords  : __red__, red_text,
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -58135,7 +58608,7 @@ sub __MAGENTA__{
 # Example   :
 # Keywords  : __red__, red_text,
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -58150,7 +58623,7 @@ sub __CYAN__{
 # Example   :
 # Keywords  : __red__, red_text,
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -58165,7 +58638,7 @@ sub __WHITE__{
 # Example   :
 # Keywords  : __red__, red_text,
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -58180,7 +58653,7 @@ sub __RESET__{
 # Example   :
 # Keywords  : __red__, red_text,
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -58195,7 +58668,7 @@ sub __BOLD__{
 # Example   :
 # Keywords  : __red__, red_text,
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -58210,7 +58683,7 @@ sub __REVERSE__{
 # Example   :
 # Keywords  : __red__, red_text,
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -58225,7 +58698,7 @@ sub __UNDERLINE__{
 # Example   :
 # Keywords  : __red__, red_text,
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -58240,7 +58713,7 @@ sub __UNDERLINE__{
 # Example   :
 # Keywords  : __red__, red_text,
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -58255,7 +58728,7 @@ sub __BLINK__{
 # Example   :
 # Keywords  : __red__, red_text,
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -58270,7 +58743,7 @@ sub __ON_BLACK__{
 # Example   :
 # Keywords  : __red__, red_text,
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -58285,7 +58758,7 @@ sub __ON_RED__{
 # Example   :
 # Keywords  : __red__, red_text,
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -58300,7 +58773,7 @@ sub __ON_GREEN__{
 # Example   :
 # Keywords  : __red__, red_text,
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -58315,7 +58788,7 @@ sub __ON_YELLOW__{
 # Example   :
 # Keywords  : __red__, red_text,
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -58330,7 +58803,7 @@ sub __ON_BLUE__{
 # Example   :
 # Keywords  : __red__, red_text,
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -58345,7 +58818,7 @@ sub __ON_CYAN__{
 # Example   :
 # Keywords  : __red__, red_text,
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -58360,7 +58833,7 @@ sub __ON_MAGENTA__{
 # Example   :
 # Keywords  : __red__, red_text,
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Version   : 1.0
 #------------------------------------------------------------------------------
@@ -58792,7 +59265,7 @@ sub ProteoSeq{
 # Options   :
 #  $time_interval= by t=
 #  $ProSeq_dir= by d=
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.4
@@ -59095,7 +59568,7 @@ sub ProteoSeq_cron{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.0
@@ -59125,7 +59598,7 @@ sub get_correct_DDD_domain_region_from_alignment{
 # Example   :
 # Keywords  : write_protein_domain_classification_file write_dali_classification_file
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.0
@@ -59158,7 +59631,7 @@ sub write_PDC_file{
 # Example   :
 # Keywords  : sort_dali_domain_classification sort_DALI
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.0
@@ -59180,7 +59653,7 @@ sub sort_protein_domain_classification_entries{
 # Example   :
 # Keywords  : put_gaps_in_missing_positions, fill_gaps_in_array
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   : ref. of array
 # Version   : 1.0
@@ -59205,7 +59678,7 @@ sub insert_gaps_in_missing_positions{
 # Example   : $herta_align_hash{$seq_1_name}{$posi} = -9.99
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.6
@@ -59256,7 +59729,7 @@ sub open_herta_files{
 # Example   :
 # Keywords  : put_gaps_in_missing_positions_in_herta_hash
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.4
@@ -59302,7 +59775,7 @@ sub insert_gaps_in_missing_positions_in_herta_hash{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.2
@@ -59350,7 +59823,7 @@ sub encode_residue_exchange_matrix{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.2
@@ -59392,7 +59865,7 @@ sub show_herta_hash{
 # Keywords  : mask_low_complexity_seq_regions
 #             seg_sequences, seq, dust
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.0
@@ -59413,7 +59886,7 @@ sub remove_low_complexity_seq_regions{
 # Keywords  : mask_low_complexity_seq_regions, remove_low_complexity_seq_regions
 #             seg_sequences, seq, dust
 # Options   :
-# Author    : jong@bio.cc,
+# Author    : jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.0
@@ -59435,7 +59908,7 @@ sub mask_low_complexity_seq_regions{
 # Example   :
 # Keywords  :
 # Options   :
-# Author    : heger@ebi.ac.uk jong@bio.cc,
+# Author    : heger@ebi.ac.uk jong@biosophy.org,
 # Category  :
 # Returns   :
 # Version   : 1.4

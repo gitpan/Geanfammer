@@ -1,0 +1,9 @@
+GOOD: all link    : 000
+2-2_cluster.mspa
+3-4_cluster.mspa
+4-7_cluster.mspa
+5-11_cluster.mspa
+6-16_cluster.mspa
+7-30_cluster.mspa
+7-22_cluster.mspa
+BAD : Not all link: 000

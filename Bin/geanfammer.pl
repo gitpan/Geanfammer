@@ -139,7 +139,7 @@
 # Author    : Sarah A Teichmann, Jong Park, sat@mrc-lmb.cam.ac.uk,
 #                                      jong@salt2.med.harvard.edu
 #             For commercial use, please contact one of the authors.
-# Version   : 3.3
+# Version   : 3.4
 #------------------------------------------------------------------
 
 print "\n\n\n#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
@@ -716,7 +716,6 @@ sub geanfammer{
 #   s=<digit>   for score threshold
 #   E=<digit>   for evalue threshold
 #   z           for activating remove_similar_sequences, rather than remove_dup....
-#   o           for overwriting
 #   v           for verbose printout (infor)
 #   D           for dynamic factor
 #   S  $short_region=  S by S -S  # taking shorter region overlap in removing similar reg
@@ -724,104 +723,113 @@ sub geanfammer{
 #   A  $average_region=A by A -A  # taking average region overlap in removing similar reg
 #   o  for $over_write
 #
-# Version   : 3.1
+# Version   : 3.4
 #------------------------------------------------------------------------
 sub divide_clusters{
-		#"""""""""""""""""< handle_arguments{ head Ver 4.1 >"""""""""""""""""""
-		my(@A)=&handle_arguments(@_);my($num_opt)=${$A[7]};my($char_opt)=${$A[8]};
-		my(@hash)=@{$A[0]};my(@file)=@{$A[4]};my(@dir)=@{$A[3]};my(@array)=@{$A[1]};
-		my(@string)=@{$A[2]};my(@num_opt)=@{$A[5]};my(@char_opt)=@{$A[6]};
-		my(@raw_string)=@{$A[9]};my(%vars)=%{$A[10]};my(@range)=@{$A[11]};
-		my($i,$j,$c,$d,$e,$f,$g,$h,$k,$l,$m,$n,$o,$p,$q,$r,$s,$t,$u,$v,$w,$x,$y,$z);
-		if($debug==1){print "\n\t\@hash=\"@hash\"
-		\@raw_string=\"@raw_string\"\n\t\@array=\"@array\"\n\t\@num_opt=\"@num_opt\"
-		\@char_opt=\"@char_opt\"\n\t\@file=\"@file\"\n\t\@string=\"@string\"\n" }
-		#""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-		my($merge, $verbose, $sat_file, $length_thresh, $factor, $indup, $indup_percent,
-			 $score, @temp_show_sub, $optimize, $file, $Evalue_thresh, $over_write, $din_dom,
-			 $sum_seq_num, $base_1, $output_clu_file, $short_region, $large_region,
-			 $average_region, $dynamic_factor, @sub_clustering_clu_files,
-			 @splited1, $link_or_not,  %duplicate);
+    #"""""""""""""""""< handle_arguments{ head Ver 4.1 >"""""""""""""""""""
+    my(@A)=&handle_arguments(@_);my($num_opt)=${$A[7]};my($char_opt)=${$A[8]};
+    my(@hash)=@{$A[0]};my(@file)=@{$A[4]};my(@dir)=@{$A[3]};my(@array)=@{$A[1]};
+    my(@string)=@{$A[2]};my(@num_opt)=@{$A[5]};my(@char_opt)=@{$A[6]};
+    my(@raw_string)=@{$A[9]};my(%vars)=%{$A[10]};my(@range)=@{$A[11]};
+    my($i,$j,$c,$d,$e,$f,$g,$h,$k,$l,$m,$n,$o,$p,$q,$r,$s,$t,$u,$v,$w,$x,$y,$z);
+    if($debug==1){print "\n\t\@hash=\"@hash\"
+    \@raw_string=\"@raw_string\"\n\t\@array=\"@array\"\n\t\@num_opt=\"@num_opt\"
+    \@char_opt=\"@char_opt\"\n\t\@file=\"@file\"\n\t\@string=\"@string\"\n" }
+    #""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    my($merge, $verbose, $sat_file, $length_thresh, $factor, $indup, $indup_percent,
+         $score, @temp_show_sub, $optimize, $file, $Evalue_thresh, $over_write, $din_dom,
+         $sum_seq_num, $base_1, $output_clu_file, $short_region, $large_region,
+         $average_region, $dynamic_factor, @sub_clustering_clu_files,
+         @splited1, $link_or_not,  %duplicate, @No_file_found_divclus_fail);
 
-		$factor=7.5; # default factor is 7 for 70%
-		$length_thresh=30;
+    $optimize=1;
+    $Evalue_thresh=0.001; # the default
+    $factor=7; # default factor is 7 for 70%
+    $length_thresh=30;
 
-		#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		# Dealing with options
-		#_________________________________________
-		if($char_opt=~/m/){        $merge='m';
-		}if($char_opt=~/v/){       $verbose='v'; # for showing debugging information
-		}if($char_opt=~/i/){       $indup='i';
-		}if($char_opt=~/z/){       $optimize='z';
-		}if($char_opt=~/o/){       $over_write='o';
-		}if($char_opt=~/d/){       $din_dom='d';
-		}if($char_opt=~/s/){       $sat_file='s';
-		}if($char_opt=~/y/){       $dynamic_factor='y';
-		}if($char_opt=~/S/){       $short_region  ='S';
-		}if($char_opt=~/L/){       $large_region  ='L';
-		}if($char_opt=~/A/){       $average_region='A';
-		}if($vars{'T'}=~/\d+/){    $length_thresh= $vars{'T'};
-		}if($vars{'l'}=~/\d+/){    $length_thresh= $vars{'l'}; ## synonym of 't'
-		}if($vars{'f'}=~/\S+/){    $factor= $vars{'f'};
-		}if($vars{'s'}=~/\d+/){    $score = $vars{'s'};
-		}if($vars{'E'}=~/\d+/){    $Evalue_thresh= $vars{'E'}; # synonym of e
+    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # Dealing with options
+    #_________________________________________
+    if($char_opt=~/m/){        $merge='m';
+    }if($char_opt=~/v/){       $verbose='v'; # for showing debugging information
+    }if($char_opt=~/i/){       $indup='i';
+    }if($char_opt=~/z/){       $optimize='z';
+    }if($char_opt=~/o/){       $over_write='o';
+    }if($char_opt=~/d/){       $din_dom='d';
+    }if($char_opt=~/s/){       $sat_file='s';
+    }if($char_opt=~/y/){       $dynamic_factor='y';
+    }if($char_opt=~/S/){       $short_region  ='S';
+    }if($char_opt=~/L/){       $large_region  ='L';
+    }if($char_opt=~/A/){       $average_region='A';
+    }if($vars{'T'}=~/\d+/){    $length_thresh= $vars{'T'};
+    }if($vars{'l'}=~/\d+/){    $length_thresh= $vars{'l'}; ## synonym of 't'
+    }if($vars{'f'}=~/\S+/){    $factor= $vars{'f'};
+    }if($vars{'s'}=~/\d+/){    $score = $vars{'s'};
+    }if($vars{'e'}=~/\d+/){    $Evalue_thresh= $vars{'e'}; # synonym of e
+    }if($vars{'E'}=~/\d+/){    $Evalue_thresh= $vars{'E'}; # synonym of e
+    }
+    $percent_fac=$factor*10; # <-- this is just to show the factor in %
+    print "\n(i) Input to divide_clusters sub are: \"@file\" sleeping for 3 seconds"; sleep 3;
+
+    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # (0) When one file input was given (yes, divclus can handle multiple files, Sarah!)
+    #________________________________________________________________________________
+    if(@file == 1){  #<=== @file has xxxx.mspa, yyyy.mspa  zzzz.mspa ....,
+		$file=$file[0];
+		$base_1=${&get_base_names($file)};
+		#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		# (2) Define the output cluster file name:  eg, 3-232_cluster_F7.clu , F7 means factor used is 7
+		#______________________________________________________________________________________________
+		$output_clu_file="$base_1\_F${factor}\.clu";
+
+		if( !$over_write and -s $output_clu_file){
+			print "\n# $output_clu_file Already EXISTS, skipping. Use \'o\' opt to overwrite\n"; exit;
 		}
-	 $percent_fac=$factor*10; # <-- this is just to show the factor in %
 
-	 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	 # (0) When one file input was given (yes, divclus can handle multiple files, Sarah!)
-	 #________________________________________________________________________________
-	 if(@file == 1){  #<=== @file has xxxx.mspa, yyyy.mspa  zzzz.mspa ....,
-				$file=$file[0];
-				$base_1=${&get_base_names($file)};
+		#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		# (3) merge_sequence_in_mspa_file does not do much. Just filtering and producing
+		#     sequences in ISPA_PBS_21-215 VPR_PBS_160-354 format from mspa format
+		#________________________________________________________________________________
+        print "\n(i) Running merge_sequence_in_mspa_file";
+        @grouped_seq_names=@{&merge_sequence_in_mspa_file(\@file, "s=$score", $optimize, $din_dom, $sat_file,
+							$optimize, "T=$length_thresh", "E=$Evalue_thresh", "f=$factor", "$range", "$merge", $verbose,
+							$short_region, $large_region, $average_region, $over_write, $dynamic_factor)};
 
-				#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-				# (2) Define the output cluster file name:  eg, 3-232_cluster_F7.clu , F7 means factor used is 7
-				#______________________________________________________________________________________________
-				$output_clu_file="$base_1\_F${factor}\.clu";
-
-				if( !$over_write and -s $output_clu_file){
-						print "\n# $output_clu_file Already EXISTS, skipping. Use \'o\' opt to overwrite\n"; die;
+		#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		# (4) This is critical seqlet merging step. Up to now, things are fine usually.!!!
+		#________________________________________________________________________________
+		unless(@grouped_seq_names == 1){  ##  if @grouped_seq_names has one string like 'FAM_8_7 FAM_8_4 FAM_8_3' skip
+			F1: for($i=0; $i< @grouped_seq_names; $i++){
+                @splited1=split(/\s+/, $grouped_seq_names[$i]);
+				for($j=0; $j< @grouped_seq_names; $j++){
+    				 if($grouped_seq_names[$i] eq $grouped_seq_names[$j]){ next  }
+					 @splited2=split(/\s+/, $grouped_seq_names[$j]);
+                     $link_or_not=${&check_linkage_of_2_similar_seqlet_sets(\@splited1,
+                                                                           \@splited2,
+                                                                           "f=$factor")};
+					if($link_or_not){
+                        $optimize=1; ## This should be nearly always 1 !!!!!!!
+                        if($optimize){ ##---- This will also remove similar seqlets, not only identical ones
+                            $grouped_seq_names[$i]=join(' ', sort @{&remove_similar_seqlets( [@splited1, @splited2],
+																		$short_region, $large_region, $average_region)} );
+     				    }else{
+							$grouped_seq_names[$i]=join(' ', grep { ! $duplicate{$_}++ } (@splited1, @splited2) );
+					    }
+                        splice(@grouped_seq_names, $j,1);
+						$j--; $i--; next F1;
+					}
 				}
-				#print "# (2) divide_clusters: processing ONE single file \"@file\" with merge_sequence_in_mspa_file\n" if $verbose;
 
-				#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-				# (3) merge_sequence_in_mspa_file does not do much. Just filtering and producing
-				#     sequences in ISPA_PBS_21-215 VPR_PBS_160-354 format from msp format
-				#________________________________________________________________________________
-                @grouped_seq_names=@{&merge_sequence_in_mspa_file(\@file, "s=$score", $optimize, $din_dom, $sat_file,
-								$optimize, "T=$length_thresh", "E=$Evalue_thresh", "f=$factor", "$range", "$merge", $verbose,
-								$short_region, $large_region, $average_region, $over_write, $dynamic_factor)};
-
-				#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-				# (4) This is critical seqlet merging step
-				#________________________________________________________________________________
-				unless(@grouped_seq_names == 1){  ##  if @grouped_seq_names has one string like 'FAM_8_7 FAM_8_4 FAM_8_3' skip
-						F1: for($i=0; $i< @grouped_seq_names; $i++){
-								@splited1=split(/ +/, $grouped_seq_names[$i]);
-								for($j=0; $j< @grouped_seq_names; $j++){
-									 if($grouped_seq_names[$i] eq $grouped_seq_names[$j]){ next  }
-									 @splited2=split(/ +/, $grouped_seq_names[$j]);
-									 $link_or_not=${&check_linkage_of_2_similar_seqlet_sets(\@splited1, \@splited2, "f=$factor")};
-									 if($link_or_not){
-											 if($optimize){ ##---- This will also remove similar seqlets, not only identical ones
-													$grouped_seq_names[$i]=join(' ', sort @{&remove_similar_seqlets( [@splited1, @splited2],
-																											$short_region, $large_region, $average_region)} );
-											 }else{
-													$grouped_seq_names[$i]=join(' ', grep { ! $duplicate{$_}++ } (@splited1, @splited2) );
-											 }
-											 splice(@grouped_seq_names, $j,1);
-											 $j--; $i--; next F1;   }  }
-						}
-				}
- 				#~~~~~~~~~~~~~~ I used to use a sub, but to save time above is inserted ~~~~~~~~~~~~~
-				#@grouped_seq_names=@{&cluster_merged_seqlet_sets(\@grouped_seq_names, $dynamic_factor,
-				#			 "f=$factor", $short_region, $large_region, $average_region, $optimize)};
+             }
+		}
+		#~~~~~~~~~~~~~~ I used to use a sub, but to save time above is inserted ~~~~~~~~~~~~~
+        #@grouped_seq_names=@{&cluster_merged_seqlet_sets(\@grouped_seq_names, $dynamic_factor,
+	    #				 "f=$factor", $short_region, $large_region, $average_region, $optimize)};
 
 				#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 				# (5) This is showing the result in clu file format
 				#________________________________________________________________________________
-				@temp_show_sub=&show_subclusterings(\@grouped_seq_names, $file, $sat_file, $dindom, $indup,
+                @temp_show_sub=&show_subclusterings(\@grouped_seq_names, $file, $sat_file, $dindom, $indup,
 						   "E=$Evalue_thresh", "p=$percent_fac", "f=$factor" );
 				$good_bad       = $temp_show_sub[0];
 				$indup_c        = $temp_show_sub[1];
@@ -834,97 +842,103 @@ sub divide_clusters{
 				#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 				# (6) Final write up stage (unecessary)
 				#_______________________________________________________________
-	      &write_good_bad_list_in_divide_clusters(\@good, \@bad);
+          &write_good_bad_list_in_divide_clusters(\@good, \@bad);
 
-	 }
 	 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	 # when more than one single file input is given (Default usually)
 	 #_________________________________________________________________
-	 elsif(@file >1 ){
-         print "\n Multiple CLU files were given to divide_clusters sub !! This is O.K. \n";
+	 }elsif(@file >1 ){
 		 my (@good, @bad);
 		 if($indup =~/i/i){   open (INDUP, ">indup_stat\.txt");  } # this is not essential.
 
-		 for($i=0; $i< @file; $i++){
-				my (@grouped_seq_names, @temp_show_sub, $indup_c, $big_msp_file);
-				$indup_c=0;
-				$big_msp_file=$file[$i];
-				unless(-s $big_msp_file){ print "\n# (E) \$big_msp_file does not exist\n"; die }
-				$base_1=${&get_base_names($big_msp_file)};
-				#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-				# (1) Define the output cluster file name:  eg, 3-232_cluster_F7.clu , F7 means factor used is 7
-				#______________________________________________________________________________________________
-				$output_clu_file="$base_1\_F${factor}\.clu";
-				if( !$over_write and -s $output_clu_file){
-						print "\n# $output_clu_file Already EXISTS, skipping. Use \'w\' opt to overwrite\n";
-						next;  }
+         for($i=0; $i< @file; $i++){
+			my (@grouped_seq_names, @temp_show_sub, $indup_c, $big_mspa_file);
+			$indup_c=0;
+			$big_mspa_file=$file[$i];
+            unless(-s $big_mspa_file){
+               print "\n# (E) \$big_mspa_file ($big_mspa_file) does not exist.\n\@file: @file\n";
+               push(@No_file_found_divclus_fail, $big_mspa_file);
+            }
 
-				#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-				#  (2) If clu file(eg 2-1618_ss.clu ) is in pwd, tries to skip
-				#____________________________________________________________
-				if((-s $output_clu_file) > 10 and $over_write !~/o/){
-						print "# $output_clu_file exists, skipping, use \"o\" option to overwrite\n";  next;
-				}
+			$base_1=${&get_base_names($big_mspa_file)};
+			#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+			# (1) Define the output cluster file name:  eg, 3-232_cluster_F7.clu , F7 means factor used is 7
+			#______________________________________________________________________________________________
+			$output_clu_file="$base_1\_F${factor}\.clu";
 
-				#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-				# (3) merge_sequence_in_mspa_file does not do much. Just filtering and producing
-				#     sequences in ISPA_PBS_21-215 VPR_PBS_160-354 format of STRING from msp format
-				#     $big_msp_file is an MSP file
-				#________________________________________________________________________________
-				@grouped_seq_names=@{&merge_sequence_in_mspa_file(\$big_msp_file, "s=$score", $din_dom, $sat_file, $optimize,
-														"T=$length_thresh", "E=$Evalue_thresh", "f=$factor", "$range", "$merge", $verbose, $over_write,
-														 $short_region, $large_region, $average_region, $dynamic_factor )};
+			if( !$over_write and -s $output_clu_file){	print "\n# $output_clu_file Already EXISTS, skipping. Use \'w\' opt to overwrite\n";
+					next;  }
 
-				#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-				#  (4) Clustering the sets of merged seqlets => CORE algorithm
-				#_____________________________________________________________________
-				unless(@grouped_seq_names == 1){  ##  if @grouped_seq_names has one string like 'FAM_8_7 FAM_8_4 FAM_8_3' skip
-						F2: for($g=0; $g< @grouped_seq_names; $g++){
-								@splited1=split(/ +/, $grouped_seq_names[$g]);
-								for($h=0; $h< @grouped_seq_names; $h++){
-										if($grouped_seq_names[$g] eq $grouped_seq_names[$h]){ next  }
-										@splited2=split(/ +/, $grouped_seq_names[$h]);
-										$link_or_not=${&check_linkage_of_2_similar_seqlet_sets(\@splited1, \@splited2, "f=$factor")};
-										if($link_or_not){
-												if($optimize){ ##---- This will also remove similar seqlets, not only identical ones
-													 $grouped_seq_names[$g]=join(' ', sort @{&remove_similar_seqlets( [@splited1, @splited2],
-																											 $short_region, $large_region, $average_region)} );
-												}else{
-													 $grouped_seq_names[$g]=join(' ', grep { ! $duplicate{$_}++ } (@splited1, @splited2) );
+						#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+						#  (2) If clu file(eg 2-1618_ss.clu ) is in pwd, tries to skip
+						#____________________________________________________________
+						if((-s $output_clu_file) > 10 and $over_write !~/o/){
+							print "# $output_clu_file exists, skipping, use \"o\" option to overwrite\n";  next;
+						}
+
+						#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+						# (3) merge_sequence_in_mspa_file does not do much. Just filtering and producing
+						#     sequences in ISPA_PBS_21-215 VPR_PBS_160-354 format of STRING from mspa format
+						#     $big_mspa_file is an MSPA file
+						#________________________________________________________________________________
+                        @grouped_seq_names=@{&merge_sequence_in_mspa_file(\$big_mspa_file, "s=$score", $din_dom, $sat_file, $optimize,
+																"T=$length_thresh", "E=$Evalue_thresh", "f=$factor", "$range", "$merge", $verbose, $over_write,
+																 $short_region, $large_region, $average_region, $dynamic_factor )};
+						#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+						#  (4) Clustering the sets of merged seqlets => CORE algorithm
+						#_____________________________________________________________________
+						unless(@grouped_seq_names == 1){  ##  if @grouped_seq_names has one string like 'FAM_8_7 FAM_8_4 FAM_8_3' skip
+								F2: for($g=0; $g< @grouped_seq_names; $g++){
+										@splited1=split(/ +/, $grouped_seq_names[$g]);
+										for($h=0; $h< @grouped_seq_names; $h++){
+												if($grouped_seq_names[$g] eq $grouped_seq_names[$h]){ next  }
+												@splited2=split(/ +/, $grouped_seq_names[$h]);
+												$link_or_not=${&check_linkage_of_2_similar_seqlet_sets(\@splited1, \@splited2, "f=$factor")};
+												if($link_or_not){
+														if($optimize){ ##---- This will also remove similar seqlets, not only identical ones
+															 $grouped_seq_names[$g]=join(' ', sort @{&remove_similar_seqlets( [@splited1, @splited2],
+																													 $short_region, $large_region, $average_region)} );
+														}else{
+															 $grouped_seq_names[$g]=join(' ', grep { ! $duplicate{$_}++ } (@splited1, @splited2) );
+														}
+														splice(@grouped_seq_names, $h, 1); $h--; $g--; %duplicate=(); next F2;
 												}
-												splice(@grouped_seq_names, $h, 1); $h--; $g--; %duplicate=(); next F2;
 										}
 								}
 						}
-				}
-				#~~~~~~~~~~~~~~ I used to use a sub, but to save time above is inserted ~~~~~~~~~~~~~
-				#@grouped_seq_names=@{&cluster_merged_seqlet_sets(\@grouped_seq_names, "f=$factor", $optimize, $dynamic_factor,
-				#			 $short_region, $large_region, $average_region)};
-				@temp_show_sub=&show_subclusterings(\@grouped_seq_names, $big_msp_file, $sat_file, $dindom, $indup,
-																								"E=$Evalue_thresh", "p=$percent_fac", "f=$factor");
-										$good_bad       = $temp_show_sub[0];
-										$indup_c        = $temp_show_sub[1];
-										$sum_seq_num   += $temp_show_sub[2];
-				push(@sub_clustering_out_files, @{$temp_show_sub[3]});
-				if($good_bad==1){          push(@good, $big_msp_file);
-				}else{         push(@bad, $big_msp_file);       }
-				}
-           #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
-           &write_good_bad_list_in_divide_clusters(\@good, \@bad);
-           sub write_good_bad_list_in_divide_clusters{
-                    my  (@good, $i, @bad); @good=@{$_[0]}; @bad=@{$_[1]};
-                    open(GOODBAD, ">good_bad.list") || warn "\n Can not open good_bad.list \n\n";
-                    print GOODBAD "GOOD: all link    : 000\n";
-                    for($i=0; $i< @good; $i++){  print GOODBAD "$good[$i]\n";  }
-                    print GOODBAD "BAD : Not all link: 000\n";
-                    for($i=0; $i< @bad; $i++){   print GOODBAD "$bad[$i]\n";   }
-                    close(GOODBAD);
-           }
-           #_______________________________________________________________
+						#~~~~~~~~~~~~~~ I used to use a sub, but to save time above is inserted ~~~~~~~~~~~~~
+						#@grouped_seq_names=@{&cluster_merged_seqlet_sets(\@grouped_seq_names, "f=$factor", $optimize, $dynamic_factor,
+						#			 $short_region, $large_region, $average_region)};
+						@temp_show_sub=&show_subclusterings(\@grouped_seq_names, $big_mspa_file, $sat_file, $dindom, $indup,
+																										"E=$Evalue_thresh", "p=$percent_fac", "f=$factor");
+												$good_bad       = $temp_show_sub[0];
+												$indup_c        = $temp_show_sub[1];
+												$sum_seq_num   += $temp_show_sub[2];
+						push(@sub_clustering_out_files, @{$temp_show_sub[3]});
+
+						if($good_bad==1){          push(@good, $big_mspa_file);
+						}else{         push(@bad, $big_mspa_file);       }
+
+					}
+					#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
+					&write_good_bad_list_in_divide_clusters(\@good, \@bad);
+					sub write_good_bad_list_in_divide_clusters{
+							 my  (@good, $i, @bad); @good=@{$_[0]}; @bad=@{$_[1]};
+                             open(GOODBAD, ">good_bad.list") || warn "\n Can not open good_bad.list \n\n";
+							 print GOODBAD "GOOD: all link    : 000\n";
+							 for($i=0; $i< @good; $i++){  print GOODBAD "$good[$i]\n";  }
+							 print GOODBAD "BAD : Not all link: 000\n";
+							 for($i=0; $i< @bad; $i++){   print GOODBAD "$bad[$i]\n";   }
+							 close(GOODBAD);
+					}
+					#_______________________________________________________________
 
 	 }
-	 return(\@sub_clustering_out_files); # contains (xxxx.clu, yyy.clu,, )
+	 print "\n (E) \"@No_file_found_divclus_fail\" has been failed to be parsed by divclus\n"; sleep 3;
+     return(\@sub_clustering_out_files); # contains (xxxx.clu, yyy.clu,, )
 }
+
+
 
 
 
@@ -4019,7 +4033,7 @@ sub cluster_merged_seqlet_sets{
 }
 
 #__________________________________________________________________________
-# Title     : merge_sequence_in_msp_chunk
+# Title     : merge_sequence_in_mspa_chunk
 # Usage     :
 # Function  : merges sequences which are linked by common regions
 #             This filters the sequences by evalue and ssearch score
@@ -4049,7 +4063,7 @@ sub cluster_merged_seqlet_sets{
 # Thanks    : Alexey Eroshkin <alexey@axyspharm.com>
 # Version   : 2.7
 #--------------------------------------------------------------
-sub merge_sequence_in_msp_chunk{
+sub merge_sequence_in_mspa_chunk{
 	 #"""""""""""""""""< handle_arguments{ head Ver 4.1 >"""""""""""""""""""
 	 my(@A)=&handle_arguments(@_);my($num_opt)=${$A[7]};my($char_opt)=${$A[8]};
 	 my(@hash)=@{$A[0]};my(@file)=@{$A[4]};my(@dir)=@{$A[3]};my(@array)=@{$A[1]};
@@ -4076,13 +4090,13 @@ sub merge_sequence_in_msp_chunk{
 	 }if($char_opt=~/A/){	   $average_region='A'; }
 
 	 if($vars{'T'}=~/\d+/){
-			$length_thresh=$vars{'T'};# print "\n# merge_sequence_in_msp_chunk: Thresh is $length_thresh\n" if (defined $verbose);
+			$length_thresh=$vars{'T'};# print "\n# merge_sequence_in_mspa_chunk: Thresh is $length_thresh\n" if (defined $verbose);
 	 }if($vars{'f'}=~/\S+/){
-	    $factor=$vars{'f'}; # print "\n# merge_sequence_in_msp_chunk: Factor is $factor\n" if (defined $verbose);
+	    $factor=$vars{'f'}; # print "\n# merge_sequence_in_mspa_chunk: Factor is $factor\n" if (defined $verbose);
 	 }if($vars{'s'}=~/\d+/){
-		  $score = $vars{'s'}; # print "\n# merge_sequence_in_msp_chunk: Score is $score\n" if (defined $verbose);
+		  $score = $vars{'s'}; # print "\n# merge_sequence_in_mspa_chunk: Score is $score\n" if (defined $verbose);
 	 }if($vars{'E'}=~/\S+/){
-	    $Evalue_thresh= $vars{'E'}; # print "\n# merge_sequence_in_msp_chunk: Evalue is $Evalue_thresh\n" if (defined $verbose);
+	    $Evalue_thresh= $vars{'E'}; # print "\n# merge_sequence_in_mspa_chunk: Evalue is $Evalue_thresh\n" if (defined $verbose);
 	 }
 
 	 @seqlets=split(/\n+/, (${$_[0]} || $_[0]) );
@@ -7169,6 +7183,7 @@ sub merge_sequence_in_mspa_file{
 		}if($vars{'T'}=~/\d+/){    $length_thresh=$vars{'T'};
 		}if($vars{'f'}=~/\S+/){    $factor=$vars{'f'};  ## Here I give a generous $factor !
 		}if($vars{'s'}=~/\d+/){    $score = $vars{'s'};
+        }if($vars{'e'}=~/\S+/){    $Evalue_thresh= $vars{'e'};
 		}if($vars{'E'}=~/\S+/){    $Evalue_thresh= $vars{'E'}; }
 
 		#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -7255,7 +7270,7 @@ sub merge_sequence_in_mspa_file{
 		}
 
 		for($i=0; $i< @msp_chunks; $i++){
-			@arr=@{&merge_sequence_in_msp_chunk($msp_chunks[$i], $verbose, $optimize,
+            @arr=@{&merge_sequence_in_mspa_chunk($msp_chunks[$i], $verbose, $optimize,
 								"$merge", "E=$Evalue_thresh", "s=$score", "f=$factor", "T=$length_thresh",
 								$short_region, $large_region, $average_region)};
 			push(@all_seqlets,  @arr);
@@ -7269,7 +7284,7 @@ sub merge_sequence_in_mspa_file{
 		@all_seqlets= map{$_->[0]} sort{$a->[1] cmp $b->[1] or $a->[2] <=> $b->[2]  }
 									map {/^ *((\S+)_(\d+)\-(\d+).*)/ && [$1, $2, $3, $4]} @all_seqlets;
 		if(  $verbose){
-			print "\n# (6) merge_sequence_in_msp_chunk: Showing the very final result before merging\n";
+			print "\n# (6) merge_sequence_in_mspa_chunk: Showing the very final result before merging\n";
 			for($i=0; $i< @all_seqlets; $i++){
 				print "\n$all_seqlets[$i]";
 			}
