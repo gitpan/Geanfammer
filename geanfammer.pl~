@@ -3963,7 +3963,7 @@ sub merge_sequence_in_msp_chunk{
 				 # Following lines are disabled as I believe seqlets have been checked in previous sub
 				 #________________________________________________________________________________________________
 		     if( ($R_leng2 < $length_thresh)||($ssearch_score2 < $score) ){ splice(@seqlets, $j, 1); $j--; next; }
-		     if( $evalue_found2 > $evalue){ splice(@seqlets, $j, 1); $j--; next; }
+		     #if( $evalue_found2 > $evalue){ splice(@seqlets, $j, 1); $j--; next; }
 
 		     $R_diff=abs($R_leng1-$R_leng2)/2;   ## <<<---- Note it is div by 2
 

@@ -11,7 +11,7 @@
 
 Version.
 
-	"Geanfammer_V1.6.2.tar.gz"   5th/Jan/99
+	"Geanfammer_V1.6.2.tar.gz"   29th/Aug/98
 	 1.6.2 Fixed a bug in merge_sequence_in_msp_chunk and merge_sequence_in_msp_file
 	       Disabled a lot of printout information to speed up
 

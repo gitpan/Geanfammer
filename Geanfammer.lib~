@@ -3111,7 +3111,6 @@ sub show_array{
 	print "\n"; #### This is necessary to distinguish different arrays.
 	}
 }
-
 #__________________________________________________________________________
 # Title     : merge_sequence_in_msp_chunk
 # Usage     :
@@ -3140,27 +3139,27 @@ sub show_array{
 #
 # Returns   :
 # Argument  :
-# Version   : 2.5
+# Version   : 2.3
 #--------------------------------------------------------------
 sub merge_sequence_in_msp_chunk{
-	 #"""""""""""""""""< handle_arguments{ head Ver 4.1 >"""""""""""""""""""
-	 my(@A)=&handle_arguments(@_);my($num_opt)=${$A[7]};my($char_opt)=${$A[8]};
-	 my(@hash)=@{$A[0]};my(@file)=@{$A[4]};my(@dir)=@{$A[3]};my(@array)=@{$A[1]};
-	 my(@string)=@{$A[2]};my(@num_opt)=@{$A[5]};my(@char_opt)=@{$A[6]};
-	 my(@raw_string)=@{$A[9]};my(%vars)=%{$A[10]};my(@range)=@{$A[11]};
-	 my($i,$j,$c,$d,$e,$f,$g,$h,$k,$l,$m,$n,$o,$p,$q,$r,$s,$t,$u,$v,$w,$x,$y,$z);
-	 if($debug==1){print "\n\t\@hash=\"@hash\"
-	 \@raw_string=\"@raw_string\"\n\t\@array=\"@array\"\n\t\@num_opt=\"@num_opt\"
-	 \@char_opt=\"@char_opt\"\n\t\@file=\"@file\"\n\t\@string=\"@string\"\n" }
-	 #""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+	#"""""""""""""""""< handle_arguments{ head Ver 4.1 >"""""""""""""""""""
+	my(@A)=&handle_arguments(@_);my($num_opt)=${$A[7]};my($char_opt)=${$A[8]};
+	my(@hash)=@{$A[0]};my(@file)=@{$A[4]};my(@dir)=@{$A[3]};my(@array)=@{$A[1]};
+	my(@string)=@{$A[2]};my(@num_opt)=@{$A[5]};my(@char_opt)=@{$A[6]};
+	my(@raw_string)=@{$A[9]};my(%vars)=%{$A[10]};my(@range)=@{$A[11]};
+	my($i,$j,$c,$d,$e,$f,$g,$h,$k,$l,$m,$n,$o,$p,$q,$r,$s,$t,$u,$v,$w,$x,$y,$z);
+	if($debug==1){print "\n\t\@hash=\"@hash\"
+	\@raw_string=\"@raw_string\"\n\t\@array=\"@array\"\n\t\@num_opt=\"@num_opt\"
+	\@char_opt=\"@char_opt\"\n\t\@file=\"@file\"\n\t\@string=\"@string\"\n" }
+	#""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 	 my ($ssearch_score2, $evalue_found2, $evalue_found1, $ssearch_score1, $optimize );
 	 my ($L, %out_hash, @out, $LL, @Final_out, $verbose, $final_factor, $R_diff,
-			 $short_region, $large_region, $average_region);
+		$short_region, $large_region, $average_region);
 	 my $factor =4; # default factor for around 30% sequence mis-overlap is the threshold for common block
-	 #~~~~~~~~~~~~~~ The lower the factor the larger clustering will occur ~~~~~~~~~~~~
+	  #~~~~~~~~~~~~~~ The lower the factor the larger clustering will occur ~~~~~~~~~~~~
 	 my $score  =75; # default ssearch score. seq below this will be chucked out
 	 my $evalue =40; # default maximum e value used. Seq higher than this will be thrown out
-	 my $length_thresh =30; # sequence length threshold. overlap less than this will be ignored
+	 my $thresh =40; # sequence length threshold. overlap less than this will be ignored
 
 	 if($char_opt=~/v/){     $verbose = 'v'
 	 }if($char_opt=~/z/){    $optimize = 'z'
@@ -3168,8 +3167,8 @@ sub merge_sequence_in_msp_chunk{
 	 }if($char_opt=~/L/){	   $large_region='L';
 	 }if($char_opt=~/A/){	   $average_region='A'; }
 
-	 if($vars{'T'}=~/\d+/){
-	  $length_thresh=$vars{'T'}; print "\n# merge_sequence_in_msp_chunk: Thresh is $length_thresh\n" if (defined $verbose);
+	 if($vars{'t'}=~/\d+/){
+	  $thresh=$vars{'t'}; print "\n# merge_sequence_in_msp_chunk: Thresh is $thresh\n" if (defined $verbose);
 	 }if($vars{'f'}=~/\S+/){
 	  $factor=$vars{'f'}; print "\n# merge_sequence_in_msp_chunk: Factor is $factor\n" if (defined $verbose);
 	 }if($vars{'s'}=~/\d+/){
@@ -3181,21 +3180,21 @@ sub merge_sequence_in_msp_chunk{
 	 print "@seqlets" if $verbose;
 
 	 F1: for($i=0; $i < @seqlets; $i ++){
-	  if($seqlets[$i]=~/^ *((\S+) +(\d+\.?[e\-\d]*) +(\d+) +(\d+) +(\S+) +(\d+) +(\d+)) +(\S+) *(.*)/){
-							if($6 eq $9){ splice(@seqlets, $i, 1); $i--; next };
-							($long_match1, $enq_seq1, $mat_seq1, $R_start1, $R_end1 )=($1, $6, $9, $4, $5);
-							$R_leng1=$R_end1-$R_start1;  $ssearch_score1= $2;  $evalue_found1 = $3;
+	  if($seqlets[$i]=~/^ *((\d+) +(\d+\.?[e\-\d]*) +(\d+) +(\d+) +(\S+) +(\d+) +(\d+)) +(\S+) *(.*)/){
+		  if($6 eq $9){ splice(@seqlets, $i, 1); $i--; next };
+		  ($long_match1, $enq_seq1, $mat_seq1, $R_start1, $R_end1 )=($1, $6, $9, $4, $5);
+		  $R_leng1=$R_end1-$R_start1;  $ssearch_score1= $2;  $evalue_found1 = $3;
 	  }
-	  if( ($R_leng1 < $length_thresh) || ($ssearch_score1 < $score) ){ splice(@seqlets, $i, 1); $i--; next; }
+	  if( ($R_leng1 < $thresh) || ($ssearch_score1 < $score) ){ splice(@seqlets, $i, 1); $i--; next; }
 	  if( $evalue_found1 > $evalue){ splice(@seqlets, $i, 1); $i--; next; }
 
 	  F2: for($j=0; $j < @seqlets; $j ++){
 		 if($seqlets[$i] eq $seqlets[$j]){ next };
-		 if($seqlets[$j]=~/^ *((\S+) +(\d+\.?[e\-\d]*) +(\d+) +(\d+) +(\S+) +(\d+) +(\d+)) +(\S+) *(.*)/){
+		 if($seqlets[$j]=~/^ *((\d+) +(\d+\.?[e\-\d]*) +(\d+) +(\d+) +(\S+) +(\d+) +(\d+)) +(\S+) *(.*)/){
 			($long_match2, $enq_seq2, $mat_seq2, $R_start2, $R_end2)=($1, $6, $9, $4, $5);
 			$R_leng2=$R_end2-$R_start2;			$ssearch_score2=$2;			$evalue_found2= $3;
 	     }
-		 if( ($R_leng2 < $length_thresh)||($ssearch_score2 < $score) ){ splice(@seqlets, $j, 1); $j--; next; }
+		 if( ($R_leng2 < $thresh)||($ssearch_score2 < $score) ){ splice(@seqlets, $j, 1); $j--; next; }
 		 if( $evalue_found2 > $evalue){ splice(@seqlets, $j, 1); $j--; next; }
 
 		 $R_diff=abs($R_leng1-$R_leng2)/2;   ## <<<---- Note it is div by 2
@@ -3239,22 +3238,18 @@ sub merge_sequence_in_msp_chunk{
 	  }
 	 }
 	 if($char_opt=~/m/){
-			for($i=0; $i< @seqlets; $i++){
-				 if($seqlets[$i]=~/^ *\S+ +\d+\.?[e\-\d]* +\d+ +\d+ +(\S+) +\d+ +\d+ +(\S+) *$/){
-						if($1 eq $2){ next }
-						$leading_seq=$1; $long=$2; $long=~s/\,/ /g;
-						push(@Final_out, "$leading_seq $long" );
-				 }
-			}
+	  for($i=0; $i< @seqlets; $i++){
+		if($seqlets[$i]=~/^ *\d+ +\d+\.?[e\-\d]* +\d+ +\d+ +(\S+) +\d+ +\d+ +(\S+) *$/){
+		   if($1 eq $2){ next }
+		   $leading_seq=$1; $long=$2; $long=~s/\,/ /g;
+		   push(@Final_out, "$leading_seq $long" );
+		}
+	  }
 	 }
 	 @Final_out=sort @Final_out;
 	 print "\n\n\n# \@Final_out\n@Final_out \n=================\n " if $verbose;
 	 return(\@Final_out);
 }
-
-
-
-
 #______________________________________________________________
 # Title     : get_domain_inside_domain
 # Usage     :
