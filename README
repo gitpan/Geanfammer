@@ -1,13 +1,25 @@
-
-# Geanfammer test directory README file
-
+#______________________________________________________________________________
+# Title     : geanfammer REAME file
+# Usage     :
+# Function  :
+# Example   :
+# Keywords  :
+# Options   :
+# Author    : jong@bio.cc,
+# Category  :
+# Returns   :
+# Version   : 3.3
+#------------------------------------------------------------------------------
 
   To test geanfammer.pl   type:
 
   geanfammer.pl geanfammer_test_FASTA_DB.fa
 
-The default is to run 'fasta' program which should be in your exe PATH in Linux.
+  in ./Test  directory.
 
+
+The default is to run 'fasta' program which should be in your exe PATH in Linux.
+ (for Linux, FASTA and SSEARCH programs are in ./Bin directory).
 
 
   geanfammer.pl geanfammer_test_FASTA_DB.fa a=b
@@ -21,7 +33,7 @@ Will run Blastpgp (PSI blast) with step evalue threshold of 0.0001
 
 
 
-jong@salt2.med.harvard.edu
 
 
+jong@biosophy.org
 
