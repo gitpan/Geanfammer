@@ -1,22 +1,21 @@
 
-   =============
-   Anncouncement
-   =============
+	 =============
+	 Anncouncement
+	 =============
 
 
-   Geanfammer : A biology program for genome analysis and protein family maker.
+	 Geanfammer : A biology program for genome analysis and protein family maker.
 
 
-   Language: Perl5
+	 Language: Perl5
 
-   http://cyrah.med.harvard.edu/Project/Geanfammer
-   ftp://unix.hensa.ac.uk/mirrors/perl-CPAN/modules/by-category/23_Miscellaneous_Modules/Bio/
+	 http://cyrah.med.harvard.edu/Proj/Bio/Geanfammer
+	 ftp://unix.hensa.ac.uk/mirrors/perl-CPAN/modules/by-category/23_Miscellaneous_Modules/Bio/
 
 
+	 Authors: Sarah Teichmann, Jong Park (jong@salt2.med.harvard.edu, sat@mrc-lmb.cam.ac.uk)
 
-   Author: jong@salt2.med.harvard.edu, sat@mrc-lmb.cam.ac.uk
-
-   (C) Copyright, Sarah Teichmann and Jong Park
-       For commercial use and profit making by using this package, please contact
-       the author. Free for educational institutes.
+	 (C) Copyright, Sarah Teichmann and Jong Park
+			 For commercial use and profit making by using this package, please contact
+			 the author. Free for educational institutes.
 

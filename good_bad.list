@@ -1,0 +1,8 @@
+GOOD: all link    : 000
+2-2_cluster.msp
+3-4_cluster.msp
+5-11_cluster.msp
+6-16_cluster.msp
+7-22_cluster.msp
+BAD : Not all link: 000
+12-29_cluster.msp
