@@ -1,0 +1,65 @@
+Cluster size    No. of clusters
+     2               8
+     3               4
+     4               1
+
+# This file is created by /gn0/jong/Perl/geanfammer.pl with make_clustering_summary sub, Details below
+
+Cluster size 2
+Cluster number 310102       # E:0.01  Factor:7  P:70, Ori size:2    Sub:2    From:31          
+   2    31    MG399             1-318      1   leng: 317
+   2    31    MG401             107-423    1   leng: 316
+Cluster size 2
+Cluster number 860102       # E:0.01  Factor:7  P:70, Ori size:2    Sub:2    From:86          
+   2    86    MG439             14-272     1   leng: 258
+   2    86    MG440             3-258      1   leng: 255
+Cluster size 2
+Cluster number 100102       # E:0.01  Factor:7  P:70, Ori size:2    Sub:2    From:10          
+   2    10    MG384             162-425    1   leng: 263
+   2    10    MG387             6-272      1   leng: 266
+Cluster size 2
+Cluster number 80102        # E:0.01  Factor:7  P:70, Ori size:2    Sub:2    From:8           
+   2    8     MG372             176-375    1   leng: 199
+   2    8     MG383             22-214     1   leng: 192
+Cluster size 2
+Cluster number 150202       # E:0.01  Factor:7  P:70, Ori size:6    Sub:2    From:15          
+   2    15    MG410             223-326    1   leng: 103
+   2    15    MG421             728-840    1   leng: 112
+Cluster size 2
+Cluster number 150302       # E:0.01  Factor:7  P:70, Ori size:6    Sub:2    From:15          
+   2    15    MG390             40-659     1   leng: 619
+   2    15    MG422             103-738    1   leng: 635
+Cluster size 2
+Cluster number 150402       # E:0.01  Factor:7  P:70, Ori size:6    Sub:2    From:15          
+   2    15    MG400             11-144     1   leng: 133
+   2    15    MG410             49-184     1   leng: 135
+Cluster size 2
+Cluster number 150502       # E:0.01  Factor:7  P:70, Ori size:6    Sub:2    From:15          
+   2    15    MG410             1-304      1   leng: 303
+   2    15    MG467             1-302      1   leng: 301
+Cluster size 3
+Cluster number 510103       # E:0.01  Factor:7  P:70, Ori size:3    Sub:3    From:51          
+   3    51    MG359             16-215     1   leng: 199
+   3    51    MG420             11-255     1   leng: 244
+   3    51    MG457             245-433    1   leng: 188
+Cluster size 3
+Cluster number 450103       # E:0.01  Factor:7  P:70, Ori size:4    Sub:3    From:45          
+   3    45    MG413             463-727    1   leng: 264
+   3    45    MG414             771-1035   1   leng: 264
+   3    45    MG415             1-267      1   leng: 266
+Cluster size 3
+Cluster number 450203       # E:0.01  Factor:7  P:70, Ori size:4    Sub:3    From:45          
+   3    45    MG366             76-662     1   leng: 586
+   3    45    MG413             40-668     1   leng: 628
+   3    45    MG414             348-976    1   leng: 628
+Cluster size 3
+Cluster number 150103       # E:0.01  Factor:7  P:70, Ori size:6    Sub:3    From:15          
+   3    15    MG390             459-648    1   leng: 189
+   3    15    MG410             57-286     1   leng: 229
+   3    15    MG467             105-298    1   leng: 193
+Cluster size 4
+Cluster number 720104       # E:0.01  Factor:7  P:70, Ori size:4    Sub:4    From:72          
+   4    72    MG411             444-617    1   leng: 173
+   4    72    MG432             2-385      1   leng: 383
+   4    72    MG437             5-234      1   leng: 229
+   4    72    MG443             6-333      1   leng: 327
